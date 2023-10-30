@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="IntelliJ files">
-      <change afterPath="$PROJECT_DIR$/src/UseCases/LegalMoves.java" afterDir="false" />
+    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Added LegalMoves.java and use case package">
+      <change beforePath="$PROJECT_DIR$/src/UseCases/LegalMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UseCases/LegalMoves.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "simon",
-    "last_opened_file_path": "C:/Users/Daniel/IdeaProjects/CSC207Group193/src",
+    "last_opened_file_path": "C:/Users/Simon/IdeaProjects/LoginCleanArchitecture",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -129,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698703628024</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added LegalMoves.java and use case package">
+      <option name="closed" value="true" />
+      <created>1698704329350</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698704329350</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,6 +160,7 @@
     <MESSAGE value="Extremely basic view of chessboard" />
     <MESSAGE value="squash!" />
     <MESSAGE value="IntelliJ files" />
-    <option name="LAST_COMMIT_MESSAGE" value="IntelliJ files" />
+    <MESSAGE value="Added LegalMoves.java and use case package" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added LegalMoves.java and use case package" />
   </component>
 </project>
