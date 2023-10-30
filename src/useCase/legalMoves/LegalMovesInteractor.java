@@ -8,5 +8,10 @@ package useCase.legalMoves;
  */
 
 
-public class LegalMovesInteractor {
+public class LegalMovesInteractor implements LegalMovesInputBoundry{
+    final LegalMovesOutputBoundry legalMovesOutputBoundry;
+
+    public LegalMovesInteractor(LegalMovesOutputBoundry legalMovesOutputBoundry) {
+        this.legalMovesOutputBoundry = legalMovesOutputBoundry;
+    }
 }
