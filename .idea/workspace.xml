@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Added LegalMoves.java and use case package">
-      <change beforePath="$PROJECT_DIR$/src/UseCases/LegalMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UseCases/LegalMoves.java" afterDir="false" />
+    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later.">
+      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/LegalMovesPresenter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/LegalMovesViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/ViewManagerModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/ViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/useCase/legalMoves/LegalMovesInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/useCase/legalMoves/LegalMovesInteractor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +20,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -38,7 +44,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "simon",
-    "last_opened_file_path": "C:/Users/Simon/IdeaProjects/LoginCleanArchitecture",
+    "last_opened_file_path": "C:/Users/Simon/IdeaProjects/CSC207ProjGroup193",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -88,6 +94,7 @@
       <option name="presentableId" value="Default" />
       <updated>1698701780264</updated>
       <workItem from="1698701781331" duration="2132000" />
+      <workItem from="1698704603530" duration="2278000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -137,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698704329350</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later.">
+      <option name="closed" value="true" />
+      <created>1698705275286</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1698705275286</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,6 +176,7 @@
     <MESSAGE value="squash!" />
     <MESSAGE value="IntelliJ files" />
     <MESSAGE value="Added LegalMoves.java and use case package" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added LegalMoves.java and use case package" />
+    <MESSAGE value="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later." />
   </component>
 </project>
