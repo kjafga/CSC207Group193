@@ -1,5 +1,6 @@
 package interfaceAdapters.legalMoves;
 
+import interfaceAdapters.ViewManagerModel;
 import useCase.legalMoves.LegalMovesOutputBoundry;
 
 public class LegalMovesPresenter implements LegalMovesOutputBoundry {

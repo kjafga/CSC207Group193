@@ -1,20 +1,17 @@
-package interfaceAdapters.legalMoves;
+package interfaceAdapters.movePiece;
 
 import interfaceAdapters.ViewModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class LegalMovesViewModel extends ViewModel {
-
-
+public class MovePieceViewModel extends ViewModel {
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public LegalMovesViewModel() {
-        super("Legal Moves");
+    public MovePieceViewModel() {
+        super("Move Piece");
     }
-
     @Override
     public void firePropertyChanged() {
 

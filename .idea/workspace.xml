@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
+    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Refactored interface adapters and began introducing the classes for the MovePiece use case">
+      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePieceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePiecePresenter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePieceState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePieceViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInputBoundry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInputData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInteractor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceOutputBoundry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceOutputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/ViewManagerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/ViewManagerModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/ViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/ViewModel.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,7 +54,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "simon",
-    "last_opened_file_path": "C:/Users/Simon/IdeaProjects/CSC207ProjGroup193",
+    "last_opened_file_path": "C:/Users/Expec/IdeaProjects/noblesim",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

@@ -1,4 +1,4 @@
-package interfaceAdapters.legalMoves;
+package interfaceAdapters;
 
 import java.beans.PropertyChangeListener;
 
