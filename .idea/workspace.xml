@@ -4,23 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Refactored interface adapters and began introducing the classes for the MovePiece use case">
-      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePieceController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePiecePresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePieceState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/movePiece/MovePieceViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInputBoundry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInputData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceOutputBoundry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceOutputData.java" afterDir="false" />
+    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/ViewManagerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/ViewManagerModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/ViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/ViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/useCase/movePiece/MovePieceInteractor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +65,7 @@
   <component name="RunManager">
     <configuration name="View" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.View" />
-      <module name="CSC207ProjGroup193" />
+      <module name="CSC207Group193" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="view.*" />
@@ -195,7 +181,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698856325955</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added CA classes for the MovePiece use case. Implements and extensions were added and some basic funtionality to some classes.">
+      <option name="closed" value="true" />
+      <created>1698864838039</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1698864838039</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,6 +217,7 @@
     <MESSAGE value="Added more interfaces for CA and filled in some details" />
     <MESSAGE value="Refactored to allow view to run, moving view.fxml" />
     <MESSAGE value="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
+    <MESSAGE value="Added CA classes for the MovePiece use case. Implements and extensions were added and some basic funtionality to some classes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added CA classes for the MovePiece use case. Implements and extensions were added and some basic funtionality to some classes." />
   </component>
 </project>
