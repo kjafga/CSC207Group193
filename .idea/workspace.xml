@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Refactored to allow view to run, moving view.fxml">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/LegalMovesPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/LegalMovesViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/LegalMovesViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/ViewManagerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/ViewManagerModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interfaceAdapters/ViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interfaceAdapters/legalMoves/ViewModel.java" afterDir="false" />
-    </list>
+    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -94,7 +88,7 @@
       <option name="presentableId" value="Default" />
       <updated>1698701780264</updated>
       <workItem from="1698701781331" duration="2132000" />
-      <workItem from="1698704603530" duration="5429000" />
+      <workItem from="1698704603530" duration="6102000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -176,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698852516691</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Refactored interface adapters and began introducing the classes for the MovePiece use case">
+      <option name="closed" value="true" />
+      <created>1698856325955</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1698856325955</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -203,6 +205,7 @@
     <MESSAGE value="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later." />
     <MESSAGE value="Added more interfaces for CA and filled in some details" />
     <MESSAGE value="Refactored to allow view to run, moving view.fxml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored to allow view to run, moving view.fxml" />
+    <MESSAGE value="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
   </component>
 </project>
