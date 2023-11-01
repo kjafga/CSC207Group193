@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later.">
-      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/LegalMovesPresenter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/LegalMovesViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/ViewManagerModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interfaceAdapters/ViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/useCase/legalMoves/LegalMovesInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/useCase/legalMoves/LegalMovesInteractor.java" afterDir="false" />
-    </list>
+    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="Added more interfaces for CA and filled in some details" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +61,7 @@
   <component name="RunManager">
     <configuration name="View" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.View" />
-      <module name="CSC207Group193" />
+      <module name="CSC207ProjGroup193" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="view.*" />
@@ -94,7 +87,7 @@
       <option name="presentableId" value="Default" />
       <updated>1698701780264</updated>
       <workItem from="1698701781331" duration="2132000" />
-      <workItem from="1698704603530" duration="2278000" />
+      <workItem from="1698704603530" duration="3432000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -152,7 +145,23 @@
       <option name="project" value="LOCAL" />
       <updated>1698705275286</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added more interfaces for CA and filled in some details">
+      <option name="closed" value="true" />
+      <created>1698706917572</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698706917572</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added more interfaces for CA and filled in some details">
+      <option name="closed" value="true" />
+      <created>1698781569850</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1698781569850</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,6 +186,7 @@
     <MESSAGE value="IntelliJ files" />
     <MESSAGE value="Added LegalMoves.java and use case package" />
     <MESSAGE value="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later." />
+    <MESSAGE value="Added more interfaces for CA and filled in some details" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added more interfaces for CA and filled in some details" />
   </component>
 </project>
