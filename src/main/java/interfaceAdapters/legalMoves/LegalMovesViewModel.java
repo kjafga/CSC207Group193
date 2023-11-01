@@ -1,9 +1,9 @@
-package interfaceAdapters;
+package interfaceAdapters.legalMoves;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class LegalMovesViewModel extends ViewModel{
+public class LegalMovesViewModel extends ViewModel {
 
 
 

@@ -1,4 +1,4 @@
-package interfaceAdapters;
+package interfaceAdapters.legalMoves;
 
 import useCase.legalMoves.LegalMovesOutputBoundry;
 
