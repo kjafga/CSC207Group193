@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/view/BoardView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -197,7 +196,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698866873704</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added BoardView.java to properly implement the view in the future">
+      <option name="closed" value="true" />
+      <created>1699036724940</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1699036724940</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,6 +234,7 @@
     <MESSAGE value="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
     <MESSAGE value="Added CA classes for the MovePiece use case. Implements and extensions were added and some basic funtionality to some classes." />
     <MESSAGE value="Added to the docstring for the MovePieceInteractor, specifying that the interactor should confirm that the move is legal." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added to the docstring for the MovePieceInteractor, specifying that the interactor should confirm that the move is legal." />
+    <MESSAGE value="Added BoardView.java to properly implement the view in the future" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added BoardView.java to properly implement the view in the future" />
   </component>
 </project>
