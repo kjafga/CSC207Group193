@@ -10,7 +10,7 @@ public class SendBoardToApiViewModel extends ViewModel {
 
 
     public SendBoardToApiViewModel() {
-        super("Move Piece");
+        super("Send Board To Api");
     }
     @Override
     public void firePropertyChanged() {
