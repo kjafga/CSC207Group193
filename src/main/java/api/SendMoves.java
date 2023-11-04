@@ -10,5 +10,6 @@ public class SendMoves extends View implements MovePieceInputBoundry {
         String fen = "";
         int depth = 0;
         String mode = "";
+
     }
 }
