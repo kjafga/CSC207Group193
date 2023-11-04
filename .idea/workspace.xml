@@ -4,13 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="IntelliJ files">
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
+    <list default="true" id="2c140bd4-51d7-45c1-8ab6-2f7f9c96ea99" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/view/BoardView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,8 +39,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Daniel/IdeaProjects/CSC207Group193/src",
+    "git-widget-placeholder": "simon",
+    "last_opened_file_path": "C:/Users/Expec/IdeaProjects/noblesim",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -49,6 +58,7 @@
       <recent name="C:\Users\Daniel\IdeaProjects\CSC207Group193\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Simon\IdeaProjects\CSC207ProjGroup193\src\resources\view" />
       <recent name="C:\Users\Daniel\IdeaProjects\CSC207Group193\src" />
     </key>
   </component>
@@ -81,6 +91,7 @@
       <option name="presentableId" value="Default" />
       <updated>1698701780264</updated>
       <workItem from="1698701781331" duration="2132000" />
+      <workItem from="1698704603530" duration="6102000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -122,7 +133,71 @@
       <option name="project" value="LOCAL" />
       <updated>1698703628024</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added LegalMoves.java and use case package">
+      <option name="closed" value="true" />
+      <created>1698704329350</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698704329350</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later.">
+      <option name="closed" value="true" />
+      <created>1698705275286</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1698705275286</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added more interfaces for CA and filled in some details">
+      <option name="closed" value="true" />
+      <created>1698706917572</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698706917572</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added more interfaces for CA and filled in some details">
+      <option name="closed" value="true" />
+      <created>1698781569850</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1698781569850</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Refactored to allow view to run, moving view.fxml">
+      <option name="closed" value="true" />
+      <created>1698852516691</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1698852516691</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Refactored interface adapters and began introducing the classes for the MovePiece use case">
+      <option name="closed" value="true" />
+      <created>1698856325955</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1698856325955</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added CA classes for the MovePiece use case. Implements and extensions were added and some basic funtionality to some classes.">
+      <option name="closed" value="true" />
+      <created>1698864838039</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1698864838039</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added to the docstring for the MovePieceInteractor, specifying that the interactor should confirm that the move is legal.">
+      <option name="closed" value="true" />
+      <created>1698866873704</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1698866873704</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,6 +220,13 @@
     <MESSAGE value="Extremely basic view of chessboard" />
     <MESSAGE value="squash!" />
     <MESSAGE value="IntelliJ files" />
-    <option name="LAST_COMMIT_MESSAGE" value="IntelliJ files" />
+    <MESSAGE value="Added LegalMoves.java and use case package" />
+    <MESSAGE value="Added classes that make up the legal moves use case. These classes are placeholders that will be implemented later." />
+    <MESSAGE value="Added more interfaces for CA and filled in some details" />
+    <MESSAGE value="Refactored to allow view to run, moving view.fxml" />
+    <MESSAGE value="Refactored interface adapters and began introducing the classes for the MovePiece use case" />
+    <MESSAGE value="Added CA classes for the MovePiece use case. Implements and extensions were added and some basic funtionality to some classes." />
+    <MESSAGE value="Added to the docstring for the MovePieceInteractor, specifying that the interactor should confirm that the move is legal." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added to the docstring for the MovePieceInteractor, specifying that the interactor should confirm that the move is legal." />
   </component>
 </project>
