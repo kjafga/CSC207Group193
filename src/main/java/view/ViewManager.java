@@ -17,7 +17,14 @@ public class ViewManager implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'propertyChange'");
+        if (evt.getPropertyName().equals("view")) {
+            if (evt.getNewValue().equals(view)) {
+                String viewName = evt.getNewValue().toString();
+                switch (viewName) {
+                    default:
+                        throw new UnsupportedOperationException("Unimplemented view '" + viewName + "'");
+                }
+            }
+        }
     }
 }
