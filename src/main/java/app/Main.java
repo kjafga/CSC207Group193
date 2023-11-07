@@ -26,7 +26,7 @@ import useCase.Board.BoardInputData;
 import view.BoardView;
 
 public class Main extends Application {
-    
+
     String start = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
     BoardViewModel boardViewModel = new BoardViewModel(start);
