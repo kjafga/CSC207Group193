@@ -37,12 +37,11 @@ class FENGenerator {
 
     private void putEnPassantSquare() {
         builder.append(' ');
-        if (board.enPassantSquare == -1) {
+        if (board.enPassantIndex == -1) {
             builder.append('-');
         } else {
-            // FIXME: We might want to store the en passant square as an 0x88 index.
-            builder.appendCodePoint('a' + (board.enPassantSquare & 7));
-            builder.appendCodePoint('1' + (board.enPassantSquare >> 3));
+            builder.appendCodePoint('a' + (board.enPassantIndex & 7));
+            builder.appendCodePoint('1' + (board.enPassantIndex >> 4));
         }
     }
 

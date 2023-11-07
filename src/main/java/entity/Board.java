@@ -22,7 +22,7 @@ class Board {
 
     int color = 1;
     int castlingRights = 15;
-    int enPassantSquare = -1;
+    int enPassantIndex = -1;
     int rule50count = 0;
     int moveCount = 1;
 
