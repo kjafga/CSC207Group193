@@ -67,11 +67,11 @@ class FENGenerator {
 
     private void putActiveColor() {
         builder.append(' ');
-        builder.append(board.whiteMove ? 'w' : 'b');
+        builder.append(board.color == 0 ? 'w' : 'b');
     }
 
     private void putPieceData() {
-        long occupied = board.white | board.black;
+        long occupied = board.byColor[0] | board.byColor[1];
         long mask = 1L;
         for (int i = 0; i < 64; ) {
 
@@ -100,13 +100,10 @@ class FENGenerator {
                 continue;
             }
 
-            for (int j = 0; j < board.pieces.length; ++j) {
-                if ((board.pieces[j] & mask) != 0) {
-                    if ((board.white & mask) != 0) {
-                        builder.append(pieceNames[j]);
-                    } else {
-                        builder.append(Character.toLowerCase(pieceNames[j]));
-                    }
+            for (int j = 0; j < board.byPiece.length; ++j) {
+                if ((board.byPiece[j] & mask) != 0) {
+                    builder.append((board.byColor[0] & mask) != 0 ? pieceNames[j] : Character.toLowerCase(pieceNames[j]));
+                    break;
                 }
             }
 
