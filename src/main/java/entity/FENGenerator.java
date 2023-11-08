@@ -3,7 +3,7 @@ package entity;
 class FENGenerator {
 
     // NOTE: Keep this in sync with Board.java!
-    private static final char[] pieceNames = new char[]{'K', 'Q', 'R', 'B', 'N', 'P'};
+    private static final char[] pieceNames = {'K', 'Q', 'R', 'B', 'N', 'P'};
 
     private final Board board;
     private final StringBuilder builder;
@@ -37,11 +37,11 @@ class FENGenerator {
 
     private void putEnPassantSquare() {
         builder.append(' ');
-        if (board.enPassantSquare == -1) {
+        if (board.enPassantIndex == -1) {
             builder.append('-');
         } else {
-            builder.appendCodePoint('a' + (board.enPassantSquare & 7));
-            builder.appendCodePoint('1' + (board.enPassantSquare >> 3));
+            builder.appendCodePoint('a' + (board.enPassantIndex & 7));
+            builder.appendCodePoint('1' + (board.enPassantIndex >> 4));
         }
     }
 
@@ -67,57 +67,30 @@ class FENGenerator {
 
     private void putActiveColor() {
         builder.append(' ');
-        builder.append(board.whiteMove ? 'w' : 'b');
+        builder.append(board.color > 0 ? 'w' : 'b');
     }
 
     private void putPieceData() {
-        long occupied = board.white | board.black;
-        long mask = 1L;
-        for (int i = 0; i < 64; ) {
-
-            // Empty squares
-            if ((occupied & 1) == 0) {
-                final int empty = Long.numberOfTrailingZeros(occupied);
-                final int remain = 8 - (i & 7);
-
-                if (empty <= remain) {
-                    builder.append(empty);
-                    if (empty == remain) {
-                        builder.append('/');
+        for (int rank = 7; rank >= 0; --rank) {
+            for (int file = 0; file < 8; ++file) {
+                byte piece = board.pieces[(rank << 4) + file];
+                if (piece == 0) {
+                    int lastIndex = builder.length() - 1;
+                    char c = lastIndex >= 0 ? builder.charAt(lastIndex) : 0;
+                    if (c >= '1' && c < '8') {
+                        builder.setCharAt(lastIndex, (char) (c + 1));
+                    } else {
+                        builder.append('1');
                     }
                 } else {
-                    builder.append(remain);
-                    builder.append('/');
-                    builder.append("8/8/8/8/8/8/8/", 0, (empty - remain) >> 2);
-                    if (((empty - remain) & 7) != 0) {
-                        builder.append((empty - remain) & 7);
-                    }
-                }
-
-                occupied >>= empty;
-                mask <<= empty;
-                i += empty;
-                continue;
-            }
-
-            for (int j = 0; j < board.pieces.length; ++j) {
-                if ((board.pieces[j] & mask) != 0) {
-                    if ((board.white & mask) != 0) {
-                        builder.append(pieceNames[j]);
-                    } else {
-                        builder.append(Character.toLowerCase(pieceNames[j]));
-                    }
+                    char pieceName = pieceNames[Math.abs(piece) - 1];
+                    builder.append(piece > 0 ? pieceName : Character.toLowerCase(pieceName));
                 }
             }
-
-            mask <<= 1;
-            occupied >>= 1;
-            ++i;
-            if ((i & 7) == 0) {
+            if (rank > 0) {
                 builder.append('/');
             }
         }
-        builder.setLength(builder.length() - 1);
     }
 
 }
