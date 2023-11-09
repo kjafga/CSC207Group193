@@ -6,6 +6,6 @@ module com.example {
     requires annotations;
     requires java.desktop;
 
-    opens view to javafx.fxml;
-    exports view;
+    opens app to javafx.fxml;
+    exports app;
 }
