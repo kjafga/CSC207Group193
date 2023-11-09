@@ -45,35 +45,37 @@ class MoveGenerator {
             case ROOK -> generateSlidingMoves(startIndex, ROOK_DIRECTIONS);
             case BISHOP -> generateSlidingMoves(startIndex, BISHOP_DIRECTIONS);
             case KNIGHT -> generateStepMoves(startIndex, KNIGHT_DIRECTIONS);
-            case PAWN -> {
-                final int forwardStep = startIndex + 16 * board.color;
-
-                if ((forwardStep & 0x88) == 0 && board.pieces[forwardStep] == 0) {
-                    moves.add(forwardStep + (forwardStep & 7) >> 1);
-
-                    final int startRank = board.color > 0 ? 1 : 6;
-                    final int doubleForwardStep = forwardStep + 16 * board.color;
-                    if (startIndex >> 4 == startRank && board.pieces[doubleForwardStep] == 0) {
-                        moves.add(doubleForwardStep + (doubleForwardStep & 7) >> 1);
-                    }
-                }
-
-                final int captureRight = forwardStep + 1;
-                if (captureRight == board.enPassantIndex ||
-                        (captureRight & 0x88) == 0 && board.pieces[captureRight] == -board.color) {
-                    moves.add(forwardStep + 1 + (captureRight & 7) >> 1);
-                }
-
-                final int captureLeft = forwardStep - 1;
-                if (captureLeft == board.enPassantIndex ||
-                        (captureLeft & 0x88) == 0 && board.pieces[captureLeft] == -board.color) {
-                    moves.add(captureLeft + (captureLeft & 7) >> 1);
-                }
-            }
+            case PAWN -> generatePawnMoves(startIndex);
             default -> throw new AssertionError("This can't happen.  Call Daniel!");
         }
 
         return moves;
+    }
+
+    private void generatePawnMoves(int startIndex) {
+        final int forwardStep = startIndex + 16 * board.color;
+
+        if ((forwardStep & 0x88) == 0 && board.pieces[forwardStep] == 0) {
+            moves.add(forwardStep + (forwardStep & 7) >> 1);
+
+            final int startRank = board.color > 0 ? 1 : 6;
+            final int doubleForwardStep = forwardStep + 16 * board.color;
+            if (startIndex >> 4 == startRank && board.pieces[doubleForwardStep] == 0) {
+                moves.add(doubleForwardStep + (doubleForwardStep & 7) >> 1);
+            }
+        }
+
+        final int captureRight = forwardStep + 1;
+        if (captureRight == board.enPassantIndex ||
+                (captureRight & 0x88) == 0 && board.pieces[captureRight] == -board.color) {
+            moves.add(forwardStep + 1 + (captureRight & 7) >> 1);
+        }
+
+        final int captureLeft = forwardStep - 1;
+        if (captureLeft == board.enPassantIndex ||
+                (captureLeft & 0x88) == 0 && board.pieces[captureLeft] == -board.color) {
+            moves.add(captureLeft + (captureLeft & 7) >> 1);
+        }
     }
 
     private void generateStepMoves(int startIndex, int[] directions) {
