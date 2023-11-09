@@ -14,12 +14,14 @@ import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import useCase.Board.BoardInputData;
@@ -35,9 +37,10 @@ public class Main extends Application {
     LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();
     MovePieceController movePieceController = new MovePieceController();
     LegalMovesController legalMovesController = new LegalMovesController();
+    BoardViewFactory boardViewFactory = new BoardViewFactory();
 
-    BoardView boardView = new BoardView(movePieceViewModel, legalMovesViewModel, movePieceController, legalMovesController, boardViewModel);
-
+    BoardView boardView = boardViewFactory.construct(movePieceViewModel, legalMovesViewModel, movePieceController, legalMovesController, boardViewModel);
+    
     public static void main(String[] args) {
         launch(args);
     }
@@ -52,7 +55,4 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setResizable(false);
     }
-
-
-
 }

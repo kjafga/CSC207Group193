@@ -1,5 +1,6 @@
 package useCase.movePiece;
 
+import interfaceAdapters.movePiece.MovePieceViewModel;
 
 /**
  *
@@ -7,10 +8,15 @@ package useCase.movePiece;
  * The interactor will check if a move is valid, and send a fail condition if it is not a valid move
  */
 
-public class MovePieceInteractor implements MovePieceInputBoundry{
-    private final MovePieceOutputBoundry movePieceOutputBoundry;
+public class MovePieceInteractor implements MovePieceInputBoundary{
+    private final MovePieceOutputBoundary movePieceOutputBoundary;
 
-    public MovePieceInteractor(MovePieceOutputBoundry movePieceOutputBoundry) {
-        this.movePieceOutputBoundry = movePieceOutputBoundry;
+    public MovePieceInteractor(MovePieceOutputBoundary movePieceOutputBoundary) {
+        this.movePieceOutputBoundary = movePieceOutputBoundary;
+    }
+
+    @Override
+    public void movePiece(MovePieceInputData movePieceInputData, MovePieceViewModel movePieceViewModel) {
+        movePieceOutputBoundary.present(movePieceInputData, movePieceViewModel);
     }
 }
