@@ -6,12 +6,14 @@ import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -49,6 +51,8 @@ public class BoardView implements ActionListener, PropertyChangeListener {
     private final MovePieceController movePieceController;
     private final LegalMovesController legalMovesController;
 
+    public String move;
+
     public BoardView(MovePieceViewModel movePieceViewModel, LegalMovesViewModel legalMovesViewModel, MovePieceController movePieceController, LegalMovesController legalMovesController, BoardViewModel boardViewModel) {
         this.movePieceViewModel = movePieceViewModel;
         this.legalMovesViewModel = legalMovesViewModel;
@@ -71,6 +75,7 @@ public class BoardView implements ActionListener, PropertyChangeListener {
                 Pane square = new Pane();
                 square.setPrefSize(100,100);
                 square.setId(String.valueOf(val));
+                square.addEventHandler(MouseEvent.MOUSE_CLICKED, squareEventHandler);
                 chessBoard.getChildren().add(square);
                 squares.add(square);
                 if ((i + j) % 2 == 0) {
@@ -99,12 +104,27 @@ public class BoardView implements ActionListener, PropertyChangeListener {
                 image.setFitHeight(100);
                 image.setFitWidth(100);
                 ((Pane) chessBoard.getChildren().get(val)).getChildren().add(image);
+                ((Pane) chessBoard.getChildren().get(val)).addEventHandler(MouseEvent.MOUSE_CLICKED, pieceEventHandler);
             } else {
                 val = val + Character.getNumericValue(string.charAt(i)) - 1;
             }
             val++;
         }
     }
+
+    EventHandler<MouseEvent> pieceEventHandler = new EventHandler<MouseEvent>() { 
+        @Override 
+        public void handle(MouseEvent e) { 
+            move = String.valueOf(chessBoard.getChildren().indexOf(e.getSource()));
+        }
+    };
+
+    EventHandler<MouseEvent> squareEventHandler = new EventHandler<MouseEvent>() { 
+        @Override 
+        public void handle(MouseEvent e) { 
+            move = move + "," + String.valueOf(chessBoard.getChildren().indexOf(e.getSource()));
+        } 
+    };
 
     public String getLayout() {
         return boardViewModel.getPieces();
