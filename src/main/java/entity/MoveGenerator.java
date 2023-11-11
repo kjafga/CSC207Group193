@@ -1,24 +1,24 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
-import static entity.Board.*;
+import static entity.BoardData.*;
 import static java.lang.Integer.signum;
+import static java.util.Collections.emptyList;
 
-class MoveGenerator {
+final class MoveGenerator {
 
     private static final int[] ROOK_DIRECTIONS = {16, 1, -16, -1};
     private static final int[] BISHOP_DIRECTIONS = {17, -15, -17, 15};
     private static final int[] KNIGHT_DIRECTIONS = {33, 18, -14, -31, -33, -18, 14, 31};
 
-    private final Board board;
+    private final BoardData boardData;
     private final ArrayList<Integer> moves = new ArrayList<>(218);
 
-    MoveGenerator(Board board) {
-        this.board = board;
+    MoveGenerator(BoardData boardData) {
+        this.boardData = boardData;
     }
 
     List<Integer> getLegalMoves(int startSquare) {
@@ -27,17 +27,19 @@ class MoveGenerator {
         }
 
         final int startIndex = startSquare + (startSquare & -8);
-        if (signum(board.pieces[startIndex]) != board.color) {
+        if (signum(boardData.pieces[startIndex]) != boardData.color) {
             // Square doesn't even have a piece of our color
-            return Collections.emptyList();
+            return emptyList();
         }
 
         moves.clear();
-        switch (Math.abs(board.pieces[startIndex])) {
+        switch (Math.abs(boardData.pieces[startIndex])) {
             case KING -> {
                 generateStepMoves(startIndex, BISHOP_DIRECTIONS);
                 generateStepMoves(startIndex, ROOK_DIRECTIONS);
-                addCastlingMoves();
+                if (isLegal(-1, -1)) { // Stupid way of testing if we are in check
+                    addCastlingMoves();
+                }
             }
             case QUEEN -> {
                 generateSlidingMoves(startIndex, ROOK_DIRECTIONS);
@@ -64,46 +66,42 @@ class MoveGenerator {
     }
 
     private void addCastlingMoves() {
-        if (board.color > 0) {
-            if ((board.castlingRights & 1) != 0 &&
-                    isLegal(-1, -1) && isLegal(4, 5) &&
-                    board.pieces[5] == 0 && board.pieces[6] == 0) {
+        if (boardData.color > 0) {
+            if ((boardData.castlingRights & 1) != 0 && isLegal(4, 5) &&
+                    boardData.pieces[5] == 0 && boardData.pieces[6] == 0) {
                 moves.add(6);
             }
-            if ((board.castlingRights & 2) != 0 &&
-                    isLegal(-1, -1) && isLegal(4, 3) &&
-                    board.pieces[3] == 0 && board.pieces[2] == 0 && board.pieces[1] == 0) {
+            if ((boardData.castlingRights & 2) != 0 && isLegal(4, 3) &&
+                    boardData.pieces[3] == 0 && boardData.pieces[2] == 0 && boardData.pieces[1] == 0) {
                 moves.add(2);
             }
         } else {
-            if ((board.castlingRights & 4) != 0 &&
-                    isLegal(-1, -1) && isLegal(116, 117) &&
-                    board.pieces[117] == 0 && board.pieces[118] == 0) {
+            if ((boardData.castlingRights & 4) != 0 && isLegal(116, 117) &&
+                    boardData.pieces[117] == 0 && boardData.pieces[118] == 0) {
                 moves.add(118);
             }
-            if ((board.castlingRights & 8) != 0 &&
-                    isLegal(-1, -1) && isLegal(116, 115) &&
-                    board.pieces[115] == 0 && board.pieces[114] == 0 && board.pieces[113] == 0) {
+            if ((boardData.castlingRights & 8) != 0 && isLegal(116, 115) &&
+                    boardData.pieces[115] == 0 && boardData.pieces[114] == 0 && boardData.pieces[113] == 0) {
                 moves.add(114);
             }
         }
     }
 
     private boolean isLegal(int startIndex, int endIndex) {
-        int kingIndex = board.kingIndices[board.color > 0 ? 0 : 1];
+        int kingIndex = boardData.kingIndices[boardData.color > 0 ? 0 : 1];
         if (kingIndex == startIndex) {
             kingIndex = endIndex;
         }
 
-        int index = kingIndex + (board.color << 4) + 1;
-        if ((index & 0x88) == 0 && board.pieces[index] == PAWN * -board.color && index != endIndex &&
-                !(endIndex == board.enPassantIndex && index == board.enPassantIndex - (board.color << 4))) {
+        int index = kingIndex + (boardData.color << 4) + 1;
+        if ((index & 0x88) == 0 && boardData.pieces[index] == PAWN * -boardData.color && index != endIndex &&
+                !(endIndex == boardData.enPassantIndex && index == boardData.enPassantIndex - (boardData.color << 4))) {
             return false;
         }
 
-        index = kingIndex + (board.color << 4) - 1;
-        if ((index & 0x88) == 0 && board.pieces[index] == PAWN * -board.color && index != endIndex &&
-                !(endIndex == board.enPassantIndex && index == board.enPassantIndex - (board.color << 4))) {
+        index = kingIndex + (boardData.color << 4) - 1;
+        if ((index & 0x88) == 0 && boardData.pieces[index] == PAWN * -boardData.color && index != endIndex &&
+                !(endIndex == boardData.enPassantIndex && index == boardData.enPassantIndex - (boardData.color << 4))) {
             return false;
         }
 
@@ -113,7 +111,7 @@ class MoveGenerator {
 
         for (int dir : KNIGHT_DIRECTIONS) {
             index = kingIndex + dir;
-            if ((index & 0x88) == 0 && index != endIndex) {
+            if ((index & 0x88) == 0 && boardData.pieces[index] == KNIGHT * -boardData.color && index != endIndex) {
                 return false;
             }
         }
@@ -123,21 +121,14 @@ class MoveGenerator {
 
     private boolean sliderCheck(int startIndex, int endIndex, int kingIndex, int[] directions, int attacker) {
         for (int dir : directions) {
-            int index = kingIndex + dir;
-            int piece = board.pieces[index] * board.color;
-
-            if ((index & 0x88) == 0) {
-                if ((piece == KING || piece == QUEEN || piece == attacker) && index != endIndex) {
+            for (int index = kingIndex + dir; (index & 0x88) == 0; index += dir) {
+                int piece = boardData.pieces[index] * -boardData.color;
+                if (index == kingIndex + dir && piece == KING && index != endIndex ||
+                        (piece == QUEEN || piece == attacker) && index != endIndex) {
                     return true;
                 }
-                while (((index += dir) & 0x88) == 0) {
-                    piece = board.pieces[index] * board.color;
-                    if ((piece == QUEEN || piece == attacker) && index != endIndex) {
-                        return true;
-                    }
-                    if (piece != 0 && piece != startIndex) {
-                        break;
-                    }
+                if ((piece != 0 && index != startIndex) || index == endIndex) {
+                    break;
                 }
             }
         }
@@ -145,27 +136,27 @@ class MoveGenerator {
     }
 
     private void generatePawnMoves(int startIndex) {
-        final int forwardStep = startIndex + 16 * board.color;
+        final int forwardStep = startIndex + (boardData.color << 4);
 
-        if ((forwardStep & 0x88) == 0 && board.pieces[forwardStep] == 0) {
+        if ((forwardStep & 0x88) == 0 && boardData.pieces[forwardStep] == 0) {
             moves.add(forwardStep);
 
-            final int startRank = board.color > 0 ? 1 : 6;
-            final int doubleForwardStep = forwardStep + 16 * board.color;
-            if (startIndex >> 4 == startRank && board.pieces[doubleForwardStep] == 0) {
+            final int startRank = boardData.color > 0 ? 1 : 6;
+            final int doubleForwardStep = forwardStep + (boardData.color << 4);
+            if (startIndex >> 4 == startRank && boardData.pieces[doubleForwardStep] == 0) {
                 moves.add(doubleForwardStep);
             }
         }
 
         final int captureRight = forwardStep + 1;
-        if (captureRight == board.enPassantIndex ||
-                (captureRight & 0x88) == 0 && board.pieces[captureRight] == -board.color) {
+        if (captureRight == boardData.enPassantIndex ||
+                (captureRight & 0x88) == 0 && signum(boardData.pieces[captureRight]) == -boardData.color) {
             moves.add(captureRight);
         }
 
         final int captureLeft = forwardStep - 1;
-        if (captureLeft == board.enPassantIndex ||
-                (captureLeft & 0x88) == 0 && board.pieces[captureLeft] == -board.color) {
+        if (captureLeft == boardData.enPassantIndex ||
+                (captureLeft & 0x88) == 0 && signum(boardData.pieces[captureLeft]) == -boardData.color) {
             moves.add(captureLeft);
         }
     }
@@ -173,7 +164,7 @@ class MoveGenerator {
     private void generateStepMoves(int startIndex, int[] directions) {
         for (int off: directions) {
             final int index = startIndex + off;
-            if ((index & 0x88) == 0 && signum(board.pieces[index]) != board.color) {
+            if ((index & 0x88) == 0 && signum(boardData.pieces[index]) != boardData.color) {
                 moves.add(index);
             }
         }
@@ -182,11 +173,11 @@ class MoveGenerator {
     private void generateSlidingMoves(int startIndex, int[] directions) {
         for (int dir : directions) {
             for (int index = startIndex + dir; (index & 0x88) == 0; index += dir) {
-                if (signum(board.pieces[index]) != board.color) {
+                if (signum(boardData.pieces[index]) != boardData.color) {
                     moves.add(index);
                 }
-                if (board.pieces[index] != 0) {
-                    return;
+                if (boardData.pieces[index] != 0) {
+                    break;
                 }
             }
         }
