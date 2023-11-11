@@ -6,6 +6,7 @@ import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesPresenter;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
+import interfaceAdapters.movePiece.MovePiecePresenter;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,6 +15,10 @@ import javafx.stage.Stage;
 import useCase.legalMoves.LegalMovesInputBoundry;
 import useCase.legalMoves.LegalMovesInteractor;
 import useCase.legalMoves.LegalMovesOutputBoundry;
+import useCase.movePiece.MovePieceInputBoundry;
+import useCase.movePiece.MovePieceInputData;
+import useCase.movePiece.MovePieceInteractor;
+import useCase.movePiece.MovePieceOutputBoundry;
 import view.BoardView;
 
 public class Main extends Application {
@@ -22,9 +27,15 @@ public class Main extends Application {
 
     BoardViewModel boardViewModel = new BoardViewModel(start);
     ViewManagerModel viewManagerModel = new ViewManagerModel();
+
+
+
     MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
 
-    MovePieceController movePieceController = new MovePieceController();
+    MovePieceOutputBoundry movePieceOutputBoundry = new MovePiecePresenter(movePieceViewModel);
+    MovePieceInputBoundry movePieceInputBoundry = new MovePieceInteractor(movePieceOutputBoundry);
+
+    MovePieceController movePieceController = new MovePieceController(movePieceInputBoundry);
 
 
     LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();

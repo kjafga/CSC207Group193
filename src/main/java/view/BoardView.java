@@ -64,7 +64,7 @@ public class BoardView implements ActionListener, PropertyChangeListener {
         this.boardViewModel = boardViewModel;
 
         this.legalMovesViewModel.addPropertyChangeListener(this);
-
+        this.movePieceViewModel.addPropertyChangeListener(this);
 
         this.handler = new EventHandler() {
             @Override
@@ -72,6 +72,7 @@ public class BoardView implements ActionListener, PropertyChangeListener {
                 System.out.println("test    " + event.getSource() +  event.getEventType());
 
                 legalMovesController.execute("");
+                movePieceController.execute("");
             }
         };
 
@@ -150,7 +151,7 @@ public class BoardView implements ActionListener, PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("WORKING???");
+        System.out.println(evt.getPropertyName());
 
     }
 
