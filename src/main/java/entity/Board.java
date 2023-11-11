@@ -26,4 +26,6 @@ class Board {
     int rule50count = 0;
     int moveCount = 1;
 
+    final int[] kingIndices = {4, 116};
+
 }
