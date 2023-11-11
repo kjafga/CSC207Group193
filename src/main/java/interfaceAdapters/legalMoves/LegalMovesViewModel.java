@@ -14,14 +14,19 @@ public class LegalMovesViewModel extends ViewModel {
     public LegalMovesViewModel() {
         super("Legal Moves");
     }
+    private LegalMovesState state = new LegalMovesState();
+    public void setState(LegalMovesState state){
+        this.state = state;
+    }
 
     @Override
     public void firePropertyChanged() {
+        support.firePropertyChange("state", null, this.state);
 
     }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-
+        support.addPropertyChangeListener(listener);
     }
 }

@@ -1,28 +1,19 @@
 package app;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import javax.print.DocFlavor.URL;
-
 import interfaceAdapters.ViewManagerModel;
-import interfaceAdapters.Board.BoardController;
-import interfaceAdapters.Board.BoardPresenter;
 import interfaceAdapters.Board.BoardViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
+import interfaceAdapters.legalMoves.LegalMovesPresenter;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
-import useCase.Board.BoardInputData;
+import useCase.legalMoves.LegalMovesInputBoundry;
+import useCase.legalMoves.LegalMovesInteractor;
+import useCase.legalMoves.LegalMovesOutputBoundry;
 import view.BoardView;
 
 public class Main extends Application {
@@ -32,9 +23,15 @@ public class Main extends Application {
     BoardViewModel boardViewModel = new BoardViewModel(start);
     ViewManagerModel viewManagerModel = new ViewManagerModel();
     MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
-    LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();
+
     MovePieceController movePieceController = new MovePieceController();
-    LegalMovesController legalMovesController = new LegalMovesController();
+
+
+    LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();
+    LegalMovesOutputBoundry legalMovesOutputBoundry = new LegalMovesPresenter(legalMovesViewModel);
+    LegalMovesInputBoundry legalMovesInputBoundry = new LegalMovesInteractor(legalMovesOutputBoundry);
+    LegalMovesController legalMovesController = new LegalMovesController(legalMovesInputBoundry);
+
 
     BoardView boardView = new BoardView(movePieceViewModel, legalMovesViewModel, movePieceController, legalMovesController, boardViewModel);
 
