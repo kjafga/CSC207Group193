@@ -18,12 +18,12 @@ public class MovePieceViewModel extends ViewModel {
         this.state = state;
     }
 
-    String move;
-    public void setMove(String move) {
+    int[] move;
+    public void setMove(int[] move) {
         this.move = move;
     }
 
-    public String getMove() {
+    public int[] getMove() {
         return move;
     }
 

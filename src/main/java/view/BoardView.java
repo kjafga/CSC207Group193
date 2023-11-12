@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javafx.geometry.Insets;
@@ -59,12 +60,18 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
 
     public String move = "";
 
+    public int recentSquare = -1;
+    public List<Integer> currentLegalMoves;
+
     public BoardView(MovePieceViewModel movePieceViewModel, LegalMovesViewModel legalMovesViewModel, MovePieceController movePieceController, LegalMovesController legalMovesController, BoardViewModel boardViewModel) {
         this.movePieceViewModel = movePieceViewModel;
         this.legalMovesViewModel = legalMovesViewModel;
         this.movePieceController = movePieceController;
         this.legalMovesController = legalMovesController;
         this.boardViewModel = boardViewModel;
+
+
+        this.currentLegalMoves = new ArrayList<>();
 
         //this.legalMovesViewModel.addPropertyChangeListener(this);
         //this.movePieceViewModel.addPropertyChangeListener(this);
@@ -158,6 +165,24 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
     EventHandler<MouseEvent> squareEventHandler = new EventHandler<MouseEvent>() { 
         @Override 
         public void handle(MouseEvent e) {
+            System.out.println(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
+            int newMove = chessBoard.getChildren().indexOf(e.getSource());
+
+
+            if (currentLegalMoves.contains(newMove)){
+                movePieceController.execute(new int[] {recentSquare, newMove});
+
+            }
+            if (newMove != recentSquare){
+                legalMovesController.execute(newMove);
+                recentSquare = newMove;
+            } else
+
+
+
+
+
+
             if (move != "" && ((Pane) chessBoard.getChildren().get(Integer.parseInt(move))).getChildren().size() > 0) {
                 setMove(move + "," + String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
             } 
@@ -173,7 +198,7 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
     };
 
     public void movePiece() {
-        movePieceController.movePiece(move);
+        //movePieceController.movePiece(move);
         System.out.println("move: " + move);
         String[] moves = move.split(",");
         Integer begin = Integer.parseInt(moves[0]);

@@ -1,9 +1,9 @@
 package useCase.legalMoves;
 
 public class LegalMovesInputData {
-    public String position;
+    public int position;
 
-    public  LegalMovesInputData(String position){
+    public  LegalMovesInputData(int position){
         this.position = position;
     }
 }
