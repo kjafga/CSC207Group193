@@ -21,11 +21,34 @@ public class MovePieceInteractor implements MovePieceInputBoundary{
     }
 
     @Override
-    public void movePiece(MovePieceInputData movePieceInputData, TilePane chessBoard) {
-        movePieceOutputBoundary.present(movePieceInputData);
-        int[] moves = movePieceInputData.getMove();
-        Pane startPane = (Pane) chessBoard.getChildren().get(moves[0]);
-        Pane endPane = (Pane) chessBoard.getChildren().get(moves[1]);
+    public void movePiece(MovePieceInputData movePieceInputData) {
+        int selectedSquare = movePieceInputData.move[0];
+        int targetSquare = movePieceInputData.move[1];
+        MovePieceOutputData movePieceOutputData = new MovePieceOutputData();
+
+
+
+        if (board.makeMove(selectedSquare, targetSquare,'?')){
+            movePieceOutputData.newBoard = (board.toString().split(" ")[0]);
+            movePieceOutputBoundary.prepareSuccessView(movePieceOutputData);
+        }
+        else{
+            movePieceOutputData.newBoard = (board.toString().split(" ")[0]);
+            movePieceOutputBoundary.prepareFailView(movePieceOutputData);
+        }
+
+
+    }
+
+    /**
+    public void movePiece() {
+        //movePieceController.movePiece(move);
+        System.out.println("move: " + move);
+        String[] moves = move.split(",");
+        Integer begin = Integer.parseInt(moves[0]);
+        Integer end = Integer.parseInt(moves[1]);
+        Pane startPane = (Pane) chessBoard.getChildren().get(begin);
+        Pane endPane = (Pane) chessBoard.getChildren().get(end);
         if (startPane.getChildren().size() > 0) {
             ImageView temp = (ImageView) startPane.getChildren().get(0);
             if (endPane.getChildren().size() > 0) {
