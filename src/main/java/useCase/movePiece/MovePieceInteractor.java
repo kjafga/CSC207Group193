@@ -19,7 +19,22 @@ public class MovePieceInteractor implements MovePieceInputBoundary{
 
     @Override
     public void movePiece(MovePieceInputData movePieceInputData) {
-        movePieceOutputBoundary.present(movePieceInputData);
+        int selectedSquare = movePieceInputData.move[0];
+        int targetSquare = movePieceInputData.move[1];
+        MovePieceOutputData movePieceOutputData = new MovePieceOutputData();
+
+
+
+        if (board.makeMove(selectedSquare, targetSquare,'?')){
+            movePieceOutputData.newBoard = (board.toString().split(" ")[0]);
+            movePieceOutputBoundary.prepareSuccessView(movePieceOutputData);
+        }
+        else{
+            movePieceOutputData.newBoard = (board.toString().split(" ")[0]);
+            movePieceOutputBoundary.prepareFailView(movePieceOutputData);
+        }
+
+
     }
 
     /**

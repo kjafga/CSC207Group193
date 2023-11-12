@@ -14,23 +14,24 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
         this.movePieceViewModel = movePieceViewModel;
     }
 
-    @Override
-    public void present(MovePieceInputData movePieceInputData) {
-        movePieceViewModel.setMove(movePieceInputData.getMove());
-    }
+
 
 
     @Override
-    public void prepareSuccessView(MovePieceOutputData data) {
+    public void prepareSuccessView(MovePieceOutputData move) {
 
         MovePieceState state = new MovePieceState();
-        state.newBoard = data.boardChange;
+        state.newBoard = move.newBoard;
         movePieceViewModel.setState(state);
         movePieceViewModel.firePropertyChanged();
     }
 
     @Override
-    public void prepareFailView(String error) {
+    public void prepareFailView(MovePieceOutputData move) {
+        MovePieceState state = new MovePieceState();
+        state.newBoard = move.newBoard;
+        movePieceViewModel.setState(state);
+        movePieceViewModel.firePropertyChanged();
 
     }
 }

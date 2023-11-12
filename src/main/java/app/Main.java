@@ -11,6 +11,7 @@ import interfaceAdapters.movePiece.MovePiecePresenter;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import useCase.legalMoves.LegalMovesInputBoundry;
@@ -53,7 +54,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        TilePane view = boardView.chessBoard;
+        GridPane view = boardView.chessBoard;
 
         Scene scene = new Scene(view, 800, 800);
         primaryStage.setScene(scene);

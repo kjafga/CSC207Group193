@@ -1,9 +1,9 @@
 package useCase.movePiece;
 
 public class MovePieceOutputData {
-    public String boardChange;
+    public String newBoard;
 
-    public MovePieceOutputData(String boardChange){
-        this.boardChange = boardChange;
+    public MovePieceOutputData(){
+
     }
 }

@@ -1,16 +1,19 @@
 package view;
 
+import app.Test;
 import interfaceAdapters.Board.BoardViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesState;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
+import interfaceAdapters.movePiece.MovePieceState;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,8 +21,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
@@ -28,25 +32,31 @@ import java.awt.event.InputEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.*;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
 
 public class BoardView implements PropertyChangeListener {//implements ActionListener, PropertyChangeListener {
+    private static final Background LIGHT = new Background(new BackgroundFill(Color.web("#F0D9B5"), null, null));
+    private static final Background DARK = new Background(new BackgroundFill(Color.web("#B58863"), null, null));
 
-    public TilePane chessBoard = new TilePane();
+    private static final HashMap<Character, Image> IMAGES = new HashMap<>(12);
+    static {
+        for (char c : new char[]{'k', 'q', 'r', 'b', 'n', 'p'}) {
+            InputStream whiteFile = Test.class.getResourceAsStream("/pieces/_" + c + ".png");
+            InputStream blackFile = Test.class.getResourceAsStream("/pieces/" + c + ".png");
+            assert whiteFile != null && blackFile != null;
+            IMAGES.put(Character.toUpperCase(c), new Image(whiteFile));
+            IMAGES.put(c, new Image(blackFile));
+        }
+    }
+
+    public GridPane chessBoard = new GridPane();
 
     public ArrayList<Pane> squares = new ArrayList<>();
     public ArrayList<ImageView> pieces = new ArrayList<>();
-    public Map<String, Image> pieceMap = new HashMap<>();
 
     // View Models
     private final MovePieceViewModel movePieceViewModel;
@@ -80,15 +90,25 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
 
         chessboard(this.chessBoard);
 
-        pieceMap = boardViewModel.getPieceImages();
 
-        pieceDisplay();
+
 
 
     }
 
-    private void chessboard(TilePane chessBoard) {
+    private void chessboard(GridPane chessBoard) {
+        for (int i = 0; i < 64; ++i) {
+            Pane square = new Pane();
+            square.setPrefSize(100, 100);
+            square.setId(String.valueOf(i));
+            square.setBackground(((i ^ i >> 3) & 1) != 0 ? LIGHT : DARK);
+            square.setOnMouseClicked(squareEventHandler);
+            GridPane.setConstraints(square, i & 7, 7 - (i >> 3));
+            chessBoard.getChildren().add(square);
+        }
+        updateFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
+        /**
         int val = 0;
         for (int i = 1; i < 9; i++){
             for (int j = 1; j < 9; j++){
@@ -109,30 +129,10 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
                 val++;
             }
         chessBoard.setTileAlignment(Pos.TOP_LEFT);
-        }
+        }**/
     }
 
-    public void pieceDisplay() {
 
-        int val = 0;
-        String string = getLayout();
-        for (int i = 0; i < string.length(); i++) {
-            if (string.charAt(i) == '/') {
-                val--;
-            } else if (Character.isLetter(string.charAt(i))) {
-                String key = String.valueOf(string.charAt(i));
-                ImageView image = new ImageView();
-                image.setImage(pieceMap.get(key));
-                image.setFitHeight(100);
-                image.setFitWidth(100);
-                ((Pane) chessBoard.getChildren().get(val)).getChildren().add(image);
-            } else {
-                val = val + Character.getNumericValue(string.charAt(i)) - 1;
-
-            }
-            val++;
-        }
-    }
 
     EventHandler<MouseEvent> squareEventHandler = new EventHandler<MouseEvent>() { 
         @Override 
@@ -143,12 +143,20 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
 
             if (currentLegalMoves.contains(newMove)){
                 movePieceController.execute(new int[] {recentSquare, newMove});
-
+                currentLegalMoves = new ArrayList<>();
 
             }else if (newMove != recentSquare){
+                for (int move : currentLegalMoves) {
+                    Pane square = (Pane) chessBoard.getChildren().get(move);
+                    square.getChildren().removeLast();
+                }
+                currentLegalMoves = new ArrayList<>();
+
                 System.out.println("legalMoves");
                 legalMovesController.execute(newMove);
                 recentSquare = newMove;
+
+
             }
         }
     };
@@ -168,6 +176,38 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
     }
 
 
+
+    private void updateFromFEN(String fen) {
+        List<Node> squares = chessBoard.getChildren();
+        int i = 56;
+
+        for (char c : fen.toCharArray()) {
+            if (c == '/') {
+                if ((i & 7) != 0) {
+                    throw new IllegalStateException("Invalid FEN: " + fen);
+                }
+                i -= 16;
+            } else if (c >= '1' && c <= '8') {
+                for (Node square : squares.subList(i, i + c - '0')) {
+                    ((Pane) square).getChildren().clear();
+                }
+                i += c - '0';
+            } else {
+                ImageView view = new ImageView();
+                view.setImage(Objects.requireNonNull(IMAGES.get(c)));
+                view.setFitWidth(100);
+                view.setFitHeight(100);
+
+                List<Node> squareChildren = ((Pane) squares.get(i)).getChildren();
+                squareChildren.clear();
+                squareChildren.add(view);
+
+                ++i;
+            }
+        }
+    }
+
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Property change  "+ evt.getPropertyName());
@@ -176,6 +216,17 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
             LegalMovesState state = (LegalMovesState) evt.getNewValue();
             this.currentLegalMoves = state.legalMoves;
             System.out.println(currentLegalMoves);
+
+            for (int move : currentLegalMoves) {
+                Pane square = (Pane) chessBoard.getChildren().get(move);
+                square.getChildren().add(new Circle(50, 50, 10, Color.GREEN));
+            }
+        }
+
+        if(evt.getPropertyName().equals("moveState")){
+            System.out.println("test");
+            MovePieceState state = (MovePieceState)  evt.getNewValue();
+            updateFromFEN(state.newBoard);
         }
 
     }

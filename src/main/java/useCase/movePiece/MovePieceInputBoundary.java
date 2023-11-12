@@ -1,7 +1,5 @@
 package useCase.movePiece;
 
-import interfaceAdapters.movePiece.MovePieceViewModel;
-
 public interface MovePieceInputBoundary {
     void movePiece(MovePieceInputData movePieceInputData);
 }
