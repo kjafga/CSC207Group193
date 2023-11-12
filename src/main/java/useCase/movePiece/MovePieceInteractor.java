@@ -1,20 +1,20 @@
 package useCase.movePiece;
 
-import interfaceAdapters.movePiece.MovePieceViewModel;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import entity.Board;
 
 /**
  *
- * Takes in a string representing a move and takes that action on the board
+ * Takes in a pair of ints representing a move and takes that action on the board
  * The interactor will check if a move is valid, and send a fail condition if it is not a valid move
  */
 
 public class MovePieceInteractor implements MovePieceInputBoundary{
     private final MovePieceOutputBoundary movePieceOutputBoundary;
+    private final Board board;
 
-    public MovePieceInteractor(MovePieceOutputBoundary movePieceOutputBoundary) {
+    public MovePieceInteractor(MovePieceOutputBoundary movePieceOutputBoundary, Board board) {
         this.movePieceOutputBoundary = movePieceOutputBoundary;
+        this.board = board;
     }
 
     @Override
