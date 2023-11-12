@@ -9,43 +9,51 @@ import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePiecePresenter;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import useCase.legalMoves.LegalMovesInputBoundry;
 import useCase.legalMoves.LegalMovesInteractor;
 import useCase.legalMoves.LegalMovesOutputBoundry;
-import useCase.movePiece.MovePieceInputBoundry;
+import useCase.movePiece.MovePieceInputBoundary;
 import useCase.movePiece.MovePieceInputData;
 import useCase.movePiece.MovePieceInteractor;
-import useCase.movePiece.MovePieceOutputBoundry;
+import useCase.movePiece.MovePieceOutputBoundary;
 import view.BoardView;
 
 public class Main extends Application {
 
     String start = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
-    BoardViewModel boardViewModel = new BoardViewModel(start);
     ViewManagerModel viewManagerModel = new ViewManagerModel();
 
 
-
+    // move piece
     MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
+    MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
+    MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary);
+    MovePieceController movePieceController = new MovePieceController(movePieceInputBoundary);
 
-    MovePieceOutputBoundry movePieceOutputBoundry = new MovePiecePresenter(movePieceViewModel);
-    MovePieceInputBoundry movePieceInputBoundry = new MovePieceInteractor(movePieceOutputBoundry);
-
-    MovePieceController movePieceController = new MovePieceController(movePieceInputBoundry);
-
-
+    // legal moves
     LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();
     LegalMovesOutputBoundry legalMovesOutputBoundry = new LegalMovesPresenter(legalMovesViewModel);
     LegalMovesInputBoundry legalMovesInputBoundry = new LegalMovesInteractor(legalMovesOutputBoundry);
     LegalMovesController legalMovesController = new LegalMovesController(legalMovesInputBoundry);
 
+    // board
+    BoardViewFactory boardViewFactory = new BoardViewFactory();
 
-    BoardView boardView = new BoardView(movePieceViewModel, legalMovesViewModel, movePieceController, legalMovesController, boardViewModel);
-
+    BoardViewModel boardViewModel = new BoardViewModel(start);
+    BoardView boardView = boardViewFactory.construct(movePieceViewModel, legalMovesViewModel, movePieceController, legalMovesController, boardViewModel);
+    
     public static void main(String[] args) {
         launch(args);
     }
@@ -60,7 +68,4 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setResizable(false);
     }
-
-
-
 }

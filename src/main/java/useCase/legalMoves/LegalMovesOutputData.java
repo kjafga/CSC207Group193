@@ -4,9 +4,9 @@ import java.util.List;
 
 public class LegalMovesOutputData {
 
-    public List<String> legalMoves;
+    public List<Integer> legalMoves;
 
-    public LegalMovesOutputData(List<String> legalMoves){
+    public LegalMovesOutputData(List<Integer> legalMoves){
         this.legalMoves = legalMoves;
     }
 }

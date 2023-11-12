@@ -17,6 +17,16 @@ public class MovePieceViewModel extends ViewModel {
     public void setState (MovePieceState state){
         this.state = state;
     }
+
+    int[] move;
+    public void setMove(int[] move) {
+        this.move = move;
+    }
+
+    public int[] getMove() {
+        return move;
+    }
+
     @Override
     public void firePropertyChanged() {
         support.firePropertyChange("moveState", null, this.state);

@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -28,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javafx.geometry.Insets;
@@ -37,7 +39,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 
-public class BoardView implements ActionListener, PropertyChangeListener {
+public class BoardView implements PropertyChangeListener {//implements ActionListener, PropertyChangeListener {
 
     public TilePane chessBoard = new TilePane();
 
@@ -54,7 +56,12 @@ public class BoardView implements ActionListener, PropertyChangeListener {
     private final MovePieceController movePieceController;
     private final LegalMovesController legalMovesController;
 
-    private EventHandler handler;
+    //private EventHandler handler;
+
+    private String move = "";
+
+    public int recentSquare = -1;
+    public List<Integer> currentLegalMoves;
 
     public BoardView(MovePieceViewModel movePieceViewModel, LegalMovesViewModel legalMovesViewModel, MovePieceController movePieceController, LegalMovesController legalMovesController, BoardViewModel boardViewModel) {
         this.movePieceViewModel = movePieceViewModel;
@@ -63,18 +70,25 @@ public class BoardView implements ActionListener, PropertyChangeListener {
         this.legalMovesController = legalMovesController;
         this.boardViewModel = boardViewModel;
 
-        this.legalMovesViewModel.addPropertyChangeListener(this);
-        this.movePieceViewModel.addPropertyChangeListener(this);
+        legalMovesViewModel.addPropertyChangeListener(this);
+        movePieceViewModel.addPropertyChangeListener(this);
 
-        this.handler = new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                System.out.println("test    " + event.getSource() +  event.getEventType());
 
-                legalMovesController.execute("");
-                movePieceController.execute("");
-            }
-        };
+
+        this.currentLegalMoves = new ArrayList<>();
+
+        //this.legalMovesViewModel.addPropertyChangeListener(this);
+        //this.movePieceViewModel.addPropertyChangeListener(this);
+
+        //this.handler = new EventHandler() {
+        //    @Override
+        //    public void handle(Event event) {
+        //        System.out.println("test    " + event.getSource() +  event.getEventType());
+//
+        //        legalMovesController.execute("");
+        //        movePieceController.movePiece("");
+        //    }
+        //};
 
 
         chessboard(this.chessBoard);
@@ -83,7 +97,7 @@ public class BoardView implements ActionListener, PropertyChangeListener {
 
         pieceDisplay();
 
-        this.chessBoard.getChildren();
+        //this.chessBoard.getChildren();
 
     }
 
@@ -96,15 +110,13 @@ public class BoardView implements ActionListener, PropertyChangeListener {
                 square.setPrefSize(100,100);
                 square.setId(String.valueOf(val));
                 chessBoard.getChildren().add(square);
-
-                square.setOnMouseClicked(this.handler);
-
-
-
-
-                square.addEventHandler(javafx.event.ActionEvent.ACTION, this.handler);
-
                 squares.add(square);
+
+                //square.setOnMouseClicked(this.handler);
+
+                //square.addEventHandler(javafx.event.ActionEvent.ACTION, this.handler);
+
+                ((Pane) chessBoard.getChildren().get(val)).addEventHandler(MouseEvent.MOUSE_CLICKED, squareEventHandler);
 
                 if ((i + j) % 2 == 0) {
                     square.setBackground(new Background(new BackgroundFill(Color.web("#F0D9B5"), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -124,7 +136,7 @@ public class BoardView implements ActionListener, PropertyChangeListener {
         String string = getLayout();
         for (int i = 0; i < string.length(); i++) {
             if (string.charAt(i) == '/') {
-                val = val - 1;
+                val--;
             } else if (Character.isLetter(string.charAt(i))) {
                 String key = String.valueOf(string.charAt(i));
                 ImageView image = new ImageView();
@@ -132,26 +144,88 @@ public class BoardView implements ActionListener, PropertyChangeListener {
                 image.setFitHeight(100);
                 image.setFitWidth(100);
                 ((Pane) chessBoard.getChildren().get(val)).getChildren().add(image);
+                //((Pane) chessBoard.getChildren().get(val)).addEventHandler(MouseEvent.MOUSE_CLICKED, pieceEventHandler);
             } else {
                 val = val + Character.getNumericValue(string.charAt(i)) - 1;
+                //for (int j = 0; j < Character.getNumericValue(string.charAt(i)); j++) {
+                //    System.out.println(val);
+                //    ((Pane) chessBoard.getChildren().get(val)).addEventHandler(MouseEvent.MOUSE_CLICKED, squareEventHandler);
+                //    val++;
+                //}
+                //val--;
             }
             val++;
         }
     }
 
+    //EventHandler<MouseEvent> pieceEventHandler = new EventHandler<MouseEvent>() { 
+    //    @Override 
+    //    public void handle(MouseEvent e) { 
+    //        setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
+    //        System.out.println(move);
+    //    }
+    //};
+
+    EventHandler<MouseEvent> squareEventHandler = new EventHandler<MouseEvent>() { 
+        @Override 
+        public void handle(MouseEvent e) {
+            System.out.println(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
+            int newMove = chessBoard.getChildren().indexOf(e.getSource());
+
+
+            if (currentLegalMoves.contains(newMove)){
+                movePieceController.execute(new int[] {recentSquare, newMove});
+
+
+            }else if (newMove != recentSquare){
+                System.out.println("legalMoves");
+                legalMovesController.execute(newMove);
+                recentSquare = newMove;
+            }
+
+
+
+
+
+
+/**
+            if (move != "" && ((Pane) chessBoard.getChildren().get(Integer.parseInt(move))).getChildren().size() > 0) {
+                setMove(move + "," + String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
+            }
+            else {
+                setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
+            }
+            if (move.length() >= 3) {
+                movePiece();
+                move = "";
+            }
+            System.out.println(move);**/
+        }
+    };
+
+
+
     public String getLayout() {
         return boardViewModel.getPieces();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("test");
-
+    public String getMove() {
+        return move;
     }
+
+    public void setMove(String move) {
+        this.move = move;
+    }
+
+    //@Override
+    //public void actionPerformed(ActionEvent e) {
+    //    System.out.println("test");
+//
+    //}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println(evt.getPropertyName());
+        System.out.println("Property change  "+ evt.getPropertyName());
 
     }
 

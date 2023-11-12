@@ -1,9 +1,13 @@
 package useCase.movePiece;
 
 public class MovePieceInputData {
-    String move;
+    int[] move;
 
-    public MovePieceInputData(String move){
+    public MovePieceInputData(int[] move){
         this.move = move;
+    }
+
+    public int[] getMove() {
+        return move;
     }
 }

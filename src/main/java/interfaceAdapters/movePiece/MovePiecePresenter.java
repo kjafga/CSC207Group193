@@ -2,10 +2,10 @@ package interfaceAdapters.movePiece;
 
 import interfaceAdapters.ViewManagerModel;
 import useCase.movePiece.MovePieceInputData;
-import useCase.movePiece.MovePieceOutputBoundry;
+import useCase.movePiece.MovePieceOutputBoundary;
 import useCase.movePiece.MovePieceOutputData;
 
-public class MovePiecePresenter implements MovePieceOutputBoundry {
+public class MovePiecePresenter implements MovePieceOutputBoundary {
 
     private final MovePieceViewModel movePieceViewModel;
     private ViewManagerModel viewManagerModel;
@@ -14,6 +14,10 @@ public class MovePiecePresenter implements MovePieceOutputBoundry {
         this.movePieceViewModel = movePieceViewModel;
     }
 
+    @Override
+    public void present(MovePieceInputData movePieceInputData) {
+        movePieceViewModel.setMove(movePieceInputData.getMove());
+    }
 
 
     @Override

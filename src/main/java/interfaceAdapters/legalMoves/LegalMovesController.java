@@ -10,7 +10,7 @@ public class LegalMovesController {
         this.legalMovesInputInteractor = legalMovesInputInteractor;
     }
 
-    public void execute(String position){
+    public void execute(int position){
         LegalMovesInputData legalMovesInputData = new LegalMovesInputData(position);
         legalMovesInputInteractor.execute(legalMovesInputData);
     }

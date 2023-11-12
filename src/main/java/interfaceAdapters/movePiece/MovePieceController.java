@@ -1,20 +1,18 @@
 package interfaceAdapters.movePiece;
 
-import useCase.legalMoves.LegalMovesInputBoundry;
-import useCase.legalMoves.LegalMovesInputData;
-import useCase.movePiece.MovePieceInputBoundry;
+import useCase.movePiece.MovePieceInputBoundary;
 import useCase.movePiece.MovePieceInputData;
 
 public class MovePieceController {
 
-    final MovePieceInputBoundry movePieceInputInteractor;
+    final MovePieceInputBoundary movePieceInputInteractor;
 
-    public MovePieceController(MovePieceInputBoundry movePieceInputInteractor) {
+    public MovePieceController(MovePieceInputBoundary movePieceInputInteractor) {
         this.movePieceInputInteractor = movePieceInputInteractor;
     }
 
-    public void execute(String move){
+    public void execute(int[] move){
         MovePieceInputData movePieceInputData = new MovePieceInputData(move);
-        movePieceInputInteractor.execute(movePieceInputData);
+        movePieceInputInteractor.movePiece(movePieceInputData);
     }
 }
