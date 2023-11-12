@@ -21,6 +21,6 @@ public class MovePieceInteractor implements MovePieceInputBoundary{
     }
 
     public void execute (MovePieceInputData inputData){
-        movePieceOutputBoundry.prepareSuccessView(new MovePieceOutputData("test"));
+        movePieceOutputBoundary.prepareSuccessView(new MovePieceOutputData("test"));
     }
 }

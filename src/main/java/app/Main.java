@@ -39,8 +39,8 @@ public class Main extends Application {
 
     MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
 
-    MovePieceOutputBoundary movePieceOutputBoundry = new MovePiecePresenter(movePieceViewModel);
-    MovePieceInputBoundary movePieceInputBoundry = new MovePieceInteractor(movePieceOutputBoundary);
+    MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
+    MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary);
 
     MovePieceController movePieceController = new MovePieceController(movePieceInputBoundary);
 

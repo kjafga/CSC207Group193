@@ -1,13 +1,9 @@
 package interfaceAdapters.movePiece;
 
 import interfaceAdapters.ViewManagerModel;
-<<<<<<< HEAD
-import useCase.movePiece.MovePieceOutputBoundary;
-=======
 import useCase.movePiece.MovePieceInputData;
-import useCase.movePiece.MovePieceOutputBoundry;
+import useCase.movePiece.MovePieceOutputBoundary;
 import useCase.movePiece.MovePieceOutputData;
->>>>>>> main
 
 public class MovePiecePresenter implements MovePieceOutputBoundary {
 
@@ -18,12 +14,10 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
         this.movePieceViewModel = movePieceViewModel;
     }
 
-<<<<<<< HEAD
     @Override
-    public void present(MovePieceViewModel movePieceViewModel) {
+    public void present(MovePieceInputData movePieceInputData, MovePieceViewModel movePieceViewModel) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'present'");
-=======
 
 
     @Override
@@ -38,6 +32,5 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
     @Override
     public void prepareFailView(String error) {
 
->>>>>>> main
     }
 }
