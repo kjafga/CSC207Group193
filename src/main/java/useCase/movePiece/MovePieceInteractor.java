@@ -4,7 +4,7 @@ import entity.Board;
 
 /**
  *
- * Takes in a string representing a move and takes that action on the board
+ * Takes in a pair of ints representing a move and takes that action on the board
  * The interactor will check if a move is valid, and send a fail condition if it is not a valid move
  */
 
