@@ -1,6 +1,8 @@
 package useCase.movePiece;
 
 import entity.Board;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
 /**
