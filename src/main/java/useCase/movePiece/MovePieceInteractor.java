@@ -13,4 +13,8 @@ public class MovePieceInteractor implements MovePieceInputBoundry{
     public MovePieceInteractor(MovePieceOutputBoundry movePieceOutputBoundry) {
         this.movePieceOutputBoundry = movePieceOutputBoundry;
     }
+
+    public void execute (MovePieceInputData inputData){
+        movePieceOutputBoundry.prepareSuccessView(new MovePieceOutputData("test"));
+    }
 }
