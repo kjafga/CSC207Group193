@@ -56,9 +56,9 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
     private final MovePieceController movePieceController;
     private final LegalMovesController legalMovesController;
 
-    private EventHandler handler;
+    //private EventHandler handler;
 
-    public String move = "";
+    private String move = "";
 
     public int recentSquare = -1;
     public List<Integer> currentLegalMoves;
