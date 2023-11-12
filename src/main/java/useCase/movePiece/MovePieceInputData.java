@@ -1,6 +1,7 @@
 package useCase.movePiece;
 
 public class MovePieceInputData {
+<<<<<<< HEAD
     private final String move;
 
     public MovePieceInputData(String move) {
@@ -10,4 +11,11 @@ public class MovePieceInputData {
     public String getMove() {
         return move;
     }
+=======
+    String move;
+
+    public MovePieceInputData(String move){
+        this.move = move;
+    }
+>>>>>>> main
 }
