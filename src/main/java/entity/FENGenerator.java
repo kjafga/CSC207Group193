@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Arrays;
+
 class FENGenerator {
 
     // NOTE: Keep this in sync with Board.java!
@@ -11,6 +13,93 @@ class FENGenerator {
     FENGenerator(BoardData boardData) {
         this.boardData = boardData;
         this.builder = new StringBuilder(80);
+    }
+
+    static BoardData fromFen(String fen) {
+        BoardData data = new BoardData();
+        String[] fields = fen.split(" ");
+        int i = 112;
+
+        Arrays.fill(data.pieces, (byte) 99);
+        for (char c : fields[0].toCharArray()) {
+            if (c == '/') {
+                if ((i & 15) != 8) {
+                    throw invalidFEN(fen);
+                }
+                i -= 24;
+            } else if (c >= '1' && c <= '8') {
+                int to = i + c - '0';
+                Arrays.fill(data.pieces, i, to, (byte) 0);
+                i = to;
+            } else {
+                data.pieces[i] = 1;
+                while (pieceNames[data.pieces[i] - 1] != Character.toUpperCase(c)) {
+                    ++data.pieces[i];
+                }
+                if (Character.isLowerCase(c)) {
+                    data.pieces[i] = (byte) (-data.pieces[i]);
+                }
+                if (c == 'K') {
+                    data.kingIndices[0] = i;
+                } else if (c == 'k') {
+                    data.kingIndices[1] = i;
+                }
+                ++i;
+            }
+        }
+
+        if (fields[1].equals("w")) {
+            data.color = 1;
+        } else if (fields[1].equals("b")) {
+            data.color = -1;
+        } else {
+            throw invalidFEN(fen);
+        }
+
+        data.castlingRights = 0;
+        if (!fields[2].equals("-")) {
+            for (i = 0; i < fields[2].length(); ++i) {
+                data.castlingRights |= switch (fields[2].charAt(i)) {
+                    case 'K' -> 1;
+                    case 'Q' -> 2;
+                    case 'k' -> 4;
+                    case 'q' -> 8;
+                    default -> throw invalidFEN(fen);
+                };
+                if (i > 0 && fields[2].charAt(i - 1) >= fields[2].charAt(i)) {
+                    throw invalidFEN(fen);
+                }
+            }
+        }
+
+        if (fields[3].equals("-")) {
+            data.enPassantIndex = -1;
+        } else if (fields[3].length() != 2) {
+            throw invalidFEN(fen);
+        } else {
+            int file = fields[3].charAt(0) - 'a';
+            int rank = fields[3].charAt(1) - '1';
+            if (rank < 0 || rank >= 8 || file < 0 || file >= 8) {
+                throw invalidFEN(fen);
+            }
+            data.enPassantIndex = (rank << 4) + file;
+        }
+
+        try {
+            data.rule50count = Integer.parseInt(fields[4]);
+            data.moveCount = Integer.parseInt(fields[5]);
+        } catch (NumberFormatException ignored) {
+            throw invalidFEN(fen);
+        }
+        if (data.rule50count < 0 || data.rule50count > 100 || data.moveCount < 1) {
+            throw invalidFEN(fen);
+        }
+
+        return data;
+    }
+
+    private static IllegalArgumentException invalidFEN(String fen) {
+        return new IllegalArgumentException("Malformed FEN: " + fen);
     }
 
     @Override

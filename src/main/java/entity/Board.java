@@ -16,6 +16,12 @@ public class Board {
         this.moveGenerator = new MoveGenerator(boardData);
     }
 
+    public Board(String fen) {
+        this.boardData = FENGenerator.fromFen(fen);
+        this.fenGenerator = new FENGenerator(boardData);
+        this.moveGenerator = new MoveGenerator(boardData);
+    }
+
     /**
      * @return The position described in Forsyth&ndash;Edwards Notation (FEN).
      */
@@ -38,8 +44,9 @@ public class Board {
      * @param startSquare the selected square in the range 0&ndash;64
      * @param endSquare   the target square in the range 0&ndash;64
      * @param promotion   the piece to promote to: one of {@code QRNB}
+     * @return true if the move was made successfully, false if a promotion is required
      */
-    public void makeMove(int startSquare, int endSquare, char promotion) {
+    public boolean makeMove(int startSquare, int endSquare, char promotion) {
         if (!getLegalMoves(startSquare).contains(endSquare)) {
             throw new IllegalArgumentException("Move " + startSquare + "," + endSquare + " is illegal");
         }
@@ -47,6 +54,7 @@ public class Board {
         final int startIndex = startSquare + (startSquare & -8);
         final int endIndex = endSquare + (endSquare & -8);
         final int piece = Math.abs(boardData.pieces[startIndex]);
+        boolean clearEnPassant = true;
 
         if (piece == PAWN || boardData.pieces[endIndex] != 0) {
             boardData.rule50count = 0;
@@ -55,13 +63,15 @@ public class Board {
         }
 
         if (piece == PAWN && endIndex >> 4 == (boardData.color > 0 ? 7 : 0)) {
-            boardData.pieces[endIndex] = (byte) (boardData.color * switch (promotion) {
-                case 'Q' -> QUEEN;
-                case 'R' -> ROOK;
-                case 'N' -> KNIGHT;
-                case 'B' -> BISHOP;
-                default -> throw new IllegalArgumentException("Invalid promotion");
-            });
+            switch (promotion) {
+                case 'Q' -> boardData.pieces[endIndex] = (byte) (QUEEN * boardData.color);
+                case 'R' -> boardData.pieces[endIndex] = (byte) (ROOK * boardData.color);
+                case 'N' -> boardData.pieces[endIndex] = (byte) (KNIGHT * boardData.color);
+                case 'B' -> boardData.pieces[endIndex] = (byte) (BISHOP * boardData.color);
+                default -> {
+                    return false;
+                }
+            }
         } else {
             boardData.pieces[endIndex] = boardData.pieces[startIndex];
         }
@@ -75,6 +85,7 @@ public class Board {
                     if (((endIndex + 1) & 0x88) == 0 && boardData.pieces[endIndex + 1] == PAWN * -boardData.color ||
                             ((endIndex - 1) & 0x88) == 0 && boardData.pieces[endIndex - 1] == PAWN * -boardData.color) {
                         boardData.enPassantIndex = endIndex - (boardData.color << 4);
+                        clearEnPassant = false;
                     }
                 }
             }
@@ -109,6 +120,10 @@ public class Board {
         if (boardData.color > 0) {
             ++boardData.moveCount;
         }
+        if (clearEnPassant) {
+            boardData.enPassantIndex = -1;
+        }
+        return true;
     }
 
 }
