@@ -15,6 +15,6 @@ public class MovePieceController {
 
     public void movePiece(String move){
         MovePieceInputData movePieceInputData = new MovePieceInputData(move);
-        movePieceInputInteractor.movePiece(movePieceInputData, new MovePieceViewModel());
+        movePieceInputInteractor.movePiece(movePieceInputData);
     }
 }

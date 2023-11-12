@@ -1,4 +1,4 @@
-package app;
+package view;
 
 import interfaceAdapters.Board.BoardViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
@@ -165,24 +165,29 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
                 setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
             }
             if (move.length() >= 3) {
-                System.out.println("move: " + move);
-                String[] moves = move.split(",");
-                Integer begin = Integer.parseInt(moves[0]);
-                Integer end = Integer.parseInt(moves[1]);
-                Pane startPane = (Pane) chessBoard.getChildren().get(begin);
-                Pane endPane = (Pane) chessBoard.getChildren().get(end);
-                if (startPane.getChildren().size() > 0) {
-                    ImageView temp = (ImageView) startPane.getChildren().get(0);
-                    if (endPane.getChildren().size() > 0) {
-                        endPane.getChildren().remove(0);
-                    }
-                    endPane.getChildren().add(temp);
-                }
+                movePiece();
                 move = "";
             }
             System.out.println(move);
-        } 
+        }
     };
+
+    public void movePiece() {
+        movePieceController.movePiece(move);
+        System.out.println("move: " + move);
+        String[] moves = move.split(",");
+        Integer begin = Integer.parseInt(moves[0]);
+        Integer end = Integer.parseInt(moves[1]);
+        Pane startPane = (Pane) chessBoard.getChildren().get(begin);
+        Pane endPane = (Pane) chessBoard.getChildren().get(end);
+        if (startPane.getChildren().size() > 0) {
+            ImageView temp = (ImageView) startPane.getChildren().get(0);
+            if (endPane.getChildren().size() > 0) {
+                endPane.getChildren().remove(0);
+            }
+            endPane.getChildren().add(temp);
+        }
+    }
 
     public String getLayout() {
         return boardViewModel.getPieces();

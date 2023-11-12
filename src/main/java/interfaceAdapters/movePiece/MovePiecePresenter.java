@@ -15,7 +15,7 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
     }
 
     @Override
-    public void present(MovePieceInputData movePieceInputData, MovePieceViewModel movePieceViewModel) {
+    public void present(MovePieceInputData movePieceInputData) {
         movePieceViewModel.setMove(movePieceInputData.getMove());
     }
 

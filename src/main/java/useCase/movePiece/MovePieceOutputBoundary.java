@@ -3,7 +3,7 @@ package useCase.movePiece;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 
 public interface MovePieceOutputBoundary {
-    void present(MovePieceInputData movePieceInputData, MovePieceViewModel movePieceViewModel);
+    void present(MovePieceInputData movePieceInputData);
 
     void prepareSuccessView(MovePieceOutputData move);
 

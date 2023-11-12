@@ -16,7 +16,7 @@ public class MovePieceInteractor implements MovePieceInputBoundary{
     }
 
     @Override
-    public void movePiece(MovePieceInputData movePieceInputData, MovePieceViewModel movePieceViewModel) {
-        movePieceOutputBoundary.present(movePieceInputData, movePieceViewModel);
+    public void movePiece(MovePieceInputData movePieceInputData) {
+        movePieceOutputBoundary.present(movePieceInputData);
     }
 }
