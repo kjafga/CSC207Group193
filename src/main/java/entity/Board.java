@@ -38,8 +38,9 @@ public class Board {
      * @param startSquare the selected square in the range 0&ndash;64
      * @param endSquare   the target square in the range 0&ndash;64
      * @param promotion   the piece to promote to: one of {@code QRNB}
+     * @return true if the move was made successfully, false if a promotion is required
      */
-    public void makeMove(int startSquare, int endSquare, char promotion) {
+    public boolean makeMove(int startSquare, int endSquare, char promotion) {
         if (!getLegalMoves(startSquare).contains(endSquare)) {
             throw new IllegalArgumentException("Move " + startSquare + "," + endSquare + " is illegal");
         }
@@ -56,13 +57,15 @@ public class Board {
         }
 
         if (piece == PAWN && endIndex >> 4 == (boardData.color > 0 ? 7 : 0)) {
-            boardData.pieces[endIndex] = (byte) (boardData.color * switch (promotion) {
-                case 'Q' -> QUEEN;
-                case 'R' -> ROOK;
-                case 'N' -> KNIGHT;
-                case 'B' -> BISHOP;
-                default -> throw new IllegalArgumentException("Invalid promotion");
-            });
+            switch (promotion) {
+                case 'Q' -> boardData.pieces[endIndex] = (byte) (QUEEN * boardData.color);
+                case 'R' -> boardData.pieces[endIndex] = (byte) (ROOK * boardData.color);
+                case 'N' -> boardData.pieces[endIndex] = (byte) (KNIGHT * boardData.color);
+                case 'B' -> boardData.pieces[endIndex] = (byte) (BISHOP * boardData.color);
+                default -> {
+                    return false;
+                }
+            }
         } else {
             boardData.pieces[endIndex] = boardData.pieces[startIndex];
         }
@@ -114,6 +117,7 @@ public class Board {
         if (clearEnPassant) {
             boardData.enPassantIndex = -1;
         }
+        return true;
     }
 
 }
