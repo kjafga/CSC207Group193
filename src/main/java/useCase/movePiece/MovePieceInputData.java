@@ -6,4 +6,8 @@ public class MovePieceInputData {
     public MovePieceInputData(String move){
         this.move = move;
     }
+
+    public String getMove() {
+        return move;
+    }
 }

@@ -16,8 +16,7 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
 
     @Override
     public void present(MovePieceInputData movePieceInputData, MovePieceViewModel movePieceViewModel) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'present'");
+        movePieceViewModel.setMove(movePieceInputData.getMove());
     }
 
 

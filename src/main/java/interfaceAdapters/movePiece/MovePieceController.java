@@ -13,8 +13,8 @@ public class MovePieceController {
         this.movePieceInputInteractor = movePieceInputInteractor;
     }
 
-    public void execute(String move){
+    public void movePiece(String move){
         MovePieceInputData movePieceInputData = new MovePieceInputData(move);
-        movePieceInputInteractor.execute(movePieceInputData);
+        movePieceInputInteractor.movePiece(movePieceInputData, new MovePieceViewModel());
     }
 }
