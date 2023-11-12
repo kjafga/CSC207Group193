@@ -70,6 +70,10 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
         this.legalMovesController = legalMovesController;
         this.boardViewModel = boardViewModel;
 
+        legalMovesViewModel.addPropertyChangeListener(this);
+        movePieceViewModel.addPropertyChangeListener(this);
+
+
 
         this.currentLegalMoves = new ArrayList<>();
 
@@ -172,20 +176,22 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
             if (currentLegalMoves.contains(newMove)){
                 movePieceController.execute(new int[] {recentSquare, newMove});
 
-            }
-            if (newMove != recentSquare){
+
+            }else if (newMove != recentSquare){
+                System.out.println("legalMoves");
                 legalMovesController.execute(newMove);
                 recentSquare = newMove;
-            } else
+            }
 
 
 
 
 
 
+/**
             if (move != "" && ((Pane) chessBoard.getChildren().get(Integer.parseInt(move))).getChildren().size() > 0) {
                 setMove(move + "," + String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
-            } 
+            }
             else {
                 setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
             }
@@ -193,26 +199,11 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
                 movePiece();
                 move = "";
             }
-            System.out.println(move);
+            System.out.println(move);**/
         }
     };
 
-    public void movePiece() {
-        //movePieceController.movePiece(move);
-        System.out.println("move: " + move);
-        String[] moves = move.split(",");
-        Integer begin = Integer.parseInt(moves[0]);
-        Integer end = Integer.parseInt(moves[1]);
-        Pane startPane = (Pane) chessBoard.getChildren().get(begin);
-        Pane endPane = (Pane) chessBoard.getChildren().get(end);
-        if (startPane.getChildren().size() > 0) {
-            ImageView temp = (ImageView) startPane.getChildren().get(0);
-            if (endPane.getChildren().size() > 0) {
-                endPane.getChildren().remove(0);
-            }
-            endPane.getChildren().add(temp);
-        }
-    }
+
 
     public String getLayout() {
         return boardViewModel.getPieces();
@@ -234,7 +225,7 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println(evt.getPropertyName());
+        System.out.println("Property change  "+ evt.getPropertyName());
 
     }
 

@@ -1,6 +1,8 @@
 package useCase.movePiece;
 
 import interfaceAdapters.movePiece.MovePieceViewModel;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -19,4 +21,23 @@ public class MovePieceInteractor implements MovePieceInputBoundary{
     public void movePiece(MovePieceInputData movePieceInputData) {
         movePieceOutputBoundary.present(movePieceInputData);
     }
+
+    /**
+    public void movePiece() {
+        //movePieceController.movePiece(move);
+        System.out.println("move: " + move);
+        String[] moves = move.split(",");
+        Integer begin = Integer.parseInt(moves[0]);
+        Integer end = Integer.parseInt(moves[1]);
+        Pane startPane = (Pane) chessBoard.getChildren().get(begin);
+        Pane endPane = (Pane) chessBoard.getChildren().get(end);
+        if (startPane.getChildren().size() > 0) {
+            ImageView temp = (ImageView) startPane.getChildren().get(0);
+            if (endPane.getChildren().size() > 0) {
+                endPane.getChildren().remove(0);
+            }
+            endPane.getChildren().add(temp);
+        }
+    }
+     **/
 }

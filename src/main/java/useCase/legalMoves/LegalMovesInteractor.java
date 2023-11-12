@@ -20,8 +20,8 @@ public class LegalMovesInteractor implements LegalMovesInputBoundry{
 
     @Override
     public void execute(LegalMovesInputData legalMovesInputData) {
-        List<String> legalMoves = new  ArrayList<>();
-        legalMoves.add("test");
+        List<Integer> legalMoves = new ArrayList<>();
+        legalMoves.add(-1);
         legalMovesOutputBoundry.prepareSuccessView(new LegalMovesOutputData(legalMoves));
     }
 }
