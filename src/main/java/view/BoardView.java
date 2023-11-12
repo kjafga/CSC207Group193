@@ -2,6 +2,7 @@ package view;
 
 import interfaceAdapters.Board.BoardViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
+import interfaceAdapters.legalMoves.LegalMovesState;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceViewModel;
@@ -226,6 +227,13 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Property change  "+ evt.getPropertyName());
+
+        if(evt.getPropertyName().equals("legalState")){
+            System.out.println("pog" );
+            LegalMovesState state = (LegalMovesState) evt.getNewValue();
+            this.currentLegalMoves = state.legalMoves;
+            System.out.println(currentLegalMoves);
+        }
 
     }
 

@@ -1,8 +1,6 @@
 package useCase.movePiece;
 
-import interfaceAdapters.movePiece.MovePieceViewModel;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import entity.Board;
 
 /**
  *
@@ -12,9 +10,11 @@ import javafx.scene.layout.Pane;
 
 public class MovePieceInteractor implements MovePieceInputBoundary{
     private final MovePieceOutputBoundary movePieceOutputBoundary;
+    private final Board board;
 
-    public MovePieceInteractor(MovePieceOutputBoundary movePieceOutputBoundary) {
+    public MovePieceInteractor(MovePieceOutputBoundary movePieceOutputBoundary, Board board) {
         this.movePieceOutputBoundary = movePieceOutputBoundary;
+        this.board = board;
     }
 
     @Override

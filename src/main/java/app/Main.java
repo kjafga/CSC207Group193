@@ -1,5 +1,6 @@
 package app;
 
+import entity.Board;
 import interfaceAdapters.ViewManagerModel;
 import interfaceAdapters.Board.BoardViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
@@ -9,22 +10,13 @@ import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePiecePresenter;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import useCase.legalMoves.LegalMovesInputBoundry;
 import useCase.legalMoves.LegalMovesInteractor;
 import useCase.legalMoves.LegalMovesOutputBoundry;
 import useCase.movePiece.MovePieceInputBoundary;
-import useCase.movePiece.MovePieceInputData;
 import useCase.movePiece.MovePieceInteractor;
 import useCase.movePiece.MovePieceOutputBoundary;
 import view.BoardView;
@@ -35,17 +27,17 @@ public class Main extends Application {
 
     ViewManagerModel viewManagerModel = new ViewManagerModel();
 
-
+    Board board = new Board();
     // move piece
     MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
     MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
-    MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary);
+    MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, board);
     MovePieceController movePieceController = new MovePieceController(movePieceInputBoundary);
 
     // legal moves
     LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();
     LegalMovesOutputBoundry legalMovesOutputBoundry = new LegalMovesPresenter(legalMovesViewModel);
-    LegalMovesInputBoundry legalMovesInputBoundry = new LegalMovesInteractor(legalMovesOutputBoundry);
+    LegalMovesInputBoundry legalMovesInputBoundry = new LegalMovesInteractor(legalMovesOutputBoundry, board);
     LegalMovesController legalMovesController = new LegalMovesController(legalMovesInputBoundry);
 
     // board
