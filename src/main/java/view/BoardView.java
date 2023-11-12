@@ -78,27 +78,12 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
 
         this.currentLegalMoves = new ArrayList<>();
 
-        //this.legalMovesViewModel.addPropertyChangeListener(this);
-        //this.movePieceViewModel.addPropertyChangeListener(this);
-
-        //this.handler = new EventHandler() {
-        //    @Override
-        //    public void handle(Event event) {
-        //        System.out.println("test    " + event.getSource() +  event.getEventType());
-//
-        //        legalMovesController.execute("");
-        //        movePieceController.movePiece("");
-        //    }
-        //};
-
-
         chessboard(this.chessBoard);
 
         pieceMap = boardViewModel.getPieceImages();
 
         pieceDisplay();
 
-        //this.chessBoard.getChildren();
 
     }
 
@@ -112,10 +97,6 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
                 square.setId(String.valueOf(val));
                 chessBoard.getChildren().add(square);
                 squares.add(square);
-
-                //square.setOnMouseClicked(this.handler);
-
-                //square.addEventHandler(javafx.event.ActionEvent.ACTION, this.handler);
 
                 ((Pane) chessBoard.getChildren().get(val)).addEventHandler(MouseEvent.MOUSE_CLICKED, squareEventHandler);
 
@@ -145,27 +126,13 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
                 image.setFitHeight(100);
                 image.setFitWidth(100);
                 ((Pane) chessBoard.getChildren().get(val)).getChildren().add(image);
-                //((Pane) chessBoard.getChildren().get(val)).addEventHandler(MouseEvent.MOUSE_CLICKED, pieceEventHandler);
             } else {
                 val = val + Character.getNumericValue(string.charAt(i)) - 1;
-                //for (int j = 0; j < Character.getNumericValue(string.charAt(i)); j++) {
-                //    System.out.println(val);
-                //    ((Pane) chessBoard.getChildren().get(val)).addEventHandler(MouseEvent.MOUSE_CLICKED, squareEventHandler);
-                //    val++;
-                //}
-                //val--;
+
             }
             val++;
         }
     }
-
-    //EventHandler<MouseEvent> pieceEventHandler = new EventHandler<MouseEvent>() { 
-    //    @Override 
-    //    public void handle(MouseEvent e) { 
-    //        setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
-    //        System.out.println(move);
-    //    }
-    //};
 
     EventHandler<MouseEvent> squareEventHandler = new EventHandler<MouseEvent>() { 
         @Override 
@@ -183,24 +150,6 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
                 legalMovesController.execute(newMove);
                 recentSquare = newMove;
             }
-
-
-
-
-
-
-/**
-            if (move != "" && ((Pane) chessBoard.getChildren().get(Integer.parseInt(move))).getChildren().size() > 0) {
-                setMove(move + "," + String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
-            }
-            else {
-                setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
-            }
-            if (move.length() >= 3) {
-                movePiece();
-                move = "";
-            }
-            System.out.println(move);**/
         }
     };
 
@@ -218,18 +167,12 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
         this.move = move;
     }
 
-    //@Override
-    //public void actionPerformed(ActionEvent e) {
-    //    System.out.println("test");
-//
-    //}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Property change  "+ evt.getPropertyName());
 
         if(evt.getPropertyName().equals("legalState")){
-            System.out.println("pog" );
             LegalMovesState state = (LegalMovesState) evt.getNewValue();
             this.currentLegalMoves = state.legalMoves;
             System.out.println(currentLegalMoves);
