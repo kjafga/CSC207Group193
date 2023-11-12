@@ -27,7 +27,6 @@ import useCase.movePiece.MovePieceInputBoundary;
 import useCase.movePiece.MovePieceInputData;
 import useCase.movePiece.MovePieceInteractor;
 import useCase.movePiece.MovePieceOutputBoundary;
-import view.BoardView;
 
 public class Main extends Application {
 

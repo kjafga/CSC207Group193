@@ -5,7 +5,6 @@ import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceViewModel;
-import view.BoardView;
 
 public class BoardViewFactory {
     public BoardViewFactory (){

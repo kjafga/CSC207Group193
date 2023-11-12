@@ -1,4 +1,4 @@
-package view;
+package app;
 
 import interfaceAdapters.Board.BoardViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
@@ -147,18 +147,18 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
         }
     }
 
-    EventHandler<MouseEvent> pieceEventHandler = new EventHandler<MouseEvent>() { 
-        @Override 
-        public void handle(MouseEvent e) { 
-            setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
-            System.out.println(move);
-        }
-    };
+    //EventHandler<MouseEvent> pieceEventHandler = new EventHandler<MouseEvent>() { 
+    //    @Override 
+    //    public void handle(MouseEvent e) { 
+    //        setMove(String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
+    //        System.out.println(move);
+    //    }
+    //};
 
     EventHandler<MouseEvent> squareEventHandler = new EventHandler<MouseEvent>() { 
         @Override 
         public void handle(MouseEvent e) {
-            if (move.length() > 0) {
+            if (move != "" && ((Pane) chessBoard.getChildren().get(Integer.parseInt(move))).getChildren().size() > 0) {
                 setMove(move + "," + String.valueOf(chessBoard.getChildren().indexOf(e.getSource())));
             } 
             else {
@@ -173,6 +173,9 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
                 Pane endPane = (Pane) chessBoard.getChildren().get(end);
                 if (startPane.getChildren().size() > 0) {
                     ImageView temp = (ImageView) startPane.getChildren().get(0);
+                    if (endPane.getChildren().size() > 0) {
+                        endPane.getChildren().remove(0);
+                    }
                     endPane.getChildren().add(temp);
                 }
                 move = "";
