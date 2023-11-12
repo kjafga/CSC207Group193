@@ -5,11 +5,11 @@ class FENGenerator {
     // NOTE: Keep this in sync with Board.java!
     private static final char[] pieceNames = {'K', 'Q', 'R', 'B', 'N', 'P'};
 
-    private final Board board;
+    private final BoardData boardData;
     private final StringBuilder builder;
 
-    FENGenerator(Board board) {
-        this.board = board;
+    FENGenerator(BoardData boardData) {
+        this.boardData = boardData;
         this.builder = new StringBuilder(80);
     }
 
@@ -27,39 +27,39 @@ class FENGenerator {
 
     private void putMoveCount() {
         builder.append(' ');
-        builder.append(board.moveCount);
+        builder.append(boardData.moveCount);
     }
 
     private void putRule50Count() {
         builder.append(' ');
-        builder.append(board.rule50count);
+        builder.append(boardData.rule50count);
     }
 
     private void putEnPassantSquare() {
         builder.append(' ');
-        if (board.enPassantIndex == -1) {
+        if (boardData.enPassantIndex == -1) {
             builder.append('-');
         } else {
-            builder.appendCodePoint('a' + (board.enPassantIndex & 7));
-            builder.appendCodePoint('1' + (board.enPassantIndex >> 4));
+            builder.appendCodePoint('a' + (boardData.enPassantIndex & 7));
+            builder.appendCodePoint('1' + (boardData.enPassantIndex >> 4));
         }
     }
 
     private void putCastlingRights() {
         builder.append(' ');
-        if ((board.castlingRights & 15) == 0) {
+        if ((boardData.castlingRights & 15) == 0) {
             builder.append('-');
         } else {
-            if ((board.castlingRights & 1) != 0) {
+            if ((boardData.castlingRights & 1) != 0) {
                 builder.append('K');
             }
-            if ((board.castlingRights & 2) != 0) {
+            if ((boardData.castlingRights & 2) != 0) {
                 builder.append('Q');
             }
-            if ((board.castlingRights & 4) != 0) {
+            if ((boardData.castlingRights & 4) != 0) {
                 builder.append('k');
             }
-            if ((board.castlingRights & 8) != 0) {
+            if ((boardData.castlingRights & 8) != 0) {
                 builder.append('q');
             }
         }
@@ -67,13 +67,13 @@ class FENGenerator {
 
     private void putActiveColor() {
         builder.append(' ');
-        builder.append(board.color > 0 ? 'w' : 'b');
+        builder.append(boardData.color > 0 ? 'w' : 'b');
     }
 
     private void putPieceData() {
         for (int rank = 7; rank >= 0; --rank) {
             for (int file = 0; file < 8; ++file) {
-                byte piece = board.pieces[(rank << 4) + file];
+                byte piece = boardData.pieces[(rank << 4) + file];
                 if (piece == 0) {
                     int lastIndex = builder.length() - 1;
                     char c = lastIndex >= 0 ? builder.charAt(lastIndex) : 0;
