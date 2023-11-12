@@ -73,7 +73,7 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
         legalMovesViewModel.addPropertyChangeListener(this);
         movePieceViewModel.addPropertyChangeListener(this);
 
-
+        movePieceController.setBoard(this);
 
         this.currentLegalMoves = new ArrayList<>();
 
@@ -175,9 +175,8 @@ public class BoardView implements PropertyChangeListener {//implements ActionLis
 
             if (currentLegalMoves.contains(newMove)){
                 movePieceController.execute(new int[] {recentSquare, newMove});
-
-
-            }else if (newMove != recentSquare){
+            }
+            else if (newMove != recentSquare){
                 System.out.println("legalMoves");
                 legalMovesController.execute(newMove);
                 recentSquare = newMove;
