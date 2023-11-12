@@ -16,6 +16,12 @@ public class Board {
         this.moveGenerator = new MoveGenerator(boardData);
     }
 
+    public Board(String fen) {
+        this.boardData = FENGenerator.fromFen(fen);
+        this.fenGenerator = new FENGenerator(boardData);
+        this.moveGenerator = new MoveGenerator(boardData);
+    }
+
     /**
      * @return The position described in Forsyth&ndash;Edwards Notation (FEN).
      */
