@@ -54,13 +54,8 @@ public class Board {
         final int startIndex = startSquare + (startSquare & -8);
         final int endIndex = endSquare + (endSquare & -8);
         final int piece = Math.abs(boardData.pieces[startIndex]);
+        final int captured = Math.abs(boardData.pieces[endIndex]);
         boolean clearEnPassant = true;
-
-        if (piece == PAWN || boardData.pieces[endIndex] != 0) {
-            boardData.rule50count = 0;
-        } else {
-            ++boardData.rule50count;
-        }
 
         if (piece == PAWN && endIndex >> 4 == (boardData.color > 0 ? 7 : 0)) {
             switch (promotion) {
@@ -76,6 +71,16 @@ public class Board {
             boardData.pieces[endIndex] = boardData.pieces[startIndex];
         }
         boardData.pieces[startIndex] = 0;
+
+        if (piece == PAWN || captured != 0) {
+            boardData.rule50count = 0;
+        } else {
+            ++boardData.rule50count;
+        }
+
+        if (captured == ROOK) {
+            removeCastlingRights(endIndex);
+        }
 
         switch (piece) {
             case PAWN -> {
@@ -106,14 +111,7 @@ public class Board {
                 }
                 boardData.kingIndices[boardData.color > 0 ? 0 : 1] = endIndex;
             }
-            case ROOK -> {
-                switch (startIndex) {
-                    case 7 -> boardData.castlingRights &= ~1;
-                    case 0 -> boardData.castlingRights &= ~2;
-                    case 119 -> boardData.castlingRights &= ~4;
-                    case 112 -> boardData.castlingRights &= ~8;
-                }
-            }
+            case ROOK -> removeCastlingRights(startIndex);
         }
 
         boardData.color = -boardData.color;
@@ -123,7 +121,17 @@ public class Board {
         if (clearEnPassant) {
             boardData.enPassantIndex = -1;
         }
+
         return true;
+    }
+
+    private void removeCastlingRights(int rookIndex) {
+        switch (rookIndex) {
+            case 7 -> boardData.castlingRights &= ~1;
+            case 0 -> boardData.castlingRights &= ~2;
+            case 119 -> boardData.castlingRights &= ~4;
+            case 112 -> boardData.castlingRights &= ~8;
+        }
     }
 
 }
