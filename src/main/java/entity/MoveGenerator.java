@@ -156,7 +156,7 @@ final class MoveGenerator {
         }
 
         final int captureLeft = forwardStep - 1;
-        if (captureLeft == boardData.enPassantIndex ||
+        if (captureLeft != -1 && captureLeft == boardData.enPassantIndex ||
                 (captureLeft & 0x88) == 0 && signum(boardData.pieces[captureLeft]) == -boardData.color) {
             moves.add(captureLeft);
         }
