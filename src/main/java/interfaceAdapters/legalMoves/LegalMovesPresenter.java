@@ -1,26 +1,21 @@
 package interfaceAdapters.legalMoves;
 
-import interfaceAdapters.ViewManagerModel;
-import useCase.legalMoves.LegalMovesOutputBoundry;
+import useCase.legalMoves.LegalMovesOutputBoundary;
 import useCase.legalMoves.LegalMovesOutputData;
 
-public class LegalMovesPresenter implements LegalMovesOutputBoundry {
+public class LegalMovesPresenter implements LegalMovesOutputBoundary {
+
     private final LegalMovesViewModel legalMovesViewModel;
-    private ViewManagerModel viewManagerModel;
+
     public LegalMovesPresenter(LegalMovesViewModel legalMovesViewModel) {
         this.legalMovesViewModel = legalMovesViewModel;
     }
 
     @Override
     public void prepareSuccessView(LegalMovesOutputData outputData) {
-        LegalMovesState state = new LegalMovesState();
-        state.legalMoves = outputData.legalMoves;
+        LegalMovesState state = new LegalMovesState(outputData.legalMoves());
         legalMovesViewModel.setState(state);
         legalMovesViewModel.firePropertyChanged();
     }
 
-    @Override
-    public void prepareFailView(String error) {
-
-    }
 }
