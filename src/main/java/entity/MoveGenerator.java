@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -62,7 +63,7 @@ final class MoveGenerator {
             }
         }
 
-        return moves;
+        return Collections.unmodifiableList(moves);
     }
 
     private void addCastlingMoves() {
