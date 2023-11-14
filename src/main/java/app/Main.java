@@ -1,8 +1,6 @@
 package app;
 
 import entity.Board;
-import interfaceAdapters.ViewManagerModel;
-import interfaceAdapters.Board.BoardViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesPresenter;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
@@ -11,12 +9,10 @@ import interfaceAdapters.movePiece.MovePiecePresenter;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
-import useCase.legalMoves.LegalMovesInputBoundry;
+import useCase.legalMoves.LegalMovesInputBoundary;
 import useCase.legalMoves.LegalMovesInteractor;
-import useCase.legalMoves.LegalMovesOutputBoundry;
+import useCase.legalMoves.LegalMovesOutputBoundary;
 import useCase.movePiece.MovePieceInputBoundary;
 import useCase.movePiece.MovePieceInteractor;
 import useCase.movePiece.MovePieceOutputBoundary;
@@ -24,41 +20,29 @@ import view.BoardView;
 
 public class Main extends Application {
 
-    String start = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-
-    ViewManagerModel viewManagerModel = new ViewManagerModel();
-
-    Board board = new Board();
-    // move piece
-    MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
-    MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
-    MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, board);
-    MovePieceController movePieceController = new MovePieceController(movePieceInputBoundary);
-
-    // legal moves
-    LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();
-    LegalMovesOutputBoundry legalMovesOutputBoundry = new LegalMovesPresenter(legalMovesViewModel);
-    LegalMovesInputBoundry legalMovesInputBoundry = new LegalMovesInteractor(legalMovesOutputBoundry, board);
-    LegalMovesController legalMovesController = new LegalMovesController(legalMovesInputBoundry);
-
-    // board
-    BoardViewFactory boardViewFactory = new BoardViewFactory();
-
-    BoardViewModel boardViewModel = new BoardViewModel(start);
-    BoardView boardView = boardViewFactory.construct(movePieceViewModel, legalMovesViewModel, movePieceController, legalMovesController, boardViewModel);
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        // The One True Board.  Stores the state of the game.
+        // Shared by all the controllers.
+        Board board = new Board();
 
-        GridPane view = boardView.chessBoard;
+        LegalMovesOutputBoundary legalMovesOutputBoundary = new LegalMovesPresenter(new LegalMovesViewModel());
+        LegalMovesInputBoundary legalMovesInputBoundary = new LegalMovesInteractor(legalMovesOutputBoundary, board);
 
-        Scene scene = new Scene(view, 800, 800);
+        MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(new MovePieceViewModel());
+        MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, board);
+
+        BoardView boardView = new BoardViewBuilder()
+                .setLegalMovesViewModel(new LegalMovesViewModel())
+                .setMovePieceViewModel(new MovePieceViewModel())
+                .setLegalMovesController(new LegalMovesController(legalMovesInputBoundary))
+                .setMovePieceController(new MovePieceController(movePieceInputBoundary))
+                .build();
+
+        Scene scene = new Scene(boardView.getRoot(), 800, 800);
         primaryStage.setScene(scene);
-        primaryStage.show();
         primaryStage.setResizable(false);
+        primaryStage.show();
     }
+
 }
