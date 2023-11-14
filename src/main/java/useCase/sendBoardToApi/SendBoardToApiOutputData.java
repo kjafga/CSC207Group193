@@ -1,4 +1,3 @@
 package useCase.sendBoardToApi;
 
-public class SendBoardToApiOutputData {
-}
+public record SendBoardToApiOutputData(int startSquare, int endSquare, char promotion) {}
