@@ -128,7 +128,22 @@ final class MoveGenerator {
                         (piece == QUEEN || piece == attacker) && index != endIndex) {
                     return true;
                 }
-                if ((piece != 0 && index != startIndex) || index == endIndex) {
+                if (index == endIndex) {
+                    // The newly placed piece blocks this ray
+                    break;
+                }
+                if (endIndex == boardData.enPassantIndex &&
+                        startIndex >= 0 && boardData.pieces[startIndex] == PAWN * boardData.color &&
+                        index == boardData.enPassantIndex - (boardData.color << 4)) {
+                    // The pawn that used to block this ray was en passanted away
+                    continue;
+                }
+                if (index == startIndex) {
+                    // The piece that used to block this ray was moved
+                    continue;
+                }
+                if (piece != 0) {
+                    // A piece that didn't move blocks this ray
                     break;
                 }
             }
