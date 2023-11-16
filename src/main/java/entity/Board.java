@@ -109,7 +109,7 @@ public class Board {
                     boardData.pieces[112] = 0;
                     boardData.pieces[115] = (byte) (ROOK * boardData.color);
                 }
-                boardData.kingIndices[boardData.color > 0 ? 0 : 1] = endIndex;
+                boardData.kingIndices[boardData.color >>> 31] = endIndex;
             }
             case ROOK -> removeCastlingRights(startIndex);
         }

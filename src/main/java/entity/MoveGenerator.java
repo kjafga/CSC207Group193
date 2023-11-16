@@ -89,7 +89,7 @@ final class MoveGenerator {
     }
 
     private boolean isLegal(int startIndex, int endIndex) {
-        int kingIndex = boardData.kingIndices[boardData.color > 0 ? 0 : 1];
+        int kingIndex = boardData.kingIndices[boardData.color >>> 31];
         if (kingIndex == startIndex) {
             kingIndex = endIndex;
         }
