@@ -7,7 +7,6 @@ import java.util.ListIterator;
 
 import static entity.BoardData.*;
 import static java.lang.Integer.signum;
-import static java.util.Collections.emptyList;
 
 final class MoveGenerator {
 
@@ -30,7 +29,7 @@ final class MoveGenerator {
         final int startIndex = startSquare + (startSquare & -8);
         if (signum(boardData.pieces[startIndex]) != boardData.color) {
             // Square doesn't even have a piece of our color
-            return emptyList();
+            return Collections.emptyList();
         }
 
         moves.clear();
