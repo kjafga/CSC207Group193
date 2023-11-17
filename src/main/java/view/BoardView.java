@@ -74,17 +74,23 @@ public class BoardView implements PropertyChangeListener {
     private void onSquareClicked(MouseEvent e) {
         final int clickedSquare = Integer.parseInt(((Node) e.getSource()).getId());
 
-        if (legalMoves.contains(clickedSquare)) {
-            movePieceController.execute(selectedSquare, clickedSquare, '?');
-        } else if (selectedSquare == -1 || clickedSquare != selectedSquare) {
+        if (selectedSquare == -1) {
             selectedSquare = clickedSquare;
             legalMovesController.execute(selectedSquare);
-            if (!legalMoves.isEmpty()) {
-                return;
+        } else if (legalMoves.contains(clickedSquare)) {
+            movePieceController.execute(selectedSquare, clickedSquare, '?');
+            selectedSquare = -1;
+            legalMoves = emptyList();
+        } else {
+            for (int move : legalMoves) {
+                Pane square = (Pane) chessBoard.getChildren().get(move);
+                square.getChildren().removeLast();
+            }
+            if (clickedSquare != selectedSquare) {
+                selectedSquare = clickedSquare;
+                legalMovesController.execute(selectedSquare);
             }
         }
-        selectedSquare = -1;
-        legalMoves = emptyList();
     }
 
     private void updateFromFEN(String fen) {
@@ -125,7 +131,11 @@ public class BoardView implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("legalState")) {
-            this.legalMoves = ((LegalMovesState) evt.getNewValue()).legalMoves();
+            legalMoves = ((LegalMovesState) evt.getNewValue()).legalMoves();
+            if (legalMoves.isEmpty()) {
+                selectedSquare = -1;
+                legalMoves = emptyList();
+            }
             for (int move : legalMoves) {
                 Pane square = (Pane) chessBoard.getChildren().get(move);
                 square.getChildren().add(new Circle(50, 50, 10, Color.GREEN));
