@@ -75,16 +75,16 @@ public class BoardView implements PropertyChangeListener {
         final int clickedSquare = Integer.parseInt(((Node) e.getSource()).getId());
 
         if (legalMoves.contains(clickedSquare)) {
-            BoardView.this.movePieceController.execute(selectedSquare, clickedSquare, '?');
-            legalMoves = emptyList();
-        } else if (clickedSquare != selectedSquare) {
-            for (int move : legalMoves) {
-                Pane square1 = (Pane) chessBoard.getChildren().get(move);
-                square1.getChildren().removeLast();
-            }
-            BoardView.this.legalMovesController.execute(clickedSquare);
+            movePieceController.execute(selectedSquare, clickedSquare, '?');
+        } else if (selectedSquare == -1 || clickedSquare != selectedSquare) {
             selectedSquare = clickedSquare;
+            legalMovesController.execute(selectedSquare);
+            if (!legalMoves.isEmpty()) {
+                return;
+            }
         }
+        selectedSquare = -1;
+        legalMoves = emptyList();
     }
 
     private void updateFromFEN(String fen) {

@@ -26,15 +26,17 @@ public class Main extends Application {
         // Shared by all the controllers.
         Board board = new Board();
 
-        LegalMovesOutputBoundary legalMovesOutputBoundary = new LegalMovesPresenter(new LegalMovesViewModel());
+        LegalMovesViewModel legalMovesViewModel = new LegalMovesViewModel();
+        LegalMovesOutputBoundary legalMovesOutputBoundary = new LegalMovesPresenter(legalMovesViewModel);
         LegalMovesInputBoundary legalMovesInputBoundary = new LegalMovesInteractor(legalMovesOutputBoundary, board);
 
-        MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(new MovePieceViewModel());
+        MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
+        MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
         MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, board);
 
         BoardView boardView = new BoardViewBuilder()
-                .setLegalMovesViewModel(new LegalMovesViewModel())
-                .setMovePieceViewModel(new MovePieceViewModel())
+                .setLegalMovesViewModel(legalMovesViewModel)
+                .setMovePieceViewModel(movePieceViewModel)
                 .setLegalMovesController(new LegalMovesController(legalMovesInputBoundary))
                 .setMovePieceController(new MovePieceController(movePieceInputBoundary))
                 .build();
