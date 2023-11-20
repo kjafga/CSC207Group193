@@ -1,12 +1,13 @@
 package interfaceAdapters.legalMoves;
 
-import useCase.legalMoves.LegalMovesInputBoundry;
+import useCase.legalMoves.LegalMovesInputBoundary;
 import useCase.legalMoves.LegalMovesInputData;
 
 public class LegalMovesController {
-    final LegalMovesInputBoundry legalMovesInputInteractor;
 
-    public LegalMovesController(LegalMovesInputBoundry legalMovesInputInteractor) {
+    private final LegalMovesInputBoundary legalMovesInputInteractor;
+
+    public LegalMovesController(LegalMovesInputBoundary legalMovesInputInteractor) {
         this.legalMovesInputInteractor = legalMovesInputInteractor;
     }
 
@@ -14,4 +15,5 @@ public class LegalMovesController {
         LegalMovesInputData legalMovesInputData = new LegalMovesInputData(position);
         legalMovesInputInteractor.execute(legalMovesInputData);
     }
+
 }

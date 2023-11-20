@@ -1,12 +1,12 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
 import static entity.BoardData.*;
 import static java.lang.Integer.signum;
-import static java.util.Collections.emptyList;
 
 final class MoveGenerator {
 
@@ -29,7 +29,7 @@ final class MoveGenerator {
         final int startIndex = startSquare + (startSquare & -8);
         if (signum(boardData.pieces[startIndex]) != boardData.color) {
             // Square doesn't even have a piece of our color
-            return emptyList();
+            return Collections.emptyList();
         }
 
         moves.clear();
@@ -37,7 +37,7 @@ final class MoveGenerator {
             case KING -> {
                 generateStepMoves(startIndex, BISHOP_DIRECTIONS);
                 generateStepMoves(startIndex, ROOK_DIRECTIONS);
-                if (isLegal(-1, -1)) { // Stupid way of testing if we are in check
+                if (!inCheck()) {
                     addCastlingMoves();
                 }
             }
@@ -62,7 +62,11 @@ final class MoveGenerator {
             }
         }
 
-        return moves;
+        return Collections.unmodifiableList(moves);
+    }
+
+    boolean inCheck() {
+        return !isLegal(-1, -1); // Stupid way of testing if we are in check
     }
 
     private void addCastlingMoves() {
@@ -88,7 +92,7 @@ final class MoveGenerator {
     }
 
     private boolean isLegal(int startIndex, int endIndex) {
-        int kingIndex = boardData.kingIndices[boardData.color > 0 ? 0 : 1];
+        int kingIndex = boardData.kingIndices[boardData.color >>> 31];
         if (kingIndex == startIndex) {
             kingIndex = endIndex;
         }
@@ -127,7 +131,22 @@ final class MoveGenerator {
                         (piece == QUEEN || piece == attacker) && index != endIndex) {
                     return true;
                 }
-                if ((piece != 0 && index != startIndex) || index == endIndex) {
+                if (index == endIndex) {
+                    // The newly placed piece blocks this ray
+                    break;
+                }
+                if (endIndex == boardData.enPassantIndex &&
+                        startIndex >= 0 && boardData.pieces[startIndex] == PAWN * boardData.color &&
+                        index == boardData.enPassantIndex - (boardData.color << 4)) {
+                    // The pawn that used to block this ray was en passanted away
+                    continue;
+                }
+                if (index == startIndex) {
+                    // The piece that used to block this ray was moved
+                    continue;
+                }
+                if (piece != 0) {
+                    // A piece that didn't move blocks this ray
                     break;
                 }
             }
@@ -155,7 +174,7 @@ final class MoveGenerator {
         }
 
         final int captureLeft = forwardStep - 1;
-        if (captureLeft == boardData.enPassantIndex ||
+        if (captureLeft != -1 && captureLeft == boardData.enPassantIndex ||
                 (captureLeft & 0x88) == 0 && signum(boardData.pieces[captureLeft]) == -boardData.color) {
             moves.add(captureLeft);
         }

@@ -16,7 +16,7 @@ public class Board {
         this.moveGenerator = new MoveGenerator(boardData);
     }
 
-    public Board(String fen) {
+    Board(String fen) {
         this.boardData = FENGenerator.fromFen(fen);
         this.fenGenerator = new FENGenerator(boardData);
         this.moveGenerator = new MoveGenerator(boardData);
@@ -39,11 +39,33 @@ public class Board {
     }
 
     /**
+     * Determine whether the side to move is in check.
+     * @return true if the side to move is in check, false otherwise.
+     */
+    public boolean inCheck() {
+        return moveGenerator.inCheck();
+    }
+
+    /**
+     * Determine whether the side to move has any legal moves
+     * (i.e., check whether the game is over or not).
+     * @return true if the side to move has any legal moves, false otherwise
+     */
+    public boolean canMove() {
+        for (int i = 0; i < 64; ++i) {
+            if (!moveGenerator.getLegalMoves(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Make the specified move, updating the current position.
      *
      * @param startSquare the selected square in the range 0&ndash;64
      * @param endSquare   the target square in the range 0&ndash;64
-     * @param promotion   the piece to promote to: one of {@code QRNB}
+     * @param promotion   the piece to promote to: one of {@code qrnb}
      * @return true if the move was made successfully, false if a promotion is required
      */
     public boolean makeMove(int startSquare, int endSquare, char promotion) {
@@ -54,20 +76,15 @@ public class Board {
         final int startIndex = startSquare + (startSquare & -8);
         final int endIndex = endSquare + (endSquare & -8);
         final int piece = Math.abs(boardData.pieces[startIndex]);
+        final int captured = Math.abs(boardData.pieces[endIndex]);
         boolean clearEnPassant = true;
-
-        if (piece == PAWN || boardData.pieces[endIndex] != 0) {
-            boardData.rule50count = 0;
-        } else {
-            ++boardData.rule50count;
-        }
 
         if (piece == PAWN && endIndex >> 4 == (boardData.color > 0 ? 7 : 0)) {
             switch (promotion) {
-                case 'Q' -> boardData.pieces[endIndex] = (byte) (QUEEN * boardData.color);
-                case 'R' -> boardData.pieces[endIndex] = (byte) (ROOK * boardData.color);
-                case 'N' -> boardData.pieces[endIndex] = (byte) (KNIGHT * boardData.color);
-                case 'B' -> boardData.pieces[endIndex] = (byte) (BISHOP * boardData.color);
+                case 'q' -> boardData.pieces[endIndex] = (byte) (QUEEN * boardData.color);
+                case 'r' -> boardData.pieces[endIndex] = (byte) (ROOK * boardData.color);
+                case 'n' -> boardData.pieces[endIndex] = (byte) (KNIGHT * boardData.color);
+                case 'b' -> boardData.pieces[endIndex] = (byte) (BISHOP * boardData.color);
                 default -> {
                     return false;
                 }
@@ -76,6 +93,16 @@ public class Board {
             boardData.pieces[endIndex] = boardData.pieces[startIndex];
         }
         boardData.pieces[startIndex] = 0;
+
+        if (piece == PAWN || captured != 0) {
+            boardData.rule50count = 0;
+        } else {
+            ++boardData.rule50count;
+        }
+
+        if (captured == ROOK) {
+            removeCastlingRights(endIndex);
+        }
 
         switch (piece) {
             case PAWN -> {
@@ -104,16 +131,9 @@ public class Board {
                     boardData.pieces[112] = 0;
                     boardData.pieces[115] = (byte) (ROOK * boardData.color);
                 }
-                boardData.kingIndices[boardData.color > 0 ? 0 : 1] = endIndex;
+                boardData.kingIndices[boardData.color >>> 31] = endIndex;
             }
-            case ROOK -> {
-                switch (startIndex) {
-                    case 7 -> boardData.castlingRights &= ~1;
-                    case 0 -> boardData.castlingRights &= ~2;
-                    case 119 -> boardData.castlingRights &= ~4;
-                    case 112 -> boardData.castlingRights &= ~8;
-                }
-            }
+            case ROOK -> removeCastlingRights(startIndex);
         }
 
         boardData.color = -boardData.color;
@@ -123,7 +143,17 @@ public class Board {
         if (clearEnPassant) {
             boardData.enPassantIndex = -1;
         }
+
         return true;
+    }
+
+    private void removeCastlingRights(int rookIndex) {
+        switch (rookIndex) {
+            case 7 -> boardData.castlingRights &= ~1;
+            case 0 -> boardData.castlingRights &= ~2;
+            case 119 -> boardData.castlingRights &= ~4;
+            case 112 -> boardData.castlingRights &= ~8;
+        }
     }
 
 }

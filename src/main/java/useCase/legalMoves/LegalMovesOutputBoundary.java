@@ -1,8 +1,7 @@
 package useCase.legalMoves;
 
-public interface LegalMovesOutputBoundry {
+public interface LegalMovesOutputBoundary {
 
     void prepareSuccessView(LegalMovesOutputData legalMoves);
 
-    void prepareFailView(String error);
 }

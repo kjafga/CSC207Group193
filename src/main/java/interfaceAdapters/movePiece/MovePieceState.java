@@ -1,6 +1,3 @@
 package interfaceAdapters.movePiece;
 
-public class MovePieceState {
-    public String newBoard;
-}
-
+public record MovePieceState(String newBoard) {}

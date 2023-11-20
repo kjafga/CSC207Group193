@@ -1,5 +1,7 @@
 package useCase.legalMoves;
 
-public interface LegalMovesInputBoundry {
+public interface LegalMovesInputBoundary {
+
     void execute(LegalMovesInputData legalMovesInputData);
+
 }

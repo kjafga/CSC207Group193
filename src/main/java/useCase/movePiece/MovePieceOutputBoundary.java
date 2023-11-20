@@ -2,7 +2,8 @@ package useCase.movePiece;
 
 public interface MovePieceOutputBoundary {
 
-    void prepareSuccessView(MovePieceOutputData move);
+    void prepareSuccessView(MovePieceOutputData outputData);
 
-    void prepareFailView(MovePieceOutputData move);
+    void preparePromotionQuestion();
+
 }

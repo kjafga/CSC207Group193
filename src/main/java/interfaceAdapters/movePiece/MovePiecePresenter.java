@@ -1,37 +1,27 @@
 package interfaceAdapters.movePiece;
 
-import interfaceAdapters.ViewManagerModel;
-import useCase.movePiece.MovePieceInputData;
 import useCase.movePiece.MovePieceOutputBoundary;
 import useCase.movePiece.MovePieceOutputData;
 
 public class MovePiecePresenter implements MovePieceOutputBoundary {
 
     private final MovePieceViewModel movePieceViewModel;
-    private ViewManagerModel viewManagerModel;
 
     public MovePiecePresenter(MovePieceViewModel movePieceViewModel) {
         this.movePieceViewModel = movePieceViewModel;
     }
 
-
-
-
     @Override
-    public void prepareSuccessView(MovePieceOutputData move) {
-
-        MovePieceState state = new MovePieceState();
-        state.newBoard = move.newBoard;
+    public void prepareSuccessView(MovePieceOutputData outputData) {
+        MovePieceState state = new MovePieceState(outputData.newBoard());
         movePieceViewModel.setState(state);
         movePieceViewModel.firePropertyChanged();
     }
 
     @Override
-    public void prepareFailView(MovePieceOutputData move) {
-        MovePieceState state = new MovePieceState();
-        state.newBoard = move.newBoard;
-        movePieceViewModel.setState(state);
-        movePieceViewModel.firePropertyChanged();
-
+    public void preparePromotionQuestion() {
+        // TODO: tell the view(model) to pop up a dialog asking for which piece to promote to
+        throw new UnsupportedOperationException();
     }
+
 }
