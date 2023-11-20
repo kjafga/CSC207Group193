@@ -1,5 +1,8 @@
 package view;
 
+import interfaceAdapters.SendMoveToApi.SendBoardToApiController;
+import interfaceAdapters.SendMoveToApi.SendBoardToApiState;
+import interfaceAdapters.SendMoveToApi.SendBoardToApiViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesState;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
@@ -20,6 +23,7 @@ import javafx.scene.shape.Circle;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -47,17 +51,20 @@ public class BoardView implements PropertyChangeListener {
 
     private final LegalMovesController legalMovesController;
     private final MovePieceController movePieceController;
+    private final SendBoardToApiController sendBoardToApiController;
 
     private int selectedSquare = -1;
     private List<Integer> legalMoves = emptyList();
 
-    public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel,
-                     LegalMovesController legalMovesController, MovePieceController movePieceController) {
+    public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel, SendBoardToApiViewModel sendBoardToApiViewModel,
+                     LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController) {
         this.legalMovesController = legalMovesController;
         this.movePieceController = movePieceController;
+        this.sendBoardToApiController = sendBoardToApiController;
 
         legalMovesViewModel.addPropertyChangeListener(this);
         movePieceViewModel.addPropertyChangeListener(this);
+        sendBoardToApiViewModel.addPropertyChangeListener(this);
 
         for (int i = 0; i < 64; ++i) {
             Pane square = new Pane();
@@ -84,7 +91,7 @@ public class BoardView implements PropertyChangeListener {
         } else {
             for (int move : legalMoves) {
                 Pane square = (Pane) chessBoard.getChildren().get(move);
-                square.getChildren().removeLast();
+                square.getChildren().remove(square.getChildren().size() - 1);
             }
             if (clickedSquare != selectedSquare) {
                 selectedSquare = clickedSquare;
@@ -130,19 +137,31 @@ public class BoardView implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("legalState")) {
-            legalMoves = ((LegalMovesState) evt.getNewValue()).legalMoves();
-            if (legalMoves.isEmpty()) {
-                selectedSquare = -1;
-                legalMoves = emptyList();
+        switch (evt.getPropertyName()) {
+            case "legalState" -> {
+                legalMoves = ((LegalMovesState) evt.getNewValue()).legalMoves();
+                if (legalMoves.isEmpty()) {
+                    selectedSquare = -1;
+                    legalMoves = emptyList();
+                }
+                for (int move : legalMoves) {
+                    Pane square = (Pane) chessBoard.getChildren().get(move);
+                    square.getChildren().add(new Circle(50, 50, 10, Color.GREEN));
+                }
             }
-            for (int move : legalMoves) {
-                Pane square = (Pane) chessBoard.getChildren().get(move);
-                square.getChildren().add(new Circle(50, 50, 10, Color.GREEN));
+            case "moveState" -> {
+                MovePieceState state = (MovePieceState) evt.getNewValue();
+                updateFromFEN(state.newBoard());
+                try {
+                    sendBoardToApiController.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        } else if (evt.getPropertyName().equals("moveState")) {
-            MovePieceState state = (MovePieceState) evt.getNewValue();
-            updateFromFEN(state.newBoard());
+            case "sendBoardToApiState" -> {
+                SendBoardToApiState state = (SendBoardToApiState) evt.getNewValue();
+                updateFromFEN(state.newBoard());
+            }
         }
     }
 

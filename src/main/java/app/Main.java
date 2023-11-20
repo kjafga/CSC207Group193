@@ -1,6 +1,9 @@
 package app;
 
 import entity.Board;
+import interfaceAdapters.SendMoveToApi.SendBoardToApiController;
+import interfaceAdapters.SendMoveToApi.SendBoardToApiPresenter;
+import interfaceAdapters.SendMoveToApi.SendBoardToApiViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesPresenter;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
@@ -16,6 +19,9 @@ import useCase.legalMoves.LegalMovesOutputBoundary;
 import useCase.movePiece.MovePieceInputBoundary;
 import useCase.movePiece.MovePieceInteractor;
 import useCase.movePiece.MovePieceOutputBoundary;
+import useCase.sendBoardToApi.SendBoardToApiInputBoundary;
+import useCase.sendBoardToApi.SendBoardToApiInteractor;
+import useCase.sendBoardToApi.SendBoardToApiOutputBoundary;
 import view.BoardView;
 
 public class Main extends Application {
@@ -34,11 +40,19 @@ public class Main extends Application {
         MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
         MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, board);
 
+        SendBoardToApiViewModel sendBoardToApiViewModel = new SendBoardToApiViewModel();
+        SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary = new SendBoardToApiPresenter(sendBoardToApiViewModel);
+        SendBoardToApiInputBoundary sendBoardToApiInputBoundary = new SendBoardToApiInteractor(sendBoardToApiOutputBoundary, board);
+
         BoardView boardView = new BoardViewBuilder()
                 .setLegalMovesViewModel(legalMovesViewModel)
                 .setMovePieceViewModel(movePieceViewModel)
+                .setSendBoardToApiViewModel(sendBoardToApiViewModel)
+
                 .setLegalMovesController(new LegalMovesController(legalMovesInputBoundary))
                 .setMovePieceController(new MovePieceController(movePieceInputBoundary))
+                .setSendBoardToApiController(new SendBoardToApiController(sendBoardToApiInputBoundary))
+
                 .build();
 
         Scene scene = new Scene(boardView.getRoot(), 800, 800);
