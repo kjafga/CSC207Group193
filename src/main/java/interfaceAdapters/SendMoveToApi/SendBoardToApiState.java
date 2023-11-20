@@ -1,4 +1,3 @@
 package interfaceAdapters.SendMoveToApi;
 
-public class SendBoardToApiState {
-}
+public record SendBoardToApiState(String newBoard) {}
