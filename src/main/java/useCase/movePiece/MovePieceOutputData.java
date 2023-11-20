@@ -1,9 +1,3 @@
 package useCase.movePiece;
 
-public class MovePieceOutputData {
-    public String newBoard;
-
-    public MovePieceOutputData(){
-
-    }
-}
+public record MovePieceOutputData(String newBoard) {}

@@ -13,18 +13,10 @@ public class MovePieceViewModel extends ViewModel {
         super("Move Piece");
     }
 
-    public MovePieceState  state = new MovePieceState();
-    public void setState (MovePieceState state){
+    private MovePieceState state = null;
+
+    void setState(MovePieceState state) {
         this.state = state;
-    }
-
-    int[] move;
-    public void setMove(int[] move) {
-        this.move = move;
-    }
-
-    public int[] getMove() {
-        return move;
     }
 
     @Override
@@ -35,6 +27,6 @@ public class MovePieceViewModel extends ViewModel {
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.support.addPropertyChangeListener(listener);
-
     }
+
 }
