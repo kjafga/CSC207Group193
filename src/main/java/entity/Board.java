@@ -16,7 +16,7 @@ public class Board {
         this.moveGenerator = new MoveGenerator(boardData);
     }
 
-    public Board(String fen) {
+    Board(String fen) {
         this.boardData = FENGenerator.fromFen(fen);
         this.fenGenerator = new FENGenerator(boardData);
         this.moveGenerator = new MoveGenerator(boardData);
