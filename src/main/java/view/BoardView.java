@@ -9,6 +9,7 @@ import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceState;
 import interfaceAdapters.movePiece.MovePieceViewModel;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -152,15 +153,18 @@ public class BoardView implements PropertyChangeListener {
             case "moveState" -> {
                 MovePieceState state = (MovePieceState) evt.getNewValue();
                 updateFromFEN(state.newBoard());
-                try {
-                    sendBoardToApiController.execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                // TODO: Is this the solution we want?
+                new Thread(() -> {
+                    try {
+                        sendBoardToApiController.execute();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
             }
             case "sendBoardToApiState" -> {
                 SendBoardToApiState state = (SendBoardToApiState) evt.getNewValue();
-                updateFromFEN(state.newBoard());
+                Platform.runLater(() -> updateFromFEN(state.newBoard()));
             }
         }
     }
