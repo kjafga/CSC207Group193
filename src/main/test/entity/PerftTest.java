@@ -80,9 +80,9 @@ public class PerftTest {
                     b = new Board(fen);
                 } else {
                     builder.append('?');
-                    for (char promotion : "QRNB".toCharArray()) {
+                    for (char promotion : "qrnb".toCharArray()) {
                         b.makeMove(i, j, promotion);
-                        builder.setCharAt(4, Character.toLowerCase(promotion));
+                        builder.setCharAt(4, promotion);
                         result.put(builder.toString(), getActualPerft(b.toString(), depth - 1).values().stream()
                                 .mapToLong(Long::longValue).sum());
                         b = new Board(fen);

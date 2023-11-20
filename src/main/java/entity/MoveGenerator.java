@@ -37,7 +37,7 @@ final class MoveGenerator {
             case KING -> {
                 generateStepMoves(startIndex, BISHOP_DIRECTIONS);
                 generateStepMoves(startIndex, ROOK_DIRECTIONS);
-                if (isLegal(-1, -1)) { // Stupid way of testing if we are in check
+                if (!inCheck()) {
                     addCastlingMoves();
                 }
             }
@@ -63,6 +63,10 @@ final class MoveGenerator {
         }
 
         return Collections.unmodifiableList(moves);
+    }
+
+    boolean inCheck() {
+        return !isLegal(-1, -1); // Stupid way of testing if we are in check
     }
 
     private void addCastlingMoves() {
