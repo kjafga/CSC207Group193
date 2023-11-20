@@ -34,7 +34,9 @@ public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
         int startSquare = move.charAt(0) - 'a' + ((move.charAt(1) - '1') << 3);
         int endSquare = move.charAt(1) - 'a' + ((move.charAt(2) - '1') << 3);
         char promotion = move.length() >= 5 ? move.charAt(4) : '?';
-        SendBoardToApiOutputData outputData = new SendBoardToApiOutputData(startSquare, endSquare, promotion);
+        board.makeMove(startSquare, endSquare, promotion);
+
+        SendBoardToApiOutputData outputData = new SendBoardToApiOutputData(board.toString().split(" ")[0]);
         sendBoardToApiOutputBoundary.prepareSuccessView(outputData);
     }
 }
