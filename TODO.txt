@@ -1,0 +1,3 @@
+- Add one more API endpoint (opening book, puzzles)
+- Check for end-of-game conditions (checkmate, stalemate)
+- Add Javadoc to all public methods/classes
