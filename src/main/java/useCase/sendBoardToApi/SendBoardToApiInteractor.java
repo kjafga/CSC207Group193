@@ -31,6 +31,11 @@ public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
 
         String move = scanner.next("[a-h][1-8][a-h][1-8][qrnb]?");
 
+        scanner.close();
+        if (scanner.ioException() != null) {
+            throw scanner.ioException();
+        }
+
         int startSquare = move.charAt(0) - 'a' + ((move.charAt(1) - '1') << 3);
         int endSquare = move.charAt(1) - 'a' + ((move.charAt(2) - '1') << 3);
         char promotion = move.length() >= 5 ? move.charAt(4) : '?';
