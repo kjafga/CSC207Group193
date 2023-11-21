@@ -12,7 +12,6 @@ class BoardViewBuilder {
 
     private LegalMovesViewModel legalMovesViewModel;
     private MovePieceViewModel movePieceViewModel;
-
     private SendBoardToApiViewModel sendBoardToApiViewModel;
 
     private LegalMovesController legalMovesController;
