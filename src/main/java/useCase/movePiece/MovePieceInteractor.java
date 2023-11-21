@@ -1,17 +1,9 @@
 package useCase.movePiece;
 
 import entity.Board;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 
-/**
- *
- * Takes in a pair of ints representing a move and takes that action on the board
- * The interactor will check if a move is valid, and send a fail condition if it is not a valid move
- */
+public class MovePieceInteractor implements MovePieceInputBoundary {
 
-public class MovePieceInteractor implements MovePieceInputBoundary{
     private final MovePieceOutputBoundary movePieceOutputBoundary;
     private final Board board;
 
@@ -22,20 +14,16 @@ public class MovePieceInteractor implements MovePieceInputBoundary{
 
     @Override
     public void movePiece(MovePieceInputData movePieceInputData) {
-        int selectedSquare = movePieceInputData.move[0];
-        int targetSquare = movePieceInputData.move[1];
-        MovePieceOutputData movePieceOutputData = new MovePieceOutputData();
+        final int startSquare = movePieceInputData.startSquare();
+        final int endSquare = movePieceInputData.endSquare();
+        final char promotion = movePieceInputData.promotion();
 
-
-
-        if (board.makeMove(selectedSquare, targetSquare,'?')){
-            movePieceOutputData.newBoard = (board.toString().split(" ")[0]);
-            movePieceOutputBoundary.prepareSuccessView(movePieceOutputData);
+        if (board.makeMove(startSquare, endSquare, promotion)) {
+            MovePieceOutputData outputData = new MovePieceOutputData(board.toString().split(" ")[0]);
+            movePieceOutputBoundary.prepareSuccessView(outputData);
+        } else {
+            movePieceOutputBoundary.preparePromotionQuestion();
         }
-        else{
-            movePieceOutputData.newBoard = (board.toString().split(" ")[0]);
-            movePieceOutputBoundary.prepareFailView(movePieceOutputData);
-        }
-
-
     }
+
+}
