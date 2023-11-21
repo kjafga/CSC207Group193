@@ -5,12 +5,8 @@ import entity.Board;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
 
@@ -24,11 +20,9 @@ public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
 
     @Override
     public void execute() throws IOException {
-        URL url = new URL(String.format(
-                "https://stockfish.online/api/stockfish.php?fen=%s&depth=%d&mode=bestmove",
-                board.toString(),
-                13
-        ));
+        // noinspection deprecation: We want to use URL so that we don't have to manually escape the FEN
+        URL url = new URL(
+                String.format("https://stockfish.online/api/stockfish.php?fen=%s&depth=%d&mode=bestmove", board, 13));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 
