@@ -1,9 +1,9 @@
 package app;
 
 import entity.Board;
-import interfaceAdapters.SendMoveToApi.SendBoardToApiController;
-import interfaceAdapters.SendMoveToApi.SendBoardToApiPresenter;
-import interfaceAdapters.SendMoveToApi.SendBoardToApiViewModel;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiPresenter;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesPresenter;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;

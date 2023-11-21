@@ -1,8 +1,8 @@
 package view;
 
-import interfaceAdapters.SendMoveToApi.SendBoardToApiController;
-import interfaceAdapters.SendMoveToApi.SendBoardToApiState;
-import interfaceAdapters.SendMoveToApi.SendBoardToApiViewModel;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiState;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesState;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;

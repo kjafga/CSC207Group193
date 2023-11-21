@@ -1,7 +1,7 @@
 package app;
 
-import interfaceAdapters.SendMoveToApi.SendBoardToApiController;
-import interfaceAdapters.SendMoveToApi.SendBoardToApiViewModel;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
+import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
 import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;

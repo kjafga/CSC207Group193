@@ -1,7 +1,5 @@
-package interfaceAdapters.SendMoveToApi;
+package interfaceAdapters.sendBoardToApi;
 
-import useCase.legalMoves.LegalMovesOutputBoundary;
-import useCase.legalMoves.LegalMovesOutputData;
 import useCase.sendBoardToApi.SendBoardToApiOutputBoundary;
 import useCase.sendBoardToApi.SendBoardToApiOutputData;
 

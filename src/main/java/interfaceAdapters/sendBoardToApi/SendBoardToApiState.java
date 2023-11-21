@@ -1,3 +1,3 @@
-package interfaceAdapters.SendMoveToApi;
+package interfaceAdapters.sendBoardToApi;
 
 public record SendBoardToApiState(String newBoard) {}
