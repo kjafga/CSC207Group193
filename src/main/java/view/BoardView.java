@@ -92,7 +92,7 @@ public class BoardView implements PropertyChangeListener {
         } else {
             for (int move : legalMoves) {
                 Pane square = (Pane) chessBoard.getChildren().get(move);
-                square.getChildren().remove(square.getChildren().size() - 1);
+                square.getChildren().removeLast();
             }
             if (clickedSquare != selectedSquare) {
                 selectedSquare = clickedSquare;
