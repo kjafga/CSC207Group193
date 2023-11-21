@@ -1,7 +1,6 @@
-package interfaceAdapters.SendMoveToApi;
+package interfaceAdapters.sendBoardToApi;
 
 import interfaceAdapters.ViewModel;
-import interfaceAdapters.legalMoves.LegalMovesState;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

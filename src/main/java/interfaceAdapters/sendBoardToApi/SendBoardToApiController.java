@@ -1,4 +1,4 @@
-package interfaceAdapters.SendMoveToApi;
+package interfaceAdapters.sendBoardToApi;
 
 import useCase.sendBoardToApi.SendBoardToApiInputBoundary;
 
