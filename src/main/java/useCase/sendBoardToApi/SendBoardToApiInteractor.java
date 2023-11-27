@@ -38,7 +38,7 @@ public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
 
     private static String getBestMove(Board board) throws IOException {
         // noinspection deprecation: We want to use URL so that we don't have to manually escape the FEN
-        URL url = new URL(String.format(STOCKFISH_API_URL, board, 13));
+        URL url = new URL(String.format(STOCKFISH_API_URL, board, 1));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 
