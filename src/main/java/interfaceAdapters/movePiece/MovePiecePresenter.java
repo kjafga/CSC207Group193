@@ -20,8 +20,9 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
 
     @Override
     public void preparePromotionQuestion() {
-        // TODO: tell the view(model) to pop up a dialog asking for which piece to promote to
-        throw new UnsupportedOperationException();
+        MovePieceState state = new MovePieceState("promotionQuestion");
+        movePieceViewModel.setState(state);
+        movePieceViewModel.firePropertyChanged();
     }
 
 }
