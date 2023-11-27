@@ -154,6 +154,9 @@ public class BoardView implements PropertyChangeListener {
         if (result.isEmpty()) {
             return;
         }
+        if (result.get().equals("Knight")) {
+            result = Optional.of("N");
+        }
         String piece = result.get().substring(0, 1).toLowerCase();
         movePieceController.execute(onSquare, promoSquare, piece.charAt(0));
     }
