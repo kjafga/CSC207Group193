@@ -12,6 +12,7 @@ import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
@@ -55,6 +57,8 @@ public class BoardView implements PropertyChangeListener {
     private final SendBoardToApiController sendBoardToApiController;
 
     private int selectedSquare = -1;
+    private int onSquare = -1;
+    private int promoSquare = -1;
     private List<Integer> legalMoves = emptyList();
 
     public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel, SendBoardToApiViewModel sendBoardToApiViewModel,
@@ -86,6 +90,8 @@ public class BoardView implements PropertyChangeListener {
             selectedSquare = clickedSquare;
             legalMovesController.execute(selectedSquare);
         } else if (legalMoves.contains(clickedSquare)) {
+            onSquare = selectedSquare;
+            promoSquare = clickedSquare;
             movePieceController.execute(selectedSquare, clickedSquare, '?');
             selectedSquare = -1;
             legalMoves = emptyList();
@@ -139,6 +145,20 @@ public class BoardView implements PropertyChangeListener {
         return chessBoard;
     }
 
+    public void displayPromotionQuestion() {
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(null, "Queen", "Rook", "Knight", "Bishop");
+        dialog.setTitle("Promotion");
+        dialog.setHeaderText("Select piece to promote to:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isEmpty()) {
+            return;
+        }
+        String piece = result.get().substring(0, 1).toLowerCase();
+        movePieceController.execute(onSquare, promoSquare, piece.charAt(0));
+    }
+
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
@@ -155,6 +175,10 @@ public class BoardView implements PropertyChangeListener {
             }
             case "moveState" -> {
                 MovePieceState state = (MovePieceState) evt.getNewValue();
+                if (state.newBoard().equals("promotionQuestion")) {
+                    Platform.runLater(this::displayPromotionQuestion);
+                    return;
+                }
                 updateFromFEN(state.newBoard());
                 chessBoard.setDisable(true);
                 // TODO: Is this the solution we want?
