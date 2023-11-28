@@ -11,7 +11,9 @@ import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePiecePresenter;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import useCase.legalMoves.LegalMovesInputBoundary;
 import useCase.legalMoves.LegalMovesInteractor;
@@ -23,11 +25,15 @@ import useCase.sendBoardToApi.SendBoardToApiInputBoundary;
 import useCase.sendBoardToApi.SendBoardToApiInteractor;
 import useCase.sendBoardToApi.SendBoardToApiOutputBoundary;
 import view.BoardView;
+import view.MainMenuView;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         // The One True Board.  Stores the state of the game.
         // Shared by all the controllers.
         Board board = new Board();
@@ -55,10 +61,15 @@ public class Main extends Application {
 
                 .build();
 
-        Scene scene = new Scene(boardView.getRoot(), 800, 800);
+        MainMenuView mainMenuView = new MainMenuView();
+        Scene scene = new Scene(mainMenuView.getRoot(),800,800);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+        //Scene scene = new Scene(boardView.getRoot(), 800, 800);
+        //primaryStage.setScene(scene);
+        //primaryStage.setResizable(false);
+        //primaryStage.show();
     }
 
 }
