@@ -19,8 +19,16 @@ public class MovePieceInteractor implements MovePieceInputBoundary {
         final char promotion = movePieceInputData.promotion();
 
         if (board.makeMove(startSquare, endSquare, promotion)) {
-            MovePieceOutputData outputData = new MovePieceOutputData(board.toString().split(" ")[0]);
-            movePieceOutputBoundary.prepareSuccessView(outputData);
+
+            if (board.canMove()){
+                MovePieceOutputData outputData = new MovePieceOutputData(board.toString().split(" ")[0]);
+                movePieceOutputBoundary.prepareSuccessView(outputData);
+            }else {
+
+            }
+
+
+
         } else {
             movePieceOutputBoundary.preparePromotionQuestion();
         }

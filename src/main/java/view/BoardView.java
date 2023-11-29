@@ -34,7 +34,7 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 
 public class BoardView implements PropertyChangeListener {
-
+    private  final String name = "BoardView";
     private static final Background LIGHT = new Background(new BackgroundFill(Color.web("#F0D9B5"), null, null));
     private static final Background DARK = new Background(new BackgroundFill(Color.web("#B58863"), null, null));
 
@@ -60,6 +60,10 @@ public class BoardView implements PropertyChangeListener {
     private int onSquare = -1;
     private int promoSquare = -1;
     private List<Integer> legalMoves = emptyList();
+
+    public String getViewName(){
+        return this.name;
+    }
 
     public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel, SendBoardToApiViewModel sendBoardToApiViewModel,
                      LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController) {
@@ -164,6 +168,8 @@ public class BoardView implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
+
         switch (evt.getPropertyName()) {
             case "legalState" -> {
                 legalMoves = ((LegalMovesState) evt.getNewValue()).legalMoves();
@@ -188,7 +194,7 @@ public class BoardView implements PropertyChangeListener {
                 new Thread(() -> {
                     try {
                         sendBoardToApiController.execute();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }).start();

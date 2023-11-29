@@ -1,6 +1,7 @@
 package app;
 
 import entity.Board;
+import interfaceAdapters.ViewManagerModel;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiPresenter;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
@@ -26,14 +27,15 @@ import useCase.sendBoardToApi.SendBoardToApiInteractor;
 import useCase.sendBoardToApi.SendBoardToApiOutputBoundary;
 import view.BoardView;
 import view.MainMenuView;
+import view.ViewManager;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.*;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws Exception {
         // The One True Board.  Stores the state of the game.
         // Shared by all the controllers.
         Board board = new Board();
@@ -61,15 +63,24 @@ public class Main extends Application {
 
                 .build();
 
+
+
         MainMenuView mainMenuView = new MainMenuView();
-        Scene scene = new Scene(mainMenuView.getRoot(),800,800);
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
-        //Scene scene = new Scene(boardView.getRoot(), 800, 800);
-        //primaryStage.setScene(scene);
-        //primaryStage.setResizable(false);
-        //primaryStage.show();
+
+        Scene mainMenuScene = new Scene(mainMenuView.getRoot(),800,800);
+        Scene boardScene = new Scene(boardView.getRoot(), 800, 800);
+
+
+        Map<String,Scene> scenes = new HashMap<>();
+
+        scenes.put("MainMenuView", mainMenuScene);
+        scenes.put("BoardView",boardScene);
+
+        Stage stage = new Stage();
+
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        ViewManager viewManager = new ViewManager(viewManagerModel,scenes);
+        viewManager.start(stage);
     }
 
 }

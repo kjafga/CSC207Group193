@@ -11,8 +11,14 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class MainMenuView implements PropertyChangeListener {
+    private final String name = "MainMenuView";
 
     private final AnchorPane scene;
+
+    public String getViewName(){
+        return this.name;
+    }
+
     public MainMenuView() throws IOException {
         this.scene = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/MainMenu.fxml")));
 
