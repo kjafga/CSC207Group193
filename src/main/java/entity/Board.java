@@ -9,6 +9,16 @@ public class Board {
     private final BoardData boardData;
     private final FENGenerator fenGenerator;
     private final MoveGenerator moveGenerator;
+    //Difficulty of the game. -1 means over the board, 0 means easy, 1 means medium, 2 means hard
+    private Integer difficulty = -1;
+
+    public Integer getDifficulty() {
+        return this.difficulty;
+    }
+    public void newGame(Integer difficulty, String side) {
+        this.difficulty = difficulty;
+
+    }
 
     public Board() {
         this.boardData = new BoardData();

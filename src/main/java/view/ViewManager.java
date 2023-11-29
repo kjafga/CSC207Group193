@@ -31,12 +31,15 @@ public class ViewManager extends Application implements PropertyChangeListener {
         if (evt.getPropertyName().equals("view")) {
             String sceneName = (String) evt.getNewValue();
             this.currentScene = scenes.get(sceneName);
+            primaryStage.setScene(currentScene);
+            primaryStage.show();
 
         }
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         this.primaryStage = primaryStage;
         primaryStage.setScene(currentScene);
         primaryStage.setResizable(false);
