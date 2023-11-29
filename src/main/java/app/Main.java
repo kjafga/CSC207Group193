@@ -26,7 +26,6 @@ import useCase.movePiece.MovePieceOutputBoundary;
 import useCase.newGame.NewGameInputBoundary;
 import useCase.newGame.NewGameInteractor;
 import useCase.newGame.NewGameOutputBoundary;
-import useCase.newGame.NewGameOutputData;
 import useCase.sendBoardToApi.SendBoardToApiInputBoundary;
 import useCase.sendBoardToApi.SendBoardToApiInteractor;
 import useCase.sendBoardToApi.SendBoardToApiOutputBoundary;
@@ -51,13 +50,14 @@ public class Main extends Application {
         LegalMovesOutputBoundary legalMovesOutputBoundary = new LegalMovesPresenter(legalMovesViewModel);
         LegalMovesInputBoundary legalMovesInputBoundary = new LegalMovesInteractor(legalMovesOutputBoundary, board);
 
-        MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
-        MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
-        MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, board);
 
         SendBoardToApiViewModel sendBoardToApiViewModel = new SendBoardToApiViewModel();
         SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary = new SendBoardToApiPresenter(sendBoardToApiViewModel);
         SendBoardToApiInputBoundary sendBoardToApiInputBoundary = new SendBoardToApiInteractor(sendBoardToApiOutputBoundary, board);
+
+        MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
+        MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
+        MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, sendBoardToApiInputBoundary, board);
 
 
         NewGameViewModel newGameViewModel = new NewGameViewModel();

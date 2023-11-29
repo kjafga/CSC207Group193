@@ -190,15 +190,20 @@ public class BoardView implements PropertyChangeListener {
                     return;
                 }
                 updateFromFEN(state.newBoard());
-                chessBoard.setDisable(true);
+
                 // TODO: Is this the solution we want?
-                new Thread(() -> {
-                    try {
-                        sendBoardToApiController.execute();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+                if (state.waitForApiMove()) {
+                    chessBoard.setDisable(true);
+                }
+
+//                new Thread(() -> {
+
+//                    try {
+//                        sendBoardToApiController.execute();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }).start();
             }
             case "sendBoardToApiState" -> {
                 SendBoardToApiState state = (SendBoardToApiState) evt.getNewValue();

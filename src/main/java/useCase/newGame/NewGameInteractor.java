@@ -15,13 +15,13 @@ public class NewGameInteractor implements NewGameInputBoundary {
     public void execute(NewGameInputData newGameInputData) {
 
         Integer difficulty = -1;
-        if (newGameInputData.difficulty.equals("over the board")) {
+        if (newGameInputData.difficulty.equals("Over The Board")) {
             difficulty = -1;
-        } else if (newGameInputData.difficulty.equals("easy")) {
+        } else if (newGameInputData.difficulty.equals("Easy")) {
             difficulty = 0;
-        } else if (newGameInputData.difficulty.equals("medium")) {
+        } else if (newGameInputData.difficulty.equals("Medium")) {
             difficulty = 1;
-        } else if (newGameInputData.difficulty.equals("hard")) {
+        } else if (newGameInputData.difficulty.equals("Hard")) {
             difficulty = 2;
         }
       board.newGame(difficulty, newGameInputData.side);
