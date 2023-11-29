@@ -1,5 +1,6 @@
 package view;
 
+import interfaceAdapters.newGame.NewGameState;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiState;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
@@ -204,6 +205,12 @@ public class BoardView implements PropertyChangeListener {
                 Platform.runLater(() -> {
                     updateFromFEN(state.newBoard());
                     chessBoard.setDisable(false);
+                });
+            }
+            case "newGame" -> {
+                NewGameState state = (NewGameState) evt.getNewValue();
+                Platform.runLater(() -> {
+                    updateFromFEN(state.getNewBoard());
                 });
             }
         }

@@ -24,4 +24,8 @@ public class NewGameViewModel extends ViewModel {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.support.addPropertyChangeListener(listener);
     }
+
+    public NewGameState getstate() {
+        return this.state;
+    }
 }

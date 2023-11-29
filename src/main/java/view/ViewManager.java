@@ -21,7 +21,7 @@ public class ViewManager extends Application implements PropertyChangeListener {
 
         this.viewManagerModel = viewManagerModel;
         this.scenes = scenes;
-        this.currentScene = scenes.get("BoardView");
+        this.currentScene = scenes.get("MainMenuView");
 
         this.viewManagerModel.addPropertyChangeListener(this);
     }

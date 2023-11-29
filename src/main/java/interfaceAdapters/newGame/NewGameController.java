@@ -1,6 +1,8 @@
 package interfaceAdapters.newGame;
 
 import useCase.newGame.NewGameInputBoundary;
+import useCase.newGame.NewGameInputData;
+
 public class NewGameController {
 //    private final MovePieceInputBoundary movePieceInputInteractor;
 //
@@ -17,7 +19,9 @@ public class NewGameController {
     public NewGameController(NewGameInputBoundary newGameInputInteractor) {
         this.newGameInputInteractor = newGameInputInteractor;
     }
-    public void execute(){
-        newGameInputInteractor.execute();
+    public void execute(String difficulty, String side){
+        newGameInputInteractor.execute(new NewGameInputData(difficulty,side));
     }
+
+
 }
