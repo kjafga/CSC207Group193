@@ -13,6 +13,7 @@ public class SendBoardToApiPresenter implements SendBoardToApiOutputBoundary {
 
     @Override
     public void prepareSuccessView(SendBoardToApiOutputData outputData) {
+        System.out.println("Api Presenter called");
         SendBoardToApiState state = new SendBoardToApiState(outputData.newBoard());
         sendBoardToApiViewModel.setState(state);
         sendBoardToApiViewModel.firePropertyChanged();

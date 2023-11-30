@@ -53,9 +53,7 @@ public class MainMenuView implements PropertyChangeListener {
         String source = e.getSource().toString();
         String pattern  = "[^']*'([^']*).*";
         source = source.replaceAll(pattern, "$1");
-        System.out.println(source);
         if (source.equals("New Game")){
-            System.out.println("TEst");
            this.promptForGameType();
         }
     }

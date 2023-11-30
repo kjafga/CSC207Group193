@@ -20,7 +20,7 @@ public class MovePieceInteractor implements MovePieceInputBoundary {
 
     @Override
     public void movePiece(MovePieceInputData movePieceInputData) {
-        System.out.printf("Piece moved");
+        System.out.println("Piece moved");
         final int startSquare = movePieceInputData.startSquare();
         final int endSquare = movePieceInputData.endSquare();
         final char promotion = movePieceInputData.promotion();
@@ -37,11 +37,19 @@ public class MovePieceInteractor implements MovePieceInputBoundary {
                     MovePieceOutputData outputData = new MovePieceOutputData(board.toString().split(" ")[0],true);
                     movePieceOutputBoundary.prepareSuccessView(outputData);
 
-                    try {
-                        sendBoardToApiInteractor.execute();
-                    }catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    // Calls the sendBoardToApiInteractor on a new thread, allowing the initial thread to continue
+                    // and return the board to the user. The board after the API call will return when it's ready.
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                sendBoardToApiInteractor.execute();
+                            }catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
                 }
 
 

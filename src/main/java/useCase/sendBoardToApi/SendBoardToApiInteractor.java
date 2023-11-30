@@ -25,6 +25,7 @@ public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
 
     @Override
     public void execute() throws IOException {
+        System.out.println("API interactor called");
         String move = getBestMove(board);
 
         int startSquare = move.charAt(0) - 'a' + ((move.charAt(1) - '1') << 3);
