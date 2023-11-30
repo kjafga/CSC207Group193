@@ -170,7 +170,7 @@ public class BoardView implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Platform.runLater(() -> {
+
 
         switch (evt.getPropertyName()) {
             case "legalState" -> {
@@ -196,19 +196,7 @@ public class BoardView implements PropertyChangeListener {
                         chessBoard.setDisable(true);
                     }
                 });
-                //updateFromFEN(state.newBoard());
 
-                // TODO: Is this the solution we want?
-
-
-//                new Thread(() -> {
-
-//                    try {
-//                        sendBoardToApiController.execute();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }).start();
             }
             case "sendBoardToApiState" -> {
                 SendBoardToApiState state = (SendBoardToApiState) evt.getNewValue();
@@ -224,7 +212,7 @@ public class BoardView implements PropertyChangeListener {
                 });
             }
         }
-        });
+
     }
 
 }
