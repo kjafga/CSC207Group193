@@ -13,6 +13,7 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
 
     @Override
     public void prepareSuccessView(MovePieceOutputData outputData) {
+        System.out.println("board sent");
         MovePieceState state = new MovePieceState(outputData.newBoard(), outputData.waitForApiMove());
         movePieceViewModel.setState(state);
         movePieceViewModel.firePropertyChanged();

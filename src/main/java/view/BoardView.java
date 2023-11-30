@@ -97,7 +97,8 @@ public class BoardView implements PropertyChangeListener {
         } else if (legalMoves.contains(clickedSquare)) {
             onSquare = selectedSquare;
             promoSquare = clickedSquare;
-            movePieceController.execute(selectedSquare, clickedSquare, '?');
+            Platform.runLater(() -> movePieceController.execute(onSquare, promoSquare, '?'));
+            //movePieceController.execute(selectedSquare, clickedSquare, '?');
             selectedSquare = -1;
             legalMoves = emptyList();
         } else {
@@ -169,7 +170,7 @@ public class BoardView implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        Platform.runLater(() -> {
 
         switch (evt.getPropertyName()) {
             case "legalState" -> {
@@ -184,17 +185,22 @@ public class BoardView implements PropertyChangeListener {
                 }
             }
             case "moveState" -> {
+                System.out.println("event recieved");
                 MovePieceState state = (MovePieceState) evt.getNewValue();
                 if (state.newBoard().equals("promotionQuestion")) {
                     Platform.runLater(this::displayPromotionQuestion);
                     return;
                 }
-                updateFromFEN(state.newBoard());
+                Platform.runLater(() -> {
+                    updateFromFEN(state.newBoard());
+                    if (state.waitForApiMove()) {
+                        chessBoard.setDisable(true);
+                    }
+                });
+                //updateFromFEN(state.newBoard());
 
                 // TODO: Is this the solution we want?
-                if (state.waitForApiMove()) {
-                    chessBoard.setDisable(true);
-                }
+
 
 //                new Thread(() -> {
 
@@ -219,6 +225,7 @@ public class BoardView implements PropertyChangeListener {
                 });
             }
         }
+        });
     }
 
 }
