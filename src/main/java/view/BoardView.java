@@ -180,11 +180,9 @@ public class BoardView implements PropertyChangeListener {
         Alert gameOverPopup = new Alert(Alert.AlertType.INFORMATION);
         gameOverPopup.setTitle("Game Over");
         gameOverPopup.setHeaderText("The game has ended in " + reason + ".");
+        gameOverPopup.setContentText("Push OK to return to the main menu");
 
         Optional<ButtonType> result = gameOverPopup.showAndWait();
-
-
-
     }
 
     private void returnToMainMenuClicked(ActionEvent e) {
