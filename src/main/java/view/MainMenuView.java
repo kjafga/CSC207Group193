@@ -69,7 +69,6 @@ public class MainMenuView implements PropertyChangeListener {
         sideDialog.setHeaderText("Pick Your Side");
         Optional<String> side = sideDialog.showAndWait();
 
-        System.out.println(difficulty.get());
         this.newGameController.execute(difficulty.get(),side.get());
 
     }

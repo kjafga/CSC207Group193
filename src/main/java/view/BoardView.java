@@ -185,7 +185,6 @@ public class BoardView implements PropertyChangeListener {
                 }
             }
             case "moveState" -> {
-                System.out.println("event recieved");
                 MovePieceState state = (MovePieceState) evt.getNewValue();
                 if (state.newBoard().equals("promotionQuestion")) {
                     Platform.runLater(this::displayPromotionQuestion);

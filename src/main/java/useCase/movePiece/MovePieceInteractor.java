@@ -20,7 +20,6 @@ public class MovePieceInteractor implements MovePieceInputBoundary {
 
     @Override
     public void movePiece(MovePieceInputData movePieceInputData) {
-        System.out.println("Piece moved");
         final int startSquare = movePieceInputData.startSquare();
         final int endSquare = movePieceInputData.endSquare();
         final char promotion = movePieceInputData.promotion();
