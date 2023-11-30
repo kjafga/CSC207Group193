@@ -58,6 +58,13 @@ public class Board {
         return moveGenerator.getGameOverReason();
     }
 
+
+    public boolean isGameOver() {
+        if (moveGenerator.getGameOverReason() == null) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Make the specified move, updating the current position.
      *

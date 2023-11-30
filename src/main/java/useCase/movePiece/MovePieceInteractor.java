@@ -25,11 +25,8 @@ public class MovePieceInteractor implements MovePieceInputBoundary {
         final char promotion = movePieceInputData.promotion();
 
         if (board.makeMove(startSquare, endSquare, promotion)) {
-            if (board.canMove()){
-
-
+            if (board.isGameOver()){
                 if (board.getDifficulty() == -1) {
-
                     MovePieceOutputData outputData = new MovePieceOutputData(board.toString().split(" ")[0],false);
                     movePieceOutputBoundary.prepareSuccessView(outputData);
                 }else {
@@ -51,8 +48,9 @@ public class MovePieceInteractor implements MovePieceInputBoundary {
 
                 }
 
-
             }else {
+                MovePieceOutputData outputData = new MovePieceOutputData(board.getGameOverReason().toString(),false);
+                movePieceOutputBoundary.prepareGameOverView(outputData);
             }
         } else {
             movePieceOutputBoundary.preparePromotionQuestion();

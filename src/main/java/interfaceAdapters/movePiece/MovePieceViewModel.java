@@ -21,7 +21,7 @@ public class MovePieceViewModel extends ViewModel {
 
     @Override
     public void firePropertyChanged() {
-        support.firePropertyChange("moveState", null, this.state);
+        support.firePropertyChange(this.state.stateName(), null, this.state);
     }
 
     @Override

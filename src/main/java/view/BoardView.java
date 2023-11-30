@@ -1,5 +1,6 @@
 package view;
 
+import interfaceAdapters.newGame.NewGameController;
 import interfaceAdapters.newGame.NewGameState;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiState;
@@ -14,23 +15,25 @@ import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiState;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Popup;
 
+import java.beans.EventHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +66,7 @@ public class BoardView implements PropertyChangeListener {
     private int selectedSquare = -1;
     private int clickedSquare = -1;
     private List<Integer> legalMoves = emptyList();
+
 
     public String getViewName(){
         return this.name;
@@ -150,7 +154,7 @@ public class BoardView implements PropertyChangeListener {
         }
     }
 
-    private void displayPromotionQuestion() {
+    private void displayPromotionQuestion(int oldSquare, int newSquare){
         ChoiceDialog<String> dialog = new ChoiceDialog<>(null, "Queen", "Rook", "Knight", "Bishop");
         dialog.setTitle("Promotion");
         dialog.setHeaderText("Select piece to promote to:");
@@ -163,7 +167,25 @@ public class BoardView implements PropertyChangeListener {
             result = Optional.of("N");
         }
         char piece = Character.toLowerCase(result.get().charAt(0));
-        movePieceController.execute(selectedSquare, clickedSquare, piece);
+        System.out.println(oldSquare +" - "+ newSquare +" - "+ piece);
+        movePieceController.execute(oldSquare, newSquare, piece);
+    }
+
+
+    private void displayGameoverScreen(String reason) {
+        System.out.println("Game Over");
+        Alert gameOverPopup = new Alert(Alert.AlertType.INFORMATION);
+        gameOverPopup.setTitle("Game Over");
+        gameOverPopup.setHeaderText("The game has ended in " + reason + ".");
+
+        Optional<ButtonType> result = gameOverPopup.showAndWait();
+
+
+
+    }
+
+    private void returnToMainMenuClicked(ActionEvent e) {
+        //this.returnToMainMenuController.execute();
     }
 
 
@@ -186,9 +208,12 @@ public class BoardView implements PropertyChangeListener {
             case "moveState" -> {
                 MovePieceState state = (MovePieceState) evt.getNewValue();
                 if (state.newBoard().equals("promotionQuestion")) {
-                    Platform.runLater(this::displayPromotionQuestion);
+                    System.out.println(selectedSquare +" - "+ clickedSquare +" - ");
+
+                    displayPromotionQuestion(selectedSquare, clickedSquare);
                     return;
                 }
+
                 Platform.runLater(() -> {
                     updateFromFEN(state.newBoard());
                     if (state.waitForApiMove()) {
@@ -209,6 +234,10 @@ public class BoardView implements PropertyChangeListener {
                 Platform.runLater(() -> {
                     updateFromFEN(state.getNewBoard());
                 });
+            }
+            case "gameOverState" -> {
+                String reason = ((MovePieceState) evt.getNewValue()).newBoard();
+                displayGameoverScreen(reason);
             }
         }
 
