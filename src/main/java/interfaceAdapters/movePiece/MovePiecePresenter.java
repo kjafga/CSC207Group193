@@ -13,21 +13,21 @@ public class MovePiecePresenter implements MovePieceOutputBoundary {
 
     @Override
     public void prepareSuccessView(MovePieceOutputData outputData) {
-        MovePieceState state = new MovePieceState(outputData.newBoard(), outputData.waitForApiMove(),"moveState");
+        MovePieceState state = new MovePieceState(outputData.newBoard(), outputData.waitForApiMove());
         movePieceViewModel.setState(state);
         movePieceViewModel.firePropertyChanged();
     }
 
     @Override
     public void preparePromotionQuestion() {
-        MovePieceState state = new MovePieceState("promotionQuestion",false,"moveState");
+        MovePieceState state = new MovePieceState("promotionQuestion",false);
         movePieceViewModel.setState(state);
         movePieceViewModel.firePropertyChanged();
     }
 
     @Override
     public void prepareGameOverView(MovePieceOutputData gameOverMessage) {
-        MovePieceState state = new MovePieceState(gameOverMessage.newBoard().toString(),false,"gameOverState");
+        MovePieceState state = new MovePieceState(gameOverMessage.newBoard().toString(),false);
         movePieceViewModel.setState(state);
         movePieceViewModel.firePropertyChanged();
     }

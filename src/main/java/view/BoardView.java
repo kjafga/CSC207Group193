@@ -1,5 +1,7 @@
 package view;
 
+import interfaceAdapters.GameOver.GameOverState;
+import interfaceAdapters.GameOver.GameOverViewModel;
 import interfaceAdapters.newGame.NewGameController;
 import interfaceAdapters.newGame.NewGameState;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
@@ -73,7 +75,8 @@ public class BoardView implements PropertyChangeListener {
     }
 
     public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel, SendBoardToApiViewModel sendBoardToApiViewModel,
-                     LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController) {
+                     LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController,
+                     GameOverViewModel gameOverViewModel) {
         this.legalMovesController = legalMovesController;
         this.movePieceController = movePieceController;
         this.sendBoardToApiController = sendBoardToApiController;
@@ -81,6 +84,7 @@ public class BoardView implements PropertyChangeListener {
         legalMovesViewModel.addPropertyChangeListener(this);
         movePieceViewModel.addPropertyChangeListener(this);
         sendBoardToApiViewModel.addPropertyChangeListener(this);
+        gameOverViewModel.addPropertyChangeListener(this);
 
         for (int i = 0; i < 64; ++i) {
             Pane square = new Pane();
@@ -236,7 +240,7 @@ public class BoardView implements PropertyChangeListener {
                 });
             }
             case "gameOverState" -> {
-                String reason = ((MovePieceState) evt.getNewValue()).newBoard();
+                String reason = ((GameOverState) evt.getNewValue()).gameOverMessage();
                 displayGameoverScreen(reason);
             }
         }

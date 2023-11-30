@@ -1,6 +1,8 @@
 package app;
 
 import entity.Board;
+import interfaceAdapters.GameOver.GameOverPresenter;
+import interfaceAdapters.GameOver.GameOverViewModel;
 import interfaceAdapters.ViewManagerModel;
 import interfaceAdapters.newGame.NewGameController;
 import interfaceAdapters.newGame.NewGamePresenter;
@@ -17,6 +19,7 @@ import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import useCase.gameOver.GameOverOutputBoundary;
 import useCase.legalMoves.LegalMovesInputBoundary;
 import useCase.legalMoves.LegalMovesInteractor;
 import useCase.legalMoves.LegalMovesOutputBoundary;
@@ -55,9 +58,13 @@ public class Main extends Application {
         SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary = new SendBoardToApiPresenter(sendBoardToApiViewModel);
         SendBoardToApiInputBoundary sendBoardToApiInputBoundary = new SendBoardToApiInteractor(sendBoardToApiOutputBoundary, board);
 
+        GameOverViewModel gameOverViewModel = new GameOverViewModel();
+        GameOverOutputBoundary gameOverOutputBoundry = new GameOverPresenter(gameOverViewModel);
+
+
         MovePieceViewModel movePieceViewModel = new MovePieceViewModel();
         MovePieceOutputBoundary movePieceOutputBoundary = new MovePiecePresenter(movePieceViewModel);
-        MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, sendBoardToApiInputBoundary, board);
+        MovePieceInputBoundary movePieceInputBoundary = new MovePieceInteractor(movePieceOutputBoundary, gameOverOutputBoundry, sendBoardToApiInputBoundary, board);
 
 
         NewGameViewModel newGameViewModel = new NewGameViewModel();
@@ -66,10 +73,12 @@ public class Main extends Application {
         NewGameController newGameController = new NewGameController(newGameInteractor);
 
 
+
         BoardView boardView = new BoardViewBuilder()
                 .setLegalMovesViewModel(legalMovesViewModel)
                 .setMovePieceViewModel(movePieceViewModel)
                 .setSendBoardToApiViewModel(sendBoardToApiViewModel)
+                .setGameOverViewModel(gameOverViewModel)
 
                 .setLegalMovesController(new LegalMovesController(legalMovesInputBoundary))
                 .setMovePieceController(new MovePieceController(movePieceInputBoundary))
