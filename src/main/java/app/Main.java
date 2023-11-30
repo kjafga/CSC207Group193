@@ -54,12 +54,13 @@ public class Main extends Application {
         LegalMovesInputBoundary legalMovesInputBoundary = new LegalMovesInteractor(legalMovesOutputBoundary, board);
 
 
-        SendBoardToApiViewModel sendBoardToApiViewModel = new SendBoardToApiViewModel();
-        SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary = new SendBoardToApiPresenter(sendBoardToApiViewModel);
-        SendBoardToApiInputBoundary sendBoardToApiInputBoundary = new SendBoardToApiInteractor(sendBoardToApiOutputBoundary, board);
-
         GameOverViewModel gameOverViewModel = new GameOverViewModel();
         GameOverOutputBoundary gameOverOutputBoundry = new GameOverPresenter(gameOverViewModel);
+
+
+        SendBoardToApiViewModel sendBoardToApiViewModel = new SendBoardToApiViewModel();
+        SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary = new SendBoardToApiPresenter(sendBoardToApiViewModel);
+        SendBoardToApiInputBoundary sendBoardToApiInputBoundary = new SendBoardToApiInteractor(sendBoardToApiOutputBoundary, gameOverOutputBoundry, board);
 
 
         MovePieceViewModel movePieceViewModel = new MovePieceViewModel();

@@ -177,7 +177,6 @@ public class BoardView implements PropertyChangeListener {
 
 
     private void displayGameoverScreen(String reason) {
-        System.out.println("Game Over");
         Alert gameOverPopup = new Alert(Alert.AlertType.INFORMATION);
         gameOverPopup.setTitle("Game Over");
         gameOverPopup.setHeaderText("The game has ended in " + reason + ".");
@@ -241,7 +240,9 @@ public class BoardView implements PropertyChangeListener {
             }
             case "gameOverState" -> {
                 String reason = ((GameOverState) evt.getNewValue()).gameOverMessage();
-                displayGameoverScreen(reason);
+                Platform.runLater(() -> {
+                    displayGameoverScreen(reason);
+                });
             }
         }
 

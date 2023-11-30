@@ -1,6 +1,8 @@
 package useCase.sendBoardToApi;
 
 import entity.Board;
+import useCase.gameOver.GameOverOutputBoundary;
+import useCase.gameOver.GameOverOutputData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,10 +18,12 @@ public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
     private static final Pattern BESTMOVE_PATTERN = Pattern.compile("bestmove\\s++([a-h][1-8][a-h][1-8][qrnb]?+)");
 
     private final SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary;
+    private final GameOverOutputBoundary gameOverOutputBoundary;
     private final Board board;
 
-    public SendBoardToApiInteractor(SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary, Board board) {
+    public SendBoardToApiInteractor(SendBoardToApiOutputBoundary sendBoardToApiOutputBoundary, GameOverOutputBoundary gameOverOutputBoundary, Board board) {
         this.sendBoardToApiOutputBoundary = sendBoardToApiOutputBoundary;
+        this.gameOverOutputBoundary = gameOverOutputBoundary;
         this.board = board;
     }
 
@@ -34,6 +38,12 @@ public class SendBoardToApiInteractor implements SendBoardToApiInputBoundary {
 
         SendBoardToApiOutputData outputData = new SendBoardToApiOutputData(board.toString().split(" ")[0]);
         sendBoardToApiOutputBoundary.prepareSuccessView(outputData);
+
+        if (!board.isGameOver()) {
+            GameOverOutputData gameOverOutputData = new GameOverOutputData(board.getGameOverReason().toString());
+            gameOverOutputBoundary.prepareGameOverView(gameOverOutputData);
+
+        }
     }
 
     private static String getBestMove(Board board) throws IOException {
