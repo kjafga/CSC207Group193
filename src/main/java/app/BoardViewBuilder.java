@@ -1,6 +1,7 @@
 package app;
 
 import interfaceAdapters.GameOver.GameOverViewModel;
+import interfaceAdapters.returnToMainMenu.ReturnToMainMenuController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
@@ -19,6 +20,7 @@ class BoardViewBuilder {
     private LegalMovesController legalMovesController;
     private MovePieceController movePieceController;
     private SendBoardToApiController sendBoardToApiController;
+    private ReturnToMainMenuController returnToMainMenuController;
 
     BoardViewBuilder setLegalMovesViewModel(LegalMovesViewModel legalMovesViewModel) {
         this.legalMovesViewModel = legalMovesViewModel;
@@ -53,6 +55,10 @@ class BoardViewBuilder {
         this.sendBoardToApiController = sendBoardToApiController;
         return this;
     }
+    BoardViewBuilder setReturnToMainMenuController(ReturnToMainMenuController returnToMainMenuController) {
+        this.returnToMainMenuController = returnToMainMenuController;
+        return this;
+    }
 
     BoardView build() {
         if (legalMovesViewModel == null || movePieceViewModel == null || sendBoardToApiViewModel == null ||
@@ -61,8 +67,8 @@ class BoardViewBuilder {
         }
         return new BoardView(
                 legalMovesViewModel, movePieceViewModel, sendBoardToApiViewModel,
-                legalMovesController, movePieceController, sendBoardToApiController, gameOverViewModel
-        );
+                legalMovesController, movePieceController, sendBoardToApiController, gameOverViewModel,
+                returnToMainMenuController);
     }
 
 }

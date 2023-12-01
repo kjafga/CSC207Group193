@@ -7,6 +7,8 @@ import interfaceAdapters.ViewManagerModel;
 import interfaceAdapters.newGame.NewGameController;
 import interfaceAdapters.newGame.NewGamePresenter;
 import interfaceAdapters.newGame.NewGameViewModel;
+import interfaceAdapters.returnToMainMenu.ReturnToMainMenuController;
+import interfaceAdapters.returnToMainMenu.ReturnToMainMenuPresenter;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiPresenter;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
@@ -29,6 +31,9 @@ import useCase.movePiece.MovePieceOutputBoundary;
 import useCase.newGame.NewGameInputBoundary;
 import useCase.newGame.NewGameInteractor;
 import useCase.newGame.NewGameOutputBoundary;
+import useCase.returnToMainMenu.ReturnToMainMenuInputBoundary;
+import useCase.returnToMainMenu.ReturnToMainMenuInteractor;
+import useCase.returnToMainMenu.ReturnToMainMenuOutputBoundary;
 import useCase.sendBoardToApi.SendBoardToApiInputBoundary;
 import useCase.sendBoardToApi.SendBoardToApiInteractor;
 import useCase.sendBoardToApi.SendBoardToApiOutputBoundary;
@@ -73,7 +78,8 @@ public class Main extends Application {
         NewGameInputBoundary newGameInteractor = new NewGameInteractor(board, newGameOutputBoundary);
         NewGameController newGameController = new NewGameController(newGameInteractor);
 
-
+        ReturnToMainMenuOutputBoundary returnToMainMenuOutputBoundary = new ReturnToMainMenuPresenter(viewManagerModel);
+        ReturnToMainMenuInputBoundary returnToMainMenuInputBoundary = new ReturnToMainMenuInteractor(returnToMainMenuOutputBoundary);
 
         BoardView boardView = new BoardViewBuilder()
                 .setLegalMovesViewModel(legalMovesViewModel)
@@ -84,6 +90,7 @@ public class Main extends Application {
                 .setLegalMovesController(new LegalMovesController(legalMovesInputBoundary))
                 .setMovePieceController(new MovePieceController(movePieceInputBoundary))
                 .setSendBoardToApiController(new SendBoardToApiController(sendBoardToApiInputBoundary))
+                .setReturnToMainMenuController(new ReturnToMainMenuController(returnToMainMenuInputBoundary))
 
                 .build();
 

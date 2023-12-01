@@ -2,8 +2,8 @@ package view;
 
 import interfaceAdapters.GameOver.GameOverState;
 import interfaceAdapters.GameOver.GameOverViewModel;
-import interfaceAdapters.newGame.NewGameController;
 import interfaceAdapters.newGame.NewGameState;
+import interfaceAdapters.returnToMainMenu.ReturnToMainMenuController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiState;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
@@ -13,12 +13,7 @@ import interfaceAdapters.legalMoves.LegalMovesViewModel;
 import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceState;
 import interfaceAdapters.movePiece.MovePieceViewModel;
-import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
-import interfaceAdapters.sendBoardToApi.SendBoardToApiState;
-import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -28,14 +23,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Popup;
 
-import java.beans.EventHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +55,7 @@ public class BoardView implements PropertyChangeListener {
     private final LegalMovesController legalMovesController;
     private final MovePieceController movePieceController;
     private final SendBoardToApiController sendBoardToApiController;
+    private final ReturnToMainMenuController returnToMainMenuController;
 
     private int selectedSquare = -1;
     private int clickedSquare = -1;
@@ -76,10 +68,11 @@ public class BoardView implements PropertyChangeListener {
 
     public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel, SendBoardToApiViewModel sendBoardToApiViewModel,
                      LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController,
-                     GameOverViewModel gameOverViewModel) {
+                     GameOverViewModel gameOverViewModel, ReturnToMainMenuController returnToMainMenuController) {
         this.legalMovesController = legalMovesController;
         this.movePieceController = movePieceController;
         this.sendBoardToApiController = sendBoardToApiController;
+        this.returnToMainMenuController = returnToMainMenuController;
 
         legalMovesViewModel.addPropertyChangeListener(this);
         movePieceViewModel.addPropertyChangeListener(this);
@@ -183,11 +176,11 @@ public class BoardView implements PropertyChangeListener {
         gameOverPopup.setContentText("Push OK to return to the main menu");
 
         Optional<ButtonType> result = gameOverPopup.showAndWait();
+        if (result.isPresent()){
+            returnToMainMenuController.execute();
+        }
     }
 
-    private void returnToMainMenuClicked(ActionEvent e) {
-        //this.returnToMainMenuController.execute();
-    }
 
 
     @Override
