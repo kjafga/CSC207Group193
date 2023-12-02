@@ -35,10 +35,6 @@ public class MainMenuView implements PropertyChangeListener {
         this.newGameController = newGameController;
 
 
-
-
-
-
         this.scene = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/MainMenu.fxml")));
         for (Node node : scene.getChildren()) {
             node.setOnMouseClicked(this::onButtonClicked);

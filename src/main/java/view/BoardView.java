@@ -164,7 +164,6 @@ public class BoardView implements PropertyChangeListener {
             result = Optional.of("N");
         }
         char piece = Character.toLowerCase(result.get().charAt(0));
-        System.out.println(oldSquare +" - "+ newSquare +" - "+ piece);
         movePieceController.execute(oldSquare, newSquare, piece);
     }
 
