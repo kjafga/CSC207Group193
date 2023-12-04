@@ -2,17 +2,23 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import static entity.BoardData.*;
 import static java.lang.Integer.signum;
+import static java.util.Collections.disjoint;
+import static java.util.Collections.emptyList;
 
 final class MoveGenerator {
 
     private static final int[] ROOK_DIRECTIONS = {16, 1, -16, -1};
     private static final int[] BISHOP_DIRECTIONS = {17, -15, -17, 15};
     private static final int[] KNIGHT_DIRECTIONS = {33, 18, -14, -31, -33, -18, 14, 31};
+
+    private static final Set<Byte> MATING_MATERIAL = Set.of(PAWN, ROOK, QUEEN);
 
     private final BoardData boardData;
     private final ArrayList<Integer> moves = new ArrayList<>(218);
@@ -29,7 +35,7 @@ final class MoveGenerator {
         final int startIndex = startSquare + (startSquare & -8);
         if (signum(boardData.pieces[startIndex]) != boardData.color) {
             // Square doesn't even have a piece of our color
-            return Collections.emptyList();
+            return emptyList();
         }
 
         moves.clear();
@@ -65,7 +71,66 @@ final class MoveGenerator {
         return Collections.unmodifiableList(moves);
     }
 
-    boolean inCheck() {
+    GameOverReason getGameOverReason() {
+        if (boardData.rule50count >= 100) {
+            return GameOverReason.FIFTY_MOVE;
+        }
+
+        final Set<Byte> material = new HashSet<>();
+        int whiteCount = 0;
+        int blackCount = 0;
+        int bishopFlags = 0;
+        boolean hasMoves = false;
+
+        for (int i = 0; i < 64; ++i) {
+            if (!getLegalMoves(i).isEmpty()) {
+                hasMoves = true;
+            }
+            final byte piece = boardData.pieces[i + (i & -8)];
+            if (piece == 0 || piece == KING || piece == -KING) {
+                continue;
+            }
+            if (piece > 0) {
+                material.add(piece);
+                ++whiteCount;
+            } else {
+                material.add((byte) -piece);
+                ++blackCount;
+            }
+            if (piece == BISHOP) {
+                bishopFlags |= ((i ^ i >> 3) & 1) + 1;
+            } else if (piece == -BISHOP) {
+                bishopFlags |= ((i ^ i >> 3) & 1) + 1 << 2;
+            }
+        }
+        if (!hasMoves) {
+            return inCheck() ? GameOverReason.CHECKMATE : GameOverReason.STALEMATE;
+        }
+        if (!disjoint(material, MATING_MATERIAL)) {
+            return null;
+        }
+        if (material.equals(Set.of(BISHOP))) {
+            // If the only pieces remaining are bishops,
+            // they must be bishops of opposite colors,
+            // otherwise nobody can mate.
+            if (bishopFlags == 0b1001 || bishopFlags == 0b0110) {
+                return null;
+            }
+            return GameOverReason.INSUFFICIENT_MATERIAL;
+        }
+        if (blackCount >= 2 || whiteCount >= 2) {
+            // If a side has at least two pieces, then they have mating material
+            // (except in the same-color bishop case, which was handled earlier)
+            return null;
+        }
+        // If the only piece on the board is a knight then nobody can mate
+        if ((blackCount + whiteCount) == 1 && material.equals(Set.of(KNIGHT))) {
+            return GameOverReason.INSUFFICIENT_MATERIAL;
+        }
+        return null;
+    }
+
+    private boolean inCheck() {
         return !isLegal(-1, -1); // Stupid way of testing if we are in check
     }
 

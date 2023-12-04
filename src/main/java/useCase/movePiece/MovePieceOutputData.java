@@ -1,3 +1,3 @@
 package useCase.movePiece;
 
-public record MovePieceOutputData(String newBoard) {}
+public record MovePieceOutputData(String newBoard, Boolean waitForApiMove) {}

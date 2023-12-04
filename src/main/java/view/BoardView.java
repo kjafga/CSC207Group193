@@ -1,5 +1,9 @@
 package view;
 
+import interfaceAdapters.GameOver.GameOverState;
+import interfaceAdapters.GameOver.GameOverViewModel;
+import interfaceAdapters.newGame.NewGameState;
+import interfaceAdapters.returnToMainMenu.ReturnToMainMenuController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiState;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
@@ -12,20 +16,16 @@ import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 
 public class BoardView implements PropertyChangeListener {
-
+    private  final String name = "BoardView";
     private static final Background LIGHT = new Background(new BackgroundFill(Color.web("#F0D9B5"), null, null));
     private static final Background DARK = new Background(new BackgroundFill(Color.web("#B58863"), null, null));
 
@@ -55,21 +55,29 @@ public class BoardView implements PropertyChangeListener {
     private final LegalMovesController legalMovesController;
     private final MovePieceController movePieceController;
     private final SendBoardToApiController sendBoardToApiController;
+    private final ReturnToMainMenuController returnToMainMenuController;
 
     private int selectedSquare = -1;
-    private int onSquare = -1;
-    private int promoSquare = -1;
+    private int clickedSquare = -1;
     private List<Integer> legalMoves = emptyList();
 
+
+    public String getViewName(){
+        return this.name;
+    }
+
     public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel, SendBoardToApiViewModel sendBoardToApiViewModel,
-                     LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController) {
+                     LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController,
+                     GameOverViewModel gameOverViewModel, ReturnToMainMenuController returnToMainMenuController) {
         this.legalMovesController = legalMovesController;
         this.movePieceController = movePieceController;
         this.sendBoardToApiController = sendBoardToApiController;
+        this.returnToMainMenuController = returnToMainMenuController;
 
         legalMovesViewModel.addPropertyChangeListener(this);
         movePieceViewModel.addPropertyChangeListener(this);
         sendBoardToApiViewModel.addPropertyChangeListener(this);
+        gameOverViewModel.addPropertyChangeListener(this);
 
         for (int i = 0; i < 64; ++i) {
             Pane square = new Pane();
@@ -83,15 +91,17 @@ public class BoardView implements PropertyChangeListener {
         updateFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
     }
 
+    public Parent getRoot() {
+        return chessBoard;
+    }
+
     private void onSquareClicked(MouseEvent e) {
-        final int clickedSquare = Integer.parseInt(((Node) e.getSource()).getId());
+        clickedSquare = Integer.parseInt(((Node) e.getSource()).getId());
 
         if (selectedSquare == -1) {
             selectedSquare = clickedSquare;
             legalMovesController.execute(selectedSquare);
         } else if (legalMoves.contains(clickedSquare)) {
-            onSquare = selectedSquare;
-            promoSquare = clickedSquare;
             movePieceController.execute(selectedSquare, clickedSquare, '?');
             selectedSquare = -1;
             legalMoves = emptyList();
@@ -141,11 +151,7 @@ public class BoardView implements PropertyChangeListener {
         }
     }
 
-    public Parent getRoot() {
-        return chessBoard;
-    }
-
-    public void displayPromotionQuestion() {
+    private void displayPromotionQuestion(int oldSquare, int newSquare){
         ChoiceDialog<String> dialog = new ChoiceDialog<>(null, "Queen", "Rook", "Knight", "Bishop");
         dialog.setTitle("Promotion");
         dialog.setHeaderText("Select piece to promote to:");
@@ -157,13 +163,30 @@ public class BoardView implements PropertyChangeListener {
         if (result.get().equals("Knight")) {
             result = Optional.of("N");
         }
-        String piece = result.get().substring(0, 1).toLowerCase();
-        movePieceController.execute(onSquare, promoSquare, piece.charAt(0));
+        char piece = Character.toLowerCase(result.get().charAt(0));
+        movePieceController.execute(oldSquare, newSquare, piece);
     }
+
+
+    private void displayGameoverScreen(String reason) {
+        Alert gameOverPopup = new Alert(Alert.AlertType.INFORMATION);
+        gameOverPopup.setTitle("Game Over");
+        gameOverPopup.setHeaderText("The game has ended in " + reason + ".");
+        gameOverPopup.setContentText("Push OK to return to the main menu \n" +
+                                    "or close this window to review the board");
+
+        Optional<ButtonType> result = gameOverPopup.showAndWait();
+        if (result.isPresent()){
+            returnToMainMenuController.execute();
+        }
+    }
+
 
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
+
         switch (evt.getPropertyName()) {
             case "legalState" -> {
                 legalMoves = ((LegalMovesState) evt.getNewValue()).legalMoves();
@@ -179,19 +202,19 @@ public class BoardView implements PropertyChangeListener {
             case "moveState" -> {
                 MovePieceState state = (MovePieceState) evt.getNewValue();
                 if (state.newBoard().equals("promotionQuestion")) {
-                    Platform.runLater(this::displayPromotionQuestion);
+                    System.out.println(selectedSquare +" - "+ clickedSquare +" - ");
+
+                    displayPromotionQuestion(selectedSquare, clickedSquare);
                     return;
                 }
-                updateFromFEN(state.newBoard());
-                chessBoard.setDisable(true);
-                // TODO: Is this the solution we want?
-                new Thread(() -> {
-                    try {
-                        sendBoardToApiController.execute();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
+                Platform.runLater(() -> {
+                    updateFromFEN(state.newBoard());
+                    if (state.waitForApiMove()) {
+                        chessBoard.setDisable(true);
                     }
-                }).start();
+                });
+
             }
             case "sendBoardToApiState" -> {
                 SendBoardToApiState state = (SendBoardToApiState) evt.getNewValue();
@@ -200,7 +223,20 @@ public class BoardView implements PropertyChangeListener {
                     chessBoard.setDisable(false);
                 });
             }
+            case "newGame" -> {
+                NewGameState state = (NewGameState) evt.getNewValue();
+                Platform.runLater(() -> {
+                    updateFromFEN(state.getNewBoard());
+                });
+            }
+            case "gameOverState" -> {
+                String reason = ((GameOverState) evt.getNewValue()).gameOverMessage();
+                Platform.runLater(() -> {
+                    displayGameoverScreen(reason);
+                });
+            }
         }
+
     }
 
 }

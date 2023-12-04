@@ -6,4 +6,6 @@ public interface MovePieceOutputBoundary {
 
     void preparePromotionQuestion();
 
+    void prepareGameOverView(MovePieceOutputData gameOverMessage);
+
 }

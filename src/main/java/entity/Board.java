@@ -2,13 +2,21 @@ package entity;
 
 import java.util.List;
 
-import static entity.BoardData.*;
-
 public class Board {
 
     private final BoardData boardData;
     private final FENGenerator fenGenerator;
     private final MoveGenerator moveGenerator;
+    //Difficulty of the game. -1 means over the board, 0 means easy, 1 means medium, 2 means hard
+    private Integer difficulty = -1;
+
+    public Integer getDifficulty() {
+        return this.difficulty;
+    }
+    public void newGame(Integer difficulty, String side) {
+        this.difficulty = difficulty;
+
+    }
 
     public Board() {
         this.boardData = new BoardData();
@@ -31,6 +39,8 @@ public class Board {
     }
 
     /**
+     * Get all possible legal moves for the piece on {@code startSquare}
+     *
      * @param startSquare the selected square in the range 0&ndash;64
      * @return The legal moves from {@code startSquare} in the current position
      */
@@ -39,121 +49,35 @@ public class Board {
     }
 
     /**
-     * Determine whether the side to move is in check.
-     * @return true if the side to move is in check, false otherwise.
+     * Check whether the game is over and if so, return the reason why.
+     *
+     * @return {@code null} if the game is not over,
+     * otherwise the appropriate enum constant explaining why the game is over.
      */
-    public boolean inCheck() {
-        return moveGenerator.inCheck();
+    public GameOverReason getGameOverReason() {
+        return moveGenerator.getGameOverReason();
     }
 
-    /**
-     * Determine whether the side to move has any legal moves
-     * (i.e., check whether the game is over or not).
-     * @return true if the side to move has any legal moves, false otherwise
-     */
-    public boolean canMove() {
-        for (int i = 0; i < 64; ++i) {
-            if (!moveGenerator.getLegalMoves(i).isEmpty()) {
-                return true;
-            }
+
+    public boolean isGameOver() {
+        if (moveGenerator.getGameOverReason() == null) {
+            return true;
         }
         return false;
     }
-
     /**
      * Make the specified move, updating the current position.
      *
-     * @param startSquare the selected square in the range 0&ndash;64
+     * @param startSquare the square in the range 0&ndash;64 containing the piece to move
      * @param endSquare   the target square in the range 0&ndash;64
      * @param promotion   the piece to promote to: one of {@code qrnb}
      * @return true if the move was made successfully, false if a promotion is required
      */
     public boolean makeMove(int startSquare, int endSquare, char promotion) {
-        if (!getLegalMoves(startSquare).contains(endSquare)) {
-            throw new IllegalArgumentException("Move " + startSquare + "," + endSquare + " is illegal");
+        if (!moveGenerator.getLegalMoves(startSquare).contains(endSquare)) {
+            throw new IllegalArgumentException("Move " + startSquare + ", " + endSquare + " is illegal");
         }
-
-        final int startIndex = startSquare + (startSquare & -8);
-        final int endIndex = endSquare + (endSquare & -8);
-        final int piece = Math.abs(boardData.pieces[startIndex]);
-        final int captured = Math.abs(boardData.pieces[endIndex]);
-        boolean clearEnPassant = true;
-
-        if (piece == PAWN && endIndex >> 4 == (boardData.color > 0 ? 7 : 0)) {
-            switch (promotion) {
-                case 'q' -> boardData.pieces[endIndex] = (byte) (QUEEN * boardData.color);
-                case 'r' -> boardData.pieces[endIndex] = (byte) (ROOK * boardData.color);
-                case 'n' -> boardData.pieces[endIndex] = (byte) (KNIGHT * boardData.color);
-                case 'b' -> boardData.pieces[endIndex] = (byte) (BISHOP * boardData.color);
-                default -> {
-                    return false;
-                }
-            }
-        } else {
-            boardData.pieces[endIndex] = boardData.pieces[startIndex];
-        }
-        boardData.pieces[startIndex] = 0;
-
-        if (piece == PAWN || captured != 0) {
-            boardData.rule50count = 0;
-        } else {
-            ++boardData.rule50count;
-        }
-
-        if (captured == ROOK) {
-            removeCastlingRights(endIndex);
-        }
-
-        switch (piece) {
-            case PAWN -> {
-                if (endIndex == boardData.enPassantIndex) {
-                    boardData.pieces[endIndex - (boardData.color << 4)] = 0;
-                } else if (Math.abs(endIndex - startIndex) == 32) {
-                    if (((endIndex + 1) & 0x88) == 0 && boardData.pieces[endIndex + 1] == PAWN * -boardData.color ||
-                            ((endIndex - 1) & 0x88) == 0 && boardData.pieces[endIndex - 1] == PAWN * -boardData.color) {
-                        boardData.enPassantIndex = endIndex - (boardData.color << 4);
-                        clearEnPassant = false;
-                    }
-                }
-            }
-            case KING -> {
-                boardData.castlingRights &= (boardData.color > 0 ? 12 : 3);
-                if (startIndex == 4 && endIndex == 6) {
-                    boardData.pieces[7] = 0;
-                    boardData.pieces[5] = (byte) (ROOK * boardData.color);
-                } else if (startIndex == 4 && endIndex == 2) {
-                    boardData.pieces[0] = 0;
-                    boardData.pieces[3] = (byte) (ROOK * boardData.color);
-                } else if (startIndex == 116 && endIndex == 118) {
-                    boardData.pieces[119] = 0;
-                    boardData.pieces[117] = (byte) (ROOK * boardData.color);
-                } else if (startIndex == 116 && endIndex == 114) {
-                    boardData.pieces[112] = 0;
-                    boardData.pieces[115] = (byte) (ROOK * boardData.color);
-                }
-                boardData.kingIndices[boardData.color >>> 31] = endIndex;
-            }
-            case ROOK -> removeCastlingRights(startIndex);
-        }
-
-        boardData.color = -boardData.color;
-        if (boardData.color > 0) {
-            ++boardData.moveCount;
-        }
-        if (clearEnPassant) {
-            boardData.enPassantIndex = -1;
-        }
-
-        return true;
-    }
-
-    private void removeCastlingRights(int rookIndex) {
-        switch (rookIndex) {
-            case 7 -> boardData.castlingRights &= ~1;
-            case 0 -> boardData.castlingRights &= ~2;
-            case 119 -> boardData.castlingRights &= ~4;
-            case 112 -> boardData.castlingRights &= ~8;
-        }
+        return boardData.makeMove(startSquare, endSquare, promotion);
     }
 
 }

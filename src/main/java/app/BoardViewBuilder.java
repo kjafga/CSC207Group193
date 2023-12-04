@@ -1,5 +1,7 @@
 package app;
 
+import interfaceAdapters.GameOver.GameOverViewModel;
+import interfaceAdapters.returnToMainMenu.ReturnToMainMenuController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
 import interfaceAdapters.legalMoves.LegalMovesController;
@@ -13,10 +15,12 @@ class BoardViewBuilder {
     private LegalMovesViewModel legalMovesViewModel;
     private MovePieceViewModel movePieceViewModel;
     private SendBoardToApiViewModel sendBoardToApiViewModel;
+    private GameOverViewModel gameOverViewModel;
 
     private LegalMovesController legalMovesController;
     private MovePieceController movePieceController;
     private SendBoardToApiController sendBoardToApiController;
+    private ReturnToMainMenuController returnToMainMenuController;
 
     BoardViewBuilder setLegalMovesViewModel(LegalMovesViewModel legalMovesViewModel) {
         this.legalMovesViewModel = legalMovesViewModel;
@@ -30,6 +34,10 @@ class BoardViewBuilder {
 
     BoardViewBuilder setSendBoardToApiViewModel(SendBoardToApiViewModel sendBoardToApiViewModel) {
         this.sendBoardToApiViewModel = sendBoardToApiViewModel;
+        return this;
+    }
+    BoardViewBuilder setGameOverViewModel(GameOverViewModel gameOverViewModel) {
+        this.gameOverViewModel = gameOverViewModel;
         return this;
     }
 
@@ -47,6 +55,10 @@ class BoardViewBuilder {
         this.sendBoardToApiController = sendBoardToApiController;
         return this;
     }
+    BoardViewBuilder setReturnToMainMenuController(ReturnToMainMenuController returnToMainMenuController) {
+        this.returnToMainMenuController = returnToMainMenuController;
+        return this;
+    }
 
     BoardView build() {
         if (legalMovesViewModel == null || movePieceViewModel == null || sendBoardToApiViewModel == null ||
@@ -55,8 +67,8 @@ class BoardViewBuilder {
         }
         return new BoardView(
                 legalMovesViewModel, movePieceViewModel, sendBoardToApiViewModel,
-                legalMovesController, movePieceController, sendBoardToApiController
-        );
+                legalMovesController, movePieceController, sendBoardToApiController, gameOverViewModel,
+                returnToMainMenuController);
     }
 
 }
