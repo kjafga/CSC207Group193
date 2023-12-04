@@ -1,6 +1,8 @@
 package app;
 
 import interfaceAdapters.GameOver.GameOverViewModel;
+import interfaceAdapters.book.BookController;
+import interfaceAdapters.book.BookViewModel;
 import interfaceAdapters.returnToMainMenu.ReturnToMainMenuController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiViewModel;
@@ -10,17 +12,21 @@ import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import view.BoardView;
 
+import java.io.IOException;
+
 class BoardViewBuilder {
 
     private LegalMovesViewModel legalMovesViewModel;
     private MovePieceViewModel movePieceViewModel;
     private SendBoardToApiViewModel sendBoardToApiViewModel;
     private GameOverViewModel gameOverViewModel;
+    private BookViewModel bookViewModel;
 
     private LegalMovesController legalMovesController;
     private MovePieceController movePieceController;
     private SendBoardToApiController sendBoardToApiController;
     private ReturnToMainMenuController returnToMainMenuController;
+    private BookController bookController;
 
     BoardViewBuilder setLegalMovesViewModel(LegalMovesViewModel legalMovesViewModel) {
         this.legalMovesViewModel = legalMovesViewModel;
@@ -41,6 +47,12 @@ class BoardViewBuilder {
         return this;
     }
 
+    BoardViewBuilder setBookViewModel(BookViewModel bookViewModel) {
+        this.bookViewModel = bookViewModel;
+        return this;
+    }
+
+
     BoardViewBuilder setLegalMovesController(LegalMovesController legalMovesController) {
         this.legalMovesController = legalMovesController;
         return this;
@@ -60,15 +72,19 @@ class BoardViewBuilder {
         return this;
     }
 
-    BoardView build() {
-        if (legalMovesViewModel == null || movePieceViewModel == null || sendBoardToApiViewModel == null ||
-                legalMovesController == null || movePieceController == null || sendBoardToApiController == null) {
-            throw new IllegalStateException("Did not set all fields!");
-        }
-        return new BoardView(
-                legalMovesViewModel, movePieceViewModel, sendBoardToApiViewModel,
-                legalMovesController, movePieceController, sendBoardToApiController, gameOverViewModel,
-                returnToMainMenuController);
+    BoardViewBuilder setBookController(BookController bookController) {
+        this.bookController = bookController;
+        return this;
+    }
+
+
+    BoardView build() throws IOException {
+        return new BoardView(legalMovesViewModel, legalMovesController,
+                movePieceViewModel, movePieceController,
+                sendBoardToApiViewModel, sendBoardToApiController,
+                gameOverViewModel,
+                returnToMainMenuController,
+                bookViewModel, bookController);
     }
 
 }

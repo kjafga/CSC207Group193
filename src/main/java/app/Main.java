@@ -4,6 +4,9 @@ import entity.Board;
 import interfaceAdapters.GameOver.GameOverPresenter;
 import interfaceAdapters.GameOver.GameOverViewModel;
 import interfaceAdapters.ViewManagerModel;
+import interfaceAdapters.book.BookController;
+import interfaceAdapters.book.BookPresenter;
+import interfaceAdapters.book.BookViewModel;
 import interfaceAdapters.newGame.NewGameController;
 import interfaceAdapters.newGame.NewGamePresenter;
 import interfaceAdapters.newGame.NewGameViewModel;
@@ -21,6 +24,9 @@ import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import useCase.book.BookInputBoundary;
+import useCase.book.BookInteractor;
+import useCase.book.BookOutputBoundary;
 import useCase.gameOver.GameOverOutputBoundary;
 import useCase.legalMoves.LegalMovesInputBoundary;
 import useCase.legalMoves.LegalMovesInteractor;
@@ -81,16 +87,22 @@ public class Main extends Application {
         ReturnToMainMenuOutputBoundary returnToMainMenuOutputBoundary = new ReturnToMainMenuPresenter(viewManagerModel);
         ReturnToMainMenuInputBoundary returnToMainMenuInputBoundary = new ReturnToMainMenuInteractor(returnToMainMenuOutputBoundary);
 
+        BookViewModel bookViewModel = new BookViewModel();
+        BookOutputBoundary bookOutputBoundary = new BookPresenter(bookViewModel);
+        BookInputBoundary bookInputBoundary = new BookInteractor(bookOutputBoundary, board);
+
         BoardView boardView = new BoardViewBuilder()
                 .setLegalMovesViewModel(legalMovesViewModel)
                 .setMovePieceViewModel(movePieceViewModel)
                 .setSendBoardToApiViewModel(sendBoardToApiViewModel)
                 .setGameOverViewModel(gameOverViewModel)
+                .setBookViewModel(bookViewModel)
 
                 .setLegalMovesController(new LegalMovesController(legalMovesInputBoundary))
                 .setMovePieceController(new MovePieceController(movePieceInputBoundary))
                 .setSendBoardToApiController(new SendBoardToApiController(sendBoardToApiInputBoundary))
                 .setReturnToMainMenuController(new ReturnToMainMenuController(returnToMainMenuInputBoundary))
+                .setBookController(new BookController(bookInputBoundary))
 
                 .build();
 
@@ -99,7 +111,7 @@ public class Main extends Application {
         MainMenuView mainMenuView = new MainMenuView(newGameViewModel, newGameController);
 
         Scene mainMenuScene = new Scene(mainMenuView.getRoot(),800,800);
-        Scene boardScene = new Scene(boardView.getRoot(), 800, 800);
+        Scene boardScene = new Scene(boardView.getRoot());
 
 
         Map<String,Scene> scenes = new HashMap<>();
