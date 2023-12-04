@@ -13,7 +13,8 @@ public class Board {
     public Integer getDifficulty() {
         return this.difficulty;
     }
-    public void newGame(Integer difficulty, String side) {
+
+    public void reset(int difficulty, String side) {
         this.difficulty = difficulty;
 
     }
