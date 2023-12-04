@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
@@ -7,16 +8,22 @@ public class Board {
     private final BoardData boardData;
     private final FENGenerator fenGenerator;
     private final MoveGenerator moveGenerator;
-    //Difficulty of the game. -1 means over the board, 0 means easy, 1 means medium, 2 means hard
-    private Integer difficulty = -1;
 
-    public Integer getDifficulty() {
+    //Difficulty of the game. -1 means over the board, 0 means easy, 1 means medium, 2 means hard
+    private int difficulty = -1;
+    private final List<String> playedMoves = new ArrayList<>();
+
+    public List<String> getPlayedMoves() {
+        return playedMoves;
+    }
+
+    public int getDifficulty() {
         return this.difficulty;
     }
 
     public void reset(int difficulty, String side) {
         this.difficulty = difficulty;
-
+        this.playedMoves.clear();
     }
 
     public Board() {
@@ -78,7 +85,19 @@ public class Board {
         if (!moveGenerator.getLegalMoves(startSquare).contains(endSquare)) {
             throw new IllegalArgumentException("Move " + startSquare + ", " + endSquare + " is illegal");
         }
-        return boardData.makeMove(startSquare, endSquare, promotion);
+        if (boardData.makeMove(startSquare, endSquare, promotion)) {
+            StringBuilder moveString = new StringBuilder(5);
+            moveString.appendCodePoint('a' + (startSquare & 7));
+            moveString.appendCodePoint('1' + (startSquare >> 3));
+            moveString.appendCodePoint('a' + (endSquare & 7));
+            moveString.appendCodePoint('1' + (endSquare >> 3));
+            if (promotion == 'q' || promotion == 'r' || promotion == 'n' || promotion == 'b') {
+                moveString.append(promotion);
+            }
+            playedMoves.add(moveString.toString());
+            return true;
+        }
+        return false;
     }
 
 }
