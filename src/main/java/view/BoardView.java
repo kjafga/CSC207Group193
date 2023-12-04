@@ -261,6 +261,17 @@ public class BoardView implements PropertyChangeListener {
                     updateFromFEN(state.newBoard());
                     chessBoard.setDisable(false);
                 });
+
+                Thread bookThread = new Thread(() -> {
+                    try {
+                        bookController.getBookMoves();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                bookThread.setName("Opening Book Thread");
+                bookThread.setDaemon(true);
+                bookThread.start();
             }
             case "newGame" -> {
                 NewGameState state = (NewGameState) evt.getNewValue();

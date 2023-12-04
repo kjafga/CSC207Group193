@@ -38,17 +38,16 @@ public class MovePieceInteractor implements MovePieceInputBoundary {
 
                     // Calls the sendBoardToApiInteractor on a new thread, allowing the initial thread to continue
                     // and return the board to the user. The board after the API call will return when it's ready.
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                sendBoardToApiInteractor.execute();
-                            }catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    Thread sendBoardThread = new Thread(() -> {
+                        try {
+                            sendBoardToApiInteractor.execute();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    }).start();
-
+                    });
+                    sendBoardThread.setName("Send Board to API Thread");
+                    sendBoardThread.setDaemon(true);
+                    sendBoardThread.start();
                 }
             }else {
                 // The game is over, first update the board, then send an end of game event to the view so the
