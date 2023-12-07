@@ -24,7 +24,7 @@ public class NewGameInteractor implements NewGameInputBoundary {
         } else if (newGameInputData.difficulty.equals("Hard")) {
             difficulty = 2;
         }
-      board.newGame(difficulty, newGameInputData.side);
+      board.reset(difficulty, newGameInputData.side);
         presenter.prepareSuccessView(new NewGameOutputData(board.toString().split(" ")[0]));
     }
 }

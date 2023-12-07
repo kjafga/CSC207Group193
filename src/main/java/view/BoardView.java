@@ -2,6 +2,9 @@ package view;
 
 import interfaceAdapters.GameOver.GameOverState;
 import interfaceAdapters.GameOver.GameOverViewModel;
+import interfaceAdapters.book.BookController;
+import interfaceAdapters.book.BookState;
+import interfaceAdapters.book.BookViewModel;
 import interfaceAdapters.newGame.NewGameState;
 import interfaceAdapters.returnToMainMenu.ReturnToMainMenuController;
 import interfaceAdapters.sendBoardToApi.SendBoardToApiController;
@@ -14,8 +17,11 @@ import interfaceAdapters.movePiece.MovePieceController;
 import interfaceAdapters.movePiece.MovePieceState;
 import interfaceAdapters.movePiece.MovePieceViewModel;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,13 +29,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.TextAlignment;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.Collections.emptyList;
 
@@ -50,12 +56,16 @@ public class BoardView implements PropertyChangeListener {
         }
     }
 
-    private final GridPane chessBoard = new GridPane();
+    private final HBox root;
+    private final GridPane chessBoard;
+    private final VBox bookArea;
 
     private final LegalMovesController legalMovesController;
     private final MovePieceController movePieceController;
     private final SendBoardToApiController sendBoardToApiController;
     private final ReturnToMainMenuController returnToMainMenuController;
+    private final BookController bookController;
+
 
     private int selectedSquare = -1;
     private int clickedSquare = -1;
@@ -66,18 +76,33 @@ public class BoardView implements PropertyChangeListener {
         return this.name;
     }
 
-    public BoardView(LegalMovesViewModel legalMovesViewModel, MovePieceViewModel movePieceViewModel, SendBoardToApiViewModel sendBoardToApiViewModel,
-                     LegalMovesController legalMovesController, MovePieceController movePieceController, SendBoardToApiController sendBoardToApiController,
-                     GameOverViewModel gameOverViewModel, ReturnToMainMenuController returnToMainMenuController) {
+    public BoardView(LegalMovesViewModel legalMovesViewModel, LegalMovesController legalMovesController,
+                     MovePieceViewModel movePieceViewModel, MovePieceController movePieceController,
+                     SendBoardToApiViewModel sendBoardToApiViewModel, SendBoardToApiController sendBoardToApiController,
+                     GameOverViewModel gameOverViewModel,
+                     ReturnToMainMenuController returnToMainMenuController,
+                     BookViewModel bookViewModel, BookController bookController)
+            throws IOException {
         this.legalMovesController = legalMovesController;
         this.movePieceController = movePieceController;
         this.sendBoardToApiController = sendBoardToApiController;
         this.returnToMainMenuController = returnToMainMenuController;
+        this.bookController = bookController;
 
         legalMovesViewModel.addPropertyChangeListener(this);
         movePieceViewModel.addPropertyChangeListener(this);
         sendBoardToApiViewModel.addPropertyChangeListener(this);
         gameOverViewModel.addPropertyChangeListener(this);
+        bookViewModel.addPropertyChangeListener(this);
+
+        chessBoard = new GridPane();
+        chessBoard.setMinWidth(800);
+        chessBoard.setMinHeight(800);
+
+        bookArea = new VBox();
+
+        root = new HBox(chessBoard, bookArea);
+        root.setPrefSize(1200, 800);
 
         for (int i = 0; i < 64; ++i) {
             Pane square = new Pane();
@@ -92,7 +117,7 @@ public class BoardView implements PropertyChangeListener {
     }
 
     public Parent getRoot() {
-        return chessBoard;
+        return root;
     }
 
     private void onSquareClicked(MouseEvent e) {
@@ -181,12 +206,27 @@ public class BoardView implements PropertyChangeListener {
         }
     }
 
+    private void updateBookArea(String openingName, Map<String, int[]> bookMoves) {
+        bookArea.getChildren().clear();
 
+        Label openingNameLabel = new Label(openingName);
+        openingNameLabel.setTextAlignment(TextAlignment.CENTER);
+        bookArea.getChildren().add(openingNameLabel);
+
+        for (String move : bookMoves.keySet()) {
+            Label moveLabel = new Label(String.format(
+                    "%s\twhite wins %d%%, draw %d%%, black wins %d%%",
+                    move,
+                    bookMoves.get(move)[0],
+                    bookMoves.get(move)[1],
+                    bookMoves.get(move)[2]
+            ));
+            bookArea.getChildren().add(moveLabel);
+        }
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
-
         switch (evt.getPropertyName()) {
             case "legalState" -> {
                 legalMoves = ((LegalMovesState) evt.getNewValue()).legalMoves();
@@ -214,7 +254,6 @@ public class BoardView implements PropertyChangeListener {
                         chessBoard.setDisable(true);
                     }
                 });
-
             }
             case "sendBoardToApiState" -> {
                 SendBoardToApiState state = (SendBoardToApiState) evt.getNewValue();
@@ -222,6 +261,17 @@ public class BoardView implements PropertyChangeListener {
                     updateFromFEN(state.newBoard());
                     chessBoard.setDisable(false);
                 });
+
+                Thread bookThread = new Thread(() -> {
+                    try {
+                        bookController.getBookMoves();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                bookThread.setName("Opening Book Thread");
+                bookThread.setDaemon(true);
+                bookThread.start();
             }
             case "newGame" -> {
                 NewGameState state = (NewGameState) evt.getNewValue();
@@ -231,12 +281,15 @@ public class BoardView implements PropertyChangeListener {
             }
             case "gameOverState" -> {
                 String reason = ((GameOverState) evt.getNewValue()).gameOverMessage();
-                Platform.runLater(() -> {
-                    displayGameoverScreen(reason);
-                });
+                Platform.runLater(() -> displayGameoverScreen(reason));
+            }
+            case "bookState" -> {
+                BookState state = (BookState) evt.getNewValue();
+                String openingName = state.openingName();
+                Map<String, int[]> bookMoves = state.openingMoves();
+                Platform.runLater(() -> updateBookArea(openingName, bookMoves));
             }
         }
-
     }
 
 }

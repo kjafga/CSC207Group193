@@ -5,6 +5,7 @@ module com.example {
 //  requires org.controlsfx.controls;
     requires annotations;
     requires java.desktop;
+    requires org.json;
 
     opens app to javafx.fxml;
     exports app;
